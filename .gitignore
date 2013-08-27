@@ -1,0 +1,14 @@
+# osx
+
+.DS_Store
+.idea
+
+# python
+
+*.pyc
+build
+local_settings.py
+
+# nodejs
+
+node_modules
