@@ -4,21 +4,23 @@
 * 使用实时索引，见sphinx RT index
 * 整个搜索的查询和增删数据使用sphinx QL完成
 
+#redis中的数据格式
+
+    1. KEY: id_hash: TYPE: list, VALUES: [full_hash, hit_count, id, json]
+    2. 定期以redis中的数据重建一次索引，以达到清理过期数据的作用
+    3. GLOBAL_ID 用来每次 INCR 以成为sphinx搜索的主键
+
 # 搜索
 	1. 用sphinxql做的select查询，取json字段归并group后返回
 
-#redis中的数据格式
+# 更新数据
 
-    1. redis[0] 以 hash - json 的方式保存索引数据，查询0号库可以得知资源是否已经在索引中
-    2. redis[1] 以 id_hash - full_hash 的方式存放，查询1号库可以得知是否应该insert还是replace
-    3. 定期以redis中的数据重建一次索引，以达到清理过期数据的作用
-
-# 抓取数据处理
-
-	1. 对于一批抓取数据，每行去hash，在redis[0] 中查找 key是否存在，如存在，则剔除
-	2. 对于剩下的数据，在redis[1]中，查找key是否存在，如存在，进replace队列，如不存在，进insert队列
-	3. 对于insert队列，rt中做insert，redis[0]中新增，redis[1]中新增
-	4. 对于replace队列，rt中做replace，redis[0]中新增，redis[1]中更新，并在redis[0]中删除旧值
+	1. redis中存在id_hash, 判断为旧数据更新
+		a. full_hash一致，则是同一条数据，跳过到下一条
+		b. full_hash不一致，rt操作为replace，hit_count++, 更新id_hash: [full_hash, hit_count++, id, json]
+	2. 不存在id_hash, 为新数据，rt操作为insert, hit_count为0, redis中新增id_hash: [full_hash, 0, id, json]
+	3. 重置id_hash的expire
+	4. 批量处理replace和insert
 
 # 索引重建
 
