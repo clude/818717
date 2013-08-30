@@ -22,41 +22,42 @@
 
 * 数据模型
 
-    1. 节点列表：[名称，IP，管理状态，上次连接，绑定脚本，当前任务，完成数，错误数，超时数，客户端负载]
-    2. 脚本列表：[名称，脚本，更新时间，节点列表]
-    3. 任务列表：[域名，地址，维护周期，重要性，更新时间，到期时间，工作节点，超时时间]
-    4. 事件列表：用于跟踪状态和调试
+    1. 节点列表: [名称，IP，管理状态，上次连接，绑定脚本，当前任务，完成数，错误数，超时数，客户端负载]
+    2. 脚本列表: [名称，脚本，更新时间，节点列表]
+    3. 任务列表: [域名，地址，维护周期，重要性，更新时间，到期时间，工作节点，超时时间]
+    4. 事件列表: 用于跟踪状态和调试
 
 * 节点事件
 
-    1. login
-    2. disconnect
-    3. script success
-    4. script error
-    4. target success
-    5. target error
+    1. login: 启用节点
+    3. update result: 节点更新结果
+    4. crawl result: 节点抓取结果
 
 * 管理频道
 
-    1. start
-    2. stop
-    3. restart
-    4. status
-    5. use
-    6. update
-    7. remove
-    8. crawl
-    9. test
-    10. load
-    11. unload
-    12. refresh
+    1. start: 启动服务器/节点
+    2. stop: 停止服务器/节点
+    3. restart: 重启服务器/节点
+    4. status: 状态检查
+    5. update: 更新脚本
+    6. crawl: 立刻抓取url
+    7. load: 载入url地址列表，关联在域名上
+    8. unload: 移除域名下的url列表
+    9. refresh: 重设url列表的抓取状态
+
+    注：操作后触发result事件，异步结果触发message事件
 
 # 节点
 
-* script
-* target
+* 服务器端事件
+    1. update: 脚本更新，如不成功则回退, 触发update result事件
+    2. crawl: 调用worker函数(来自服务器端脚本), 触发crawl result事件
+
+* 节点和服务器端保持5s的无限断线重连间隔
 
 # 管理端
 
-* result
-* message
+* 服务器端事件
+
+    1. result: 服务器端对命令的直接响应
+    2. message：服务器端对命令的异步响应 / 服务器端的事件报告
