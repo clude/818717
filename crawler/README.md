@@ -37,13 +37,11 @@
 
     1. start: 启动服务器/节点
     2. stop: 停止服务器/节点
-    3. restart: 重启服务器/节点
-    4. status: 状态检查
-    5. update: 更新脚本
-    6. crawl: 立刻抓取url
-    7. load: 载入url地址列表，关联在域名上
-    8. unload: 移除域名下的url列表
-    9. refresh: 重设url列表的抓取状态
+    3. status: 状态检查
+    4. update: 更新脚本
+    5. load: 载入url地址列表，关联在域名上
+    6. unload: 移除域名下的url列表
+    7. refresh: 重设url列表的抓取状态
 
     注：操作后触发result事件，异步结果触发message事件
 

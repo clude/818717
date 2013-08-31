@@ -1,6 +1,6 @@
 
 var cfg = {
-  //host: '211.152.54.140',
+  host: '192.168.30.101',
   port: 9681,
   'script patterns': ['scripts/common.js', 'scripts/steel/*.js']
 };
@@ -24,7 +24,7 @@ var
 
 io.
   on('connect', function()  {
-    rl.setPrompt(cfg.host ? cfg.host : ''+'> ');
+    rl.setPrompt((cfg.host ? cfg.host : '')+'> ');
     rl.prompt();
   }).
 
@@ -51,9 +51,7 @@ rl.on('line', function(line){
   switch(command) {
     case 'start':
     case 'stop':
-    case 'restart':
     case 'status':
-    case 'crawl':
     case 'unload':
     case 'refresh':
       io.emit(command, arg);
