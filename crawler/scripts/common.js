@@ -1,8 +1,9 @@
 
-function worker(url, success_handler, error_handler) {
+function worker(url, crawl_result) {
   
 };
 
-function generate_url(domain)	{
-	return ['http://www.google.com', 'http://www.baidu.com'];
+function generate_url_config(domain)  {
+  return {
+  }
 };

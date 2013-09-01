@@ -62,7 +62,7 @@ rl.on('line', function(line){
     case 'load':
       // 不进行任何错误处理，此处失败则退出程序，便于早点发现问题
       eval(concat_scripts(cfg['script patterns']));
-      io.emit(command, arg, generate_url(arg));
+      io.emit(command, arg, generate_url_config(arg));
       break;
     case 'exit':
       process.exit(0);

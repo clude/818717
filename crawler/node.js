@@ -38,14 +38,11 @@ io.
   }).
 
   on('crawl', function(url) {
-    function crawl_success(rows)  {
-      socket.emit('crawl result', null, rows);
-    }
-    function crawl_error(err) {
-      socket.emit('crawl result', err, null);
+    function crawl_result(err, domain, url, objects) {
+      socket.emit('crawl result', err, domain, url, objects);
     }
     try {
-      worker(url, crawl_success, crawl_error);
+      worker(url, crawl_result);
     }
     catch(e)  {
       crawl_error(e);
