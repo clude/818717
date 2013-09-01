@@ -11,17 +11,45 @@ var io = require('socket.io').listen(cfg.port).set('log level', 1);
 var
   nodes = {},
   domains = {},
+  worklist = {},
   server = {
     online: false,
     script: ''
   };
 
 setInterval(function reorder()  {
-  
+  var now = new Date().getTime();
+  worklist = {};
+  for (var domain in domains) {
+    var
+      crawl_urls = [],
+      url_configs = domains[domain];
+    for (var url in url_configs) {
+      var url_config = url_configs[url];
+      if (url_config.check < now) {
+        crawl_urls.push([url, url_config]);
+      }
+    }
+    crawl_urls.sort(function(v1, v2){
+      return v1[1].priority > v2[1].priority;
+    });
+    worklist[domain] = crawl_urls;
+  }
 }, cfg['reorder_interval']);
 
 setInterval(function dispatch() {
-  
+  for (var domain in worklist)  {
+    var
+      crawl_urls = worklist[domain],
+      current = 0;
+    for (var socket_id in nodes)  {
+      if (current == crawl_urls.length) break;
+      if (!nodes[socket_id].ready || nodes[socket_id].working[domain]) continue;
+      var url = crawl_urls[current++][0];
+      nodes[socket_id].socket.emit('crawl', domain, url);
+      nodes[socket_id].working[domain] = url;
+    }
+  }
 }, cfg['dispatch_interval']);
 
 io.of('/node').on('connection', function(socket)  {
@@ -30,7 +58,8 @@ io.of('/node').on('connection', function(socket)  {
       nodes[socket.id] = {
         socket: socket,
         name: name,
-        ready: false
+        ready: false,
+        working: {}
       };
       socket.emit('update', server.script);
     }).
@@ -44,6 +73,8 @@ io.of('/node').on('connection', function(socket)  {
     }).
 
     on('crawl result', function(err, domain, url, objects)  {
+      var worklist = nodes[socket.id].working;
+      if (worklist && worklist[domain]) delete worklist[domain];
       if (!domains[domain] || !domains[domain][url]) return;
       crawl_config = domains[domain][url];
       var now = new Date().getTime();

@@ -1,5 +1,5 @@
 
-function worker(url, crawl_result) {
+function worker(domain, url, crawl_result) {
   
 };
 

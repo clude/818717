@@ -37,12 +37,12 @@ io.
     }
   }).
 
-  on('crawl', function(url) {
+  on('crawl', function(domain, url) {
     function crawl_result(err, domain, url, objects) {
       socket.emit('crawl result', err, domain, url, objects);
     }
     try {
-      worker(url, crawl_result);
+      worker(domain, url, crawl_result);
     }
     catch(e)  {
       crawl_error(e);
