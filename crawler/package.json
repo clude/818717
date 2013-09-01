@@ -1,0 +1,13 @@
+{
+    "dependencies": {
+        "socket.io": "*",
+        "socket.io-client": "*",
+        "jQuery": "*",
+        "gbk": "*",
+        "sprintf": "*",
+        "jsdom": "*",
+        "xmlhttprequest": "*",
+        "sha1": "*",
+        "glob": "*"
+    }
+}

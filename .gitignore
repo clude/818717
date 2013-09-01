@@ -14,3 +14,4 @@ local_settings.py
 # nodejs
 
 node_modules
+npm_debug.log
