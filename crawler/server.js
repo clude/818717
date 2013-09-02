@@ -2,8 +2,8 @@
 var cfg = {
   port: 9681,
   indexer: '127.0.0.1',
-  'dispatch_interval': 1*1000,
-  'reorder_interval': 20*1000
+  'dispatch_interval': 0.5*1000,
+  'reorder_interval': 30*1000
 };
 
 var io = require('socket.io').listen(cfg.port).set('log level', 1);
@@ -17,7 +17,7 @@ var
     script: ''
   };
 
-setInterval(function reorder()  {
+function reorder()  {
   var now = new Date().getTime();
   worklist = {};
   for (var domain in domains) {
@@ -31,26 +31,30 @@ setInterval(function reorder()  {
       }
     }
     crawl_urls.sort(function(v1, v2){
-      return v1[1].priority > v2[1].priority;
+      return v1[1].priority > v2[1].priority ? 1 : -1;
     });
     worklist[domain] = crawl_urls;
   }
-}, cfg['reorder_interval']);
+}
+setInterval(reorder, cfg['reorder_interval']);
 
-setInterval(function dispatch() {
+function dispatch() {
+  if (!server.online) return;
+  var now = new Date().getTime();
   for (var domain in worklist)  {
-    var
-      crawl_urls = worklist[domain],
-      current = 0;
+    var crawl_urls = worklist[domain];
     for (var socket_id in nodes)  {
-      if (current == crawl_urls.length) break;
+      if (crawl_urls.length == 0) break;
       if (!nodes[socket_id].ready || nodes[socket_id].working[domain]) continue;
-      var url = crawl_urls[current++][0];
+      var crawl_url = crawl_urls.splice(0, 1)[0];
+      var url = crawl_url[0], url_config = crawl_url[1];
+      url_config.check = now + 3*60*1000;
       nodes[socket_id].socket.emit('crawl', domain, url);
       nodes[socket_id].working[domain] = url;
     }
   }
-}, cfg['dispatch_interval']);
+}
+setInterval(dispatch, cfg['dispatch_interval']);
 
 io.of('/node').on('connection', function(socket)  {
   socket.
@@ -73,8 +77,8 @@ io.of('/node').on('connection', function(socket)  {
     }).
 
     on('crawl result', function(err, domain, url, objects)  {
-      var worklist = nodes[socket.id].working;
-      if (worklist && worklist[domain]) delete worklist[domain];
+      var node_worklist = nodes[socket.id].working;
+      if (node_worklist && node_worklist[domain]) delete node_worklist[domain];
       if (!domains[domain] || !domains[domain][url]) return;
       crawl_config = domains[domain][url];
       var now = new Date().getTime();
@@ -83,9 +87,8 @@ io.of('/node').on('connection', function(socket)  {
       } else {
         crawl_config.check = now + crawl_config.validity;
         // TODO: http post the objects to the indexer server.
-        console.log(objects); 
+        console.log(socket.id, '-->', domain, url, objects.length);
       }
-      dispatch();
     });
 });
 
@@ -120,10 +123,12 @@ io.of('/admin').on('connection', function(socket) {
       for (var url in url_configs)  {
         var url_config = url_configs[url];
         url_config.check = now;
-        if (!url_config.validity) url_config.validity = 20*60*1000;
+        if (!url_config.validity) url_config.validity = 20*60*1000; // 默认保质期20分钟
         if (!url_config.priority) url_config.priority = 3;
       }
       reorder();
+      //console.log(domains[domain]);
+      //console.log(worklist[domain]);
       socket.emit('result', 'OK');
     }).
 

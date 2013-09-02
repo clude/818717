@@ -1,8 +1,8 @@
 
 var cfg = {
-  host: '192.168.30.101',
+//  host: '192.168.30.101',
   port: 9681,
-  'script patterns': ['scripts/common.js', 'scripts/steel/*.js']
+  'script patterns': ['scripts/common.js', 'scripts/steel/common/*.js', 'scripts/steel/*.js']
 };
 
 function concat_scripts(patterns)  {
