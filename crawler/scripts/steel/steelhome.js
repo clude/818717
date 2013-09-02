@@ -26,14 +26,14 @@
           model: td.eq(5).text(),
           trademark: td.eq(6).text(),
           spec: td.eq(7).text(),
-          price: td.eq(8).text(),
-          weight: td.eq(9).text(),
+          price_raw: td.eq(8).text(),
+          weight_raw: td.eq(9).text(),
           producer: td.eq(10).text(),
-          stock_location: td.eq(11).text(),
-          store_name: td.eq(1).find('strong').text(),
-          phone_number: td.eq(1).find('table').find('tr:eq(1)').text().trim().match(/[-\d]+/g).join(' '),
-          spider: '钢之家',
-          spider_float: 50,
+          warehouse: td.eq(11).text(),
+          store_raw: td.eq(1).find('strong').text(),
+          cell_raw: td.eq(1).find('table').find('tr:eq(1)').text().trim().match(/[-\d]+/g).join(' '),
+          source_raw: '钢之家',
+          source_uint: 8,
         });
       });
       return result;

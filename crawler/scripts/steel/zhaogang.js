@@ -28,13 +28,13 @@
             trademark: row1.eq(2).text(),
             url: url,
             producer: row1.eq(3).text(),
-            stock_location: row1.eq(4).text(),
-            weight: row1.eq(5).text(),
-            price: row1.eq(6).text(),
-            store_name: row1.eq(7).tex,
-            phone_number: row2,
-            spider: '找钢网',
-            spider_float: 50,
+            warehouse: row1.eq(4).text(),
+            weight_raw: row1.eq(5).text(),
+            price_raw: row1.eq(6).text(),
+            store_raw: row1.eq(7).tex,
+            cell_raw: row2,
+            source_raw: '找钢网',
+            source_uint: 11,
         };
         result.push(item);
       }

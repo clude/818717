@@ -38,13 +38,13 @@
           trademark: a1[2].trim(),
           spec: a2[1].trim(),
           producer: a3[1].trim(),
-          price: td.eq(6).find('span').text().trim(),
-          weight: a4[1].trim(),
-          store_name: '上海宝钢新事业发展总公司',
-          stock_location: stock_location,
-          phone_number: '021-56105222',
-          spider: '新事业',
-          spider_float: 100,
+          price_raw: td.eq(6).find('span').text().trim(),
+          weight_raw: a4[1].trim(),
+          store_raw: '上海宝钢新事业发展总公司',
+          warehouse: stock_location,
+          cell_raw: '021-56105222',
+          source_raw: '新事业',
+          source_uint: 10,
         });
 
       });

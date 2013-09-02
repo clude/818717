@@ -39,14 +39,14 @@
           model: '',
           trademark: $row.eq(1).text(),
           spec: $row.eq(0).text(),
-          weight: '',
-          price: $row.eq(3).text(),
+          weight_raw: '',
+          price_raw: $row.eq(3).text(),
           producer: td2[0],
-          stock_location: td2.length > 1 ? td2[1] : td2[0],
-          store_name: $row.eq(4).text().trim(),
-          phone_number: $row.eq(5).text().trim(),
-          spider: '有钢',
-          spider_float: 80,
+          warehouse: td2.length > 1 ? td2[1] : td2[0],
+          store_raw: $row.eq(4).text().trim(),
+          cell_raw: $row.eq(5).text().trim(),
+          source_raw: '有钢',
+          source_uint: 7,
         });
       });
       return result;

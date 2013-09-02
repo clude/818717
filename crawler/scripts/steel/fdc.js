@@ -22,16 +22,16 @@
         result.push({
           'url': sprintf('http://www.shgt.com/package/%s/%s', row.provider_code, row.package_code),
           'model': row.product_name,
-          'store_name': row.provider_name,
-          'stock_location': row.warehose_name,
+          'store_raw': row.provider_name,
+          'warehouse': row.warehose_name,
           'producer': row.manufactorer,
           'trademark': row.shop_sign,
           'spec': row.spec,
-          'weight': sprintf('%f', row._weight),
-          'price': sprintf('%f', row.price),
-          'spider': '宝时达',
-          'spider_float': 100,
-          'phone_number': '50509699',
+          'weight_raw': sprintf('%f', row._weight),
+          'price_raw': sprintf('%f', row.price),
+          'source_raw': '范达城',
+          'source_uint': 4,
+          'cell_raw': row.cell_phone,
         });
       });
       return result;

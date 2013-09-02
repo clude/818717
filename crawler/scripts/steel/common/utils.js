@@ -13,7 +13,7 @@ var utils = {
   cellOnly: function(originString) {
     if (!originString) return '';
     var result = originString.match(/1[3-9][0-9]{9}/);
-    return result ? result[0] : '';
+    return result ? parseInt(result[0]) : 0;
   },
   analyzeSpec: function(spec) {
     if (!spec)  {
@@ -45,29 +45,30 @@ var utils = {
 }
 
 function group (item) {
-  var spec = utils.analyzeSpec(item.spec)
-    , tags = utils.analyzeTags(item.model+item.trademark+item.producer)
-  ;
+  var
+    spec = utils.analyzeSpec(item.spec),
+    tags = utils.analyzeTags(item.model+item.trademark+item.producer);
 
-  item.group = sha1(tags.join(' ') + spec.width + spec.height);
+  item.extended = tags.join(' ')
+  item.width = spec.width;
+  item.thick = spec.thick;
+  item.group_hash = 'group_'+sha1(item.extended + spec.width + spec.height);
   item.json = JSON.stringify(item);
-  item._meta = {
-    tags: tags.join(' '),
-    width: spec.width,
-    thick: spec.thick,
-    hash: item.group
-  };
 }
 
 function process(item)  {
-  var s1 = item.model+item.trademark+item.spec+item.url+item.producer+item.stock_location+item.store_name+item.spider
-    , h1 = sha1(s1)
-  ;
+  var
+    s1 = item.model+item.trademark+item.spec+item.producer+item.warehouse+item.store_raw,
+    h1 = 'id_'+sha1(s1),
+    s2 = s1+item.source_raw+item.price_raw+item.weight_raw+item.cell_raw,
+    h2 = 'full_'+sha1(s2);
+
   item.time = new Date().getTime();
-  item.price_float = utils.numberOnly(item.price, true);
-  item.weight_float = utils.numberOnly(item.weight);
-  item.phone_cell = utils.cellOnly(item.phone_number);
-  item.hash = h1;
+  item.price_float = utils.numberOnly(item.price_raw, true);
+  item.weight_float = utils.numberOnly(item.weight_raw);
+  item.cell_uint = utils.cellOnly(item.cell_raw);
+  item.id_hash = h1;
+  item.full_hash = h2;
   group(item);
   return item
 }
