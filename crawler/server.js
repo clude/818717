@@ -3,10 +3,13 @@ var cfg = {
   port: 9681,
   indexer: '127.0.0.1',
   'dispatch_interval': 0.5*1000,
-  'reorder_interval': 30*1000
+  'reorder_interval': 30*1000,
+  'index server': 'http://127.0.0.1:8000/search/'
 };
 
-var io = require('socket.io').listen(cfg.port).set('log level', 1);
+var
+  io = require('socket.io').listen(cfg.port).set('log level', 1)
+  $ = require('jQuery');
 
 var
   nodes = {},
@@ -86,8 +89,8 @@ io.of('/node').on('connection', function(socket)  {
         crawl_config.check = now;
       } else {
         crawl_config.check = now + crawl_config.validity;
-        // TODO: http post the objects to the indexer server.
         console.log(socket.id, '-->', domain, url, objects.length);
+        $.post(cfg['index server']+'update/', JSON.stringify(objects));
       }
     });
 });

@@ -18,14 +18,14 @@
           model: $(item[1]).text(),
           trademark: $(item[2]).text(),
           spec: $(item[3]).text(),
-          weight: $(item[6]).text(),
-          price: $(item[8]).text(),
-          stock_location: $(item[9]).text(),
+          weight_raw: $(item[6]).text(),
+          price_raw: $(item[8]).text(),
+          warehouse: $(item[9]).text(),
           producer: $(item[10]).text(),
-          store_name: 'www.511steel.com',
-          phone_number: '4001158158-6666',
-          spider: '百营钢铁',
-          spider_float: 50,
+          store_raw: 'www.511steel.com',
+          cell_raw: '4001158158-6666',
+          source_raw: '百营钢铁',
+          source_uint: 0
         })
       });
       return result;

@@ -46,14 +46,14 @@
             model: td.eq(0).find('a').text(),
             trademark: td.eq(1).attr('title'),
             spec: td.eq(2).attr('title'),
-            stock_location: td.eq(3).attr('title'),
+            warehouse: td.eq(3).attr('title'),
             producer: td.eq(4).attr('title'),
-            store_name: td.eq(6).attr('title'),
-            price: td.eq(5).attr('title'),
-            weight: td.eq(5).clone().children().remove().end().text().trim(),
-            spider: '我的钢铁',
-            spider_float: 50,
-            phone_number: phone,
+            store_raw: td.eq(6).attr('title'),
+            price_raw: td.eq(5).attr('title'),
+            weight_raw: td.eq(5).clone().children().remove().end().text().trim(),
+            source_raw: '我的钢铁',
+            source_uint: 5,
+            cell_raw: phone,
           }
           result.push(r);
         });

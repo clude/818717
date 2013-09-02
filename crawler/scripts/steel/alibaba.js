@@ -36,12 +36,12 @@
           producer: td.eq(3).find('p').attr('title') ? td.eq(3).find('p').attr('title') : td.eq(3).find('p').text(),
           spec: td.eq(4).find('p').attr('title') ? td.eq(4).find('p').attr('title') : td.eq(4).find('p').text(),
           price: td.eq(5).find('p>span:last').text().trim(),
-          store_name: td.eq(6).find('p:eq(0)>a').text().trim(),
-          stock_location: td.eq(6).find('p:eq(1)').text().trim(),
-          weight: '',
-          phone_number: '',
-          spider: '阿里巴巴',
-          spider_float: 40,
+          store_raw: td.eq(6).find('p:eq(0)>a').text().trim(),
+          warehouse: td.eq(6).find('p:eq(1)').text().trim(),
+          weight_raw: '',
+          cell_raw: '',
+          source_raw: '阿里巴巴',
+          source_uint: 1
         });
       });
       return result;

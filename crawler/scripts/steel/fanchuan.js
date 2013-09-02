@@ -27,14 +27,14 @@
           model: td.eq(0).text(),
           trademark: td.eq(1).text(),
           spec: td.eq(2).text(),
-          price: td.eq(3).text(),
-          weight: td.eq(4).text(),
+          price_raw: td.eq(3).text(),
+          weight_raw: td.eq(4).text(),
           producer: td.eq(5).text(),
-          stock_location: td.eq(7).text(),
-          store_name: '上海凡川物资贸易有限公司',
-          phone_number: td.eq(10).text(),
-          spider: '凡川',
-          spider_float: 90,
+          warehouse: td.eq(7).text(),
+          store_raw: '上海凡川物资贸易有限公司',
+          cell_raw: td.eq(10).text(),
+          source_raw: '凡川',
+          source_uint: 3,
         });
       });
       return result;

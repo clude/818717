@@ -26,13 +26,13 @@
           trademark: td.eq(3).text(),
           spec: td.eq(2).text(),
           producer: td.eq(4).text(),
-          price: td.eq(5).find('span').text(),
-          weight: td.eq(6).find('p:eq(0)').text(),
-          stock_location: td.eq(7).text(),
-          store_name: $(row).find('a.comp-name').text(),
-          phone_number: $(row).find('em').eq(1).text(),
-          spider: '欧浦',
-          spider_float: 60,
+          price_raw: td.eq(5).find('span').text(),
+          weight_raw: td.eq(6).find('p:eq(0)').text(),
+          warehouse: td.eq(7).text(),
+          store_raw: $(row).find('a.comp-name').text(),
+          cell_raw: $(row).find('em').eq(1).text(),
+          source_raw: '欧浦',
+          source_uint: 6,
         });
       });
       return result;

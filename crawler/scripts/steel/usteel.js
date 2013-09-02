@@ -49,13 +49,13 @@
           trademark: cols.eq(2).text(),
           spec: cols.eq(1).text(),
           producer: cols.eq(3).text(),
-          stock_location: '',
-          price: cols.eq(4).children('i').eq(0).text(),
-          weight: cols.eq(4).children('i').eq(1).text(),
-          store_name: cols.eq(7).find('a').attr('title'),
-          phone_number: phone,
-          spider: '你的钢铁',
-          spider_float: 50,
+          warehouse: '',
+          price_raw: cols.eq(4).children('i').eq(0).text(),
+          weight_raw: cols.eq(4).children('i').eq(1).text(),
+          store_raw: cols.eq(7).find('a').attr('title'),
+          cell_raw: phone,
+          source_raw: '你的钢铁',
+          source_uint: 9,
         })
       });
       return result;

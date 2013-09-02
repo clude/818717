@@ -27,15 +27,15 @@
         result.push({
             'url': 'http://beta.baostar.com'+td.eq(1).find('a').attr('href'),
             'model': td.eq(1).find('a').text(),
-            'store_name': td.eq(1).find('div:last').text(),
+            'store_raw': td.eq(1).find('div:last').text(),
             'producer': td.eq(1).find('div:first').children().remove().end().text().trim(),
             'trademark': td.eq(1).children().remove().end().text().trim(),
             'spec': td.eq(3).text().split(' ')[0].trim(),
-            'weight': td.eq(3).text().split(' ')[1].trim(),
-            'price': td.eq(4).find('del').text(),
-            'spider': '宝时达',
-            'spider_float': 100,
-            'phone_number': '50509699',
+            'weight_raw': td.eq(3).text().split(' ')[1].trim(),
+            'price_raw': td.eq(4).find('del').text(),
+            'source_raw': '宝时达',
+            'source_uint': 2,
+            'cell_raw': '50509699',
         });
       });
       return result;

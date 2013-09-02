@@ -124,6 +124,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'indexer',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -154,6 +155,8 @@ LOGGING = {
         },
     }
 }
+
+INDEX_SERVER = '127.0.0.1'
 
 try:
     from local_settings.py import *

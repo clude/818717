@@ -16,7 +16,7 @@ RESERVED_KEYWORDS = (
     'SUM', 'TABLES', 'TRANSACTION', 'TRUE', 'UPDATE', 'VALUES', 'VARIABLES', 'WARNINGS', 'WEIGHT', 'WHERE', 'WITHIN'
 )
 
-kw_encode = lambda k: k if k.upper() not in RESERVED_KEYWORDS else '_' + k
+kw_encode = lambda k: str(k) if str(k).upper() not in RESERVED_KEYWORDS else '_' + str(k)
 
 def value_encode(v):
     if v == None: return "''"
@@ -124,7 +124,7 @@ class insert(SphinxQL):
 
     def sql(self):
         if not self.columns: raise Exception('SphinxQL[INSERT]: no columns')
-        return '%s INTO %s (%s) VALUES %s'%(self.verb, self.index, ', '.join(self.columns), ', '.join(self.values))
+        return '%s INTO %s (%s) VALUES %s'%(self.verb, str(self.index), ', '.join(self.columns), ', '.join(self.values))
 
 class replace(insert):
 
