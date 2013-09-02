@@ -43,6 +43,7 @@ io.
       io.emit('crawl result', err, domain, url, objects);
     }
     try {
+      console.log(domain, url);
       worker(domain, url, crawl_result);
     }
     catch(e)  {

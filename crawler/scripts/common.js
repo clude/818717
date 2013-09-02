@@ -22,6 +22,7 @@ worker = function(domain, url, crawl_result) {
       }
       catch (e) {
         crawl_result(e, domain, url);
+        console.log('parse/process error', e);
       }
     }).
     fail(function (err){

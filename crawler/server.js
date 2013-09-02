@@ -127,7 +127,8 @@ io.of('/admin').on('connection', function(socket) {
         if (!url_config.priority) url_config.priority = 3;
       }
       reorder();
-      console.log(worklist);
+      //console.log(domains[domain]);
+      //console.log(worklist[domain]);
       socket.emit('result', 'OK');
     }).
 
