@@ -10,9 +10,9 @@ var cfg = {
 var io = require('socket.io-client').connect('/node', cfg);
 
 var script = '';
-var worker = function(url, success_handler, error_handler) {
-  error_handler('脚本未实现');
-};
+function worker(domain, url, crawl_result) {
+  crawl_result('脚本未实现');
+}
 
 io.
   on('connect', function() {
@@ -27,25 +27,26 @@ io.
     };
     try {
       eval(new_script);
+      console.log('update success');
       script = new_script;
-      socket.emit('update result');
+      io.emit('update result');
     }
     catch(e)  {
       script = backup.script;
       worker = backup.worker;
-      socket.emit('update result', e);
+      io.emit('update result', e);
     }
   }).
 
   on('crawl', function(domain, url) {
     function crawl_result(err, domain, url, objects) {
-      socket.emit('crawl result', err, domain, url, objects);
+      io.emit('crawl result', err, domain, url, objects);
     }
     try {
       worker(domain, url, crawl_result);
     }
     catch(e)  {
-      crawl_error(e);
+      crawl_result(e, domain, url);
     }
   });
 
