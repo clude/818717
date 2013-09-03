@@ -61,20 +61,27 @@ class Searcher(object):
         sphinxql.truncate(self.index).run()
         print 'rt truncated.'
 
-        all_keys = self.rc.keys('id_')
+        all_keys = self.rc.keys('id_*')
         print '%d rows in redis.'%len(all_keys)
 
         done = 0
         for page in range(int(math.ceil(float(len(all_keys))/BATCH_COUNT))):
             ql = sphinxql.insert(self.index)
             for key in all_keys[page*BATCH_COUNT:(page+1)*BATCH_COUNT]:
-                row = json.loads(self.rc.lindex(key, 3))
-                hit_count, gid = self.rc.lindex(key, 1), self.rc.incr('GLOBAL_ID')
-                row['id'] = gid
-                row['hit_count'] = hit_count
-                ql.add(row)
+                try:
+                    row = json.loads(self.rc.lindex(key, 3))
+                    hit_count, gid = self.rc.lindex(key, 1), self.rc.incr('GLOBAL_ID')
+                    row['id'] = gid
+                    row['hit_count'] = hit_count
+                    row['json'] = self.rc.lindex(key, 3)
+                    ql.add(row)
+                except:
+                    pass
                 done += 1
-            ql.run(self.SPHINX_HOST)
+            try:
+                ql.run(self.SPHINX_HOST)
+            except:
+                pass
             print '%d / %d'%(done, len(all_keys))
         print 'finished.'
         return done
