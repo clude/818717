@@ -17,7 +17,7 @@ class Searcher(object):
         self.EXPIRE_TTL = EXPIRE_TTL
 
     def query(self, keyword='', sort='', start=0, limit=20):
-        ql = sphinxql.search(self.index, 'json')
+        ql = sphinxql.search(self.index, 'id', 'hit_count', 'json')
         if keyword: ql.keyword(keyword)
         if sort: ql.sort(sort)
         ql.limit(start, limit)
