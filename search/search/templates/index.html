@@ -8,17 +8,14 @@
   <script src="static/lib/angular/angular.min.js"></script>
   <script src="static/lib/angular/ui-bootstrap-tpls-0.4.0.min.js"></script>
   <script src="static/js/app.js"></script>
+  <script src="static/js/search.js"></script>
 </head>
 <body>
 
-<div ng-include="'static/partials/nav.html'"></div>
-
+<div ng-include="'static/partials/nav.html'" ng-controller="NavCtrl"></div>
 <div class="container">
-<div ng-include="'static/partials/tab.html'"></div>
-
+	<div ng-view></div>
 </div>
-
-
 
 </body>
 </html>
