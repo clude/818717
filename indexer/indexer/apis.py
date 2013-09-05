@@ -7,6 +7,12 @@ import redis
 import json
 import math
 
+SORT_MODES = {
+    0: ('hit_count', 'DESC', 'MAX'), 
+    1: ('time', 'DESC', 'MAX'),
+    2: ('price_float', 'ASC', 'MIN'),
+}
+
 class Searcher(object):
 
     def __init__(self, index, HOST='127.0.0.1', EXPIRE_TTL=60*60*24):
@@ -16,11 +22,17 @@ class Searcher(object):
         self.index = index
         self.EXPIRE_TTL = EXPIRE_TTL
 
-    def query(self, keyword='', sort='', start=0, limit=20):
+    def query(self, keyword, sort, start, count):
+        sort_field, sort_method, group_method = SORT_MODES[sort]
+        ql = sphinxql.search(self.index, 'json', '%s(%s) AS sort_by'%(group_method, sort_field))
+        ql.keyword(keyword).sort('sort_by %s'%sort_method).group('group_hash').limit(start, count)
+        result = ql.run(self.SPHINX_HOST)        
+        return result
+
+    def detail(self, group_hash, keyword, sort):
+        sort_field, sort_method, group_method = SORT_MODES[sort]
         ql = sphinxql.search(self.index, 'json')
-        if keyword: ql.keyword(keyword)
-        if sort: ql.sort(sort)
-        ql.limit(start, limit)
+        ql.keyword(keyword+' '+group_hash).sort('%s %s'%(sort_field, sort_method)).limit(0, 1000)
         result = ql.run(self.SPHINX_HOST)
         return result
 

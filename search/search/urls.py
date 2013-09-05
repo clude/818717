@@ -1,8 +1,5 @@
 from django.conf.urls import patterns, include, url
-
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+from django.shortcuts import render_to_response
 
 urlpatterns = patterns('',
     # Examples:
@@ -15,4 +12,5 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
     url(r'^search/', include('indexer.urls')),
+    url(r'^', lambda req: render_to_response('index.html')),
 )
