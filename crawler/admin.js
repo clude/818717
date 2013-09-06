@@ -1,6 +1,6 @@
 
 var cfg = {
-//  host: '192.168.30.101',
+  //host: '203.166.177.14',
   port: 9681,
   'script patterns': ['scripts/common.js', 'scripts/steel/common/*.js', 'scripts/steel/*.js']
 };

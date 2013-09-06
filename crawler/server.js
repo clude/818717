@@ -1,7 +1,6 @@
 
 var cfg = {
   port: 9681,
-  indexer: '127.0.0.1',
   'dispatch_interval': 0.5*1000,
   'reorder_interval': 30*1000,
   'index server': 'http://127.0.0.1:8000/search/'
@@ -72,14 +71,16 @@ io.of('/node').on('connection', function(socket)  {
     }).
 
     on('disconnect', function(socket) {
-        delete nodes[socket.id];
+      if (socket) delete nodes[socket.id];
     }).
 
     on('update result', function(err) {
+      if (!socket) return;
       nodes[socket.id].ready = !err;
     }).
 
     on('crawl result', function(err, domain, url, objects)  {
+      if (!socket || !socket.id) return;
       var node_worklist = nodes[socket.id].working;
       if (node_worklist && node_worklist[domain]) delete node_worklist[domain];
       if (!domains[domain] || !domains[domain][url]) return;
@@ -130,8 +131,6 @@ io.of('/admin').on('connection', function(socket) {
         if (!url_config.priority) url_config.priority = 3;
       }
       reorder();
-      //console.log(domains[domain]);
-      //console.log(worklist[domain]);
       socket.emit('result', 'OK');
     }).
 
