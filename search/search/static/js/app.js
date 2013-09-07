@@ -16,10 +16,14 @@ function price_text(input)  {
   return (parseFloat(input)>88888) ? '电议' : input;
 }
 
-angular.module('818717', ['ui.bootstrap', 'search']).
+// This is a placeholder, the real template cache will be built later
+// or, in the dev mode, just load from /static/partials directly.
+angular.module('templates-partials', []);
+
+angular.module('818717', ['ui.bootstrap', 'search', 'templates-partials']).
   config(['$routeProvider', function($routeProvider) {
     $routeProvider.
-      when('/', {templateUrl: 'static/partials/search.html', controller: SearchCtrl}).
+      when('/', {templateUrl: 'static/partials/search.html', controller: 'SearchCtrl'}).
       otherwise({redirectTo: '/'});
   }]).
   config(['$locationProvider', function($locationProvider) {
@@ -27,44 +31,44 @@ angular.module('818717', ['ui.bootstrap', 'search']).
   }]).
   filter('from_now', function() { return timestamp_from_now; }).
   filter('price', function(){ return price_text; }).
-  filter('sort_by_text', function(SearchService){
+  filter('sort_by_text', ['SearchService', function(SearchService){
     return function(input)  {
       var sort = SearchService.param('sort');
       if (sort == 0) return input;
       if (sort == 1) return timestamp_from_now(input);
       if (sort == 2) return price_text(input);
     };
-  });
+  }]).
+  controller('NavCtrl', ['$scope', 'SearchService', function($scope, SearchService){
+    $scope.modes = [
+      { text: '活跃', sort: 0 },
+      { text: '更新', sort: 1 },
+      { text: '价格', sort: 2 }
+    ];
 
-function NavCtrl($scope, SearchService)  {
-  $scope.modes = [
-    { text: '活跃', sort: 0 },
-    { text: '更新', sort: 1 },
-    { text: '价格', sort: 2 }
-  ];
-
-  $scope.sort = function(sort_mode)  {
-    SearchService.param('sort', sort_mode);
-    SearchService.param('page', 0);
-    SearchService.search();
-  };
-
-  $scope.search = function(query)  {
-    SearchService.param('query', query);
-    SearchService.param('page', 0);
-    SearchService.search();
-  };
-  
-  function load_params()  {
-    $scope.params = {
-      query: SearchService.param('query'),
-      sort_mode: $scope.modes[SearchService.param('sort')]
+    $scope.sort = function(sort_mode)  {
+      SearchService.param('sort', sort_mode);
+      SearchService.param('page', 0);
+      SearchService.search();
     };
-  };
 
-  load_params();
+    $scope.search = function(query)  {
+      SearchService.param('query', query);
+      SearchService.param('page', 0);
+      SearchService.search();
+    };
+    
+    function load_params()  {
+      $scope.params = {
+        query: SearchService.param('query'),
+        sort_mode: $scope.modes[SearchService.param('sort')]
+      };
+    };
 
-  $scope.$on('search params', function(event, data) {
     load_params();
-  });
-}
+
+    $scope.$on('search params', function(event, data) {
+      load_params();
+    });
+  }]);
+  
