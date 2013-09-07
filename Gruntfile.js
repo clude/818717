@@ -93,9 +93,6 @@ module.exports = function ( grunt ) {
       compile: {
         options: {
           banner: '<%= meta.banner %>',
-          compress: false,
-          mangle: false,
-          report: true,
         },
         files: {
           '<%= target_dir %>/search/static/js/<%= product_name %>.min.js': '<%= concat.compile.dest %>'
