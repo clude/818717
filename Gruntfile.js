@@ -1,5 +1,8 @@
 
-var sha1 = require('sha1');
+var
+  sha1 = require('sha1'),
+  path = require('path'),
+  cwd = process.cwd();
 
 module.exports = function ( grunt ) {
   
@@ -13,8 +16,11 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-exec');
 
   var userConfig = {
-    target_dir: 'build',
+    target_dir: path.join(cwd, 'build'),
+    log_dir: path.join(cwd, 'log'),
+    crawler_dir: path.join(cwd, 'crawler'),
     product_name: '818717',
+    index_server: '127.0.0.1',
   };
 
   var taskConfig = {
@@ -26,9 +32,14 @@ module.exports = function ( grunt ) {
         ' */\n'
     },
 
-    clean: [ 
-      '<%= target_dir %>'
-    ],
+    clean: {
+      compile: {
+        options: {
+          force: true,
+        },
+        src: ['<%= target_dir %>']
+      }
+    },
 
     copy: {
       python: {
@@ -113,10 +124,28 @@ module.exports = function ( grunt ) {
 
     exec: {
       testbuild: {
-        command: 'python build/manage.py runserver 8000',
-        stdout: true,
-        stderr: true,
-      }
+        command: 'python <%= target_dir %>/manage.py runserver 8001'
+      },
+      pip: {
+        command: 'pip install -r search/requirements.txt'
+      },
+      npm: {
+        command: 'npm install',
+        cwd: 'crawler'
+      },
+      localrun: {
+        command: 'python search/manage.py runserver 8001'
+      },
+      reindex: {
+        command: 'python search/manage.py reindex'
+      },
+      install_searchapi: {
+        command: 'python setup.py install',
+        cwd: 'indexer'
+      },
+      test_sphinx: {
+        command: "mysql -h <%= index_server %> -P 9217 -e 'show tables; desc steel_package; select count(*) from steel_package;'"
+      },
     }
   };
 
@@ -155,6 +184,18 @@ module.exports = function ( grunt ) {
   grunt.registerTask('default', ['compile']);
 
   grunt.registerTask('compile', ['clean', 'copy', 'ngmin', 'concat', 'uglify', 'html2js', 'recess', 'index']);
-  grunt.registerTask('testbuild', ['compile', 'exec:testbuild']);
+  grunt.registerTask('testbuild', ['compile', 'exec:pip', 'exec:testbuild']);
+  grunt.registerTask('run', ['exec:pip', 'exec:localrun']);
+  grunt.registerTask('upgrade', ['exec:pip', 'exec:npm']);
+  grunt.registerTask('install_searchapi', ['exec:install_searchapi']);
+  grunt.registerTask('test_sphinx', ['exec:test_sphinx']);
+  grunt.registerTask('reindex', ['exec:reindex']);
 
+  grunt.registerTask('stop_nginx', []);
+  grunt.registerTask('start_nginx', []);
+  grunt.registerTask('stop_nginx', []);
+  grunt.registerTask('stop_nginx', []);
+  grunt.registerTask('stop_nginx', []);
+  grunt.registerTask('stop_nginx', []);
 };
+

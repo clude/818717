@@ -3,10 +3,12 @@
 .DS_Store
 .idea
 
+log
+build
+
 # python
 
 *.pyc
-build
 dist
 *.egg-info
 local_settings.py

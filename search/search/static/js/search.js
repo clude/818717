@@ -51,7 +51,6 @@ angular.
     };
 
     $scope.paging = function(page)  {
-      console.log(111);
       SearchService.param('page', page);
       SearchService.search();
     };
