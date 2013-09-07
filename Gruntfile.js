@@ -10,6 +10,7 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-recess');
   grunt.loadNpmTasks('grunt-ngmin');
   grunt.loadNpmTasks('grunt-html2js');
+  grunt.loadNpmTasks('grunt-exec');
 
   var userConfig = {
     target_dir: 'build',
@@ -111,6 +112,14 @@ module.exports = function ( grunt ) {
           compress: true,
         }
       }
+    },
+
+    exec: {
+      testbuild: {
+        command: 'python build/manage.py runserver 8000',
+        stdout: true,
+        stderr: true,
+      }
     }
   };
 
@@ -131,7 +140,7 @@ module.exports = function ( grunt ) {
     grunt.file.copy(css_min+'css', css_min+css_min_sha1+'.css');
 
     grunt.file.copy(index_html, index_html, { 
-      process: function ( contents, path ) {
+      process: function (contents, path) {
         return contents.
           replace('<!-- dev begin -->', '<!-- dev begin').
           replace('<!-- dev end -->', 'dev end -->').
@@ -149,5 +158,6 @@ module.exports = function ( grunt ) {
   grunt.registerTask('default', ['compile']);
 
   grunt.registerTask('compile', ['clean', 'copy', 'ngmin', 'concat', 'uglify', 'html2js', 'recess', 'index']);
+  grunt.registerTask('testbuild', ['compile', 'exec:testbuild']);
 
 };
