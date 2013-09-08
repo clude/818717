@@ -9,6 +9,7 @@
         "jsdom": "*",
         "xmlhttprequest": "*",
         "sha1": "*",
-        "glob": "*"
+        "glob": "*",
+        "request": "*"
     }
 }

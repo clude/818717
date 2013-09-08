@@ -77,20 +77,19 @@ io.of('/node').on('connection', function(socket)  {
       socket.emit('update', server.script);
     }).
 
-    on('disconnect', function(socket) {
-      if (!socket) return;
+    on('disconnect', function() {
       console.log(socket.id, '=== disconnect ===>');
       delete nodes[socket.id];
     }).
 
     on('update result', function(err) {
       if (!socket) return;
-      console.log(socket.id, '=== update ===>', err);
+      console.log(socket.id, '=== update ===>', err ? 'failed' : 'success');
       nodes[socket.id].ready = !err;
     }).
 
     on('crawl result', function(err, domain, url, objects)  {
-      if (!socket || !socket.id) return;
+      if (!socket || !socket.id || !nodes[socket.id]) return;
       var node_worklist = nodes[socket.id].working;
       if (node_worklist && node_worklist[domain]) delete node_worklist[domain];
       if (!domains[domain] || !domains[domain][url]) return;

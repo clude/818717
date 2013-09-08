@@ -21,7 +21,7 @@
       $(content).find('#qiatan_table').find('tr:gt(0)').each(function(index, row){  
         if (index % 3 != 0) return;          
         var td = $(row).find('td');
-        result.push({
+        var item = {
           url: td.eq(1).find('a').attr('href'),
           model: td.eq(5).text(),
           trademark: td.eq(6).text(),
@@ -34,7 +34,8 @@
           cell_raw: td.eq(1).find('table').find('tr:eq(1)').text().trim().match(/[-\d]+/g).join(' '),
           source_raw: '钢之家',
           source_uint: 8,
-        });
+        }
+        result.push(item);
       });
       return result;
     },

@@ -22,7 +22,7 @@
         var td = $(row).children('td');
         if (td.eq(3).text() == '')
           return;
-        result.push({
+        var item = {
           url: 'http://www.fanchuan.net/' + td.eq(0).find('a').attr('href'),
           model: td.eq(0).text(),
           trademark: td.eq(1).text(),
@@ -35,7 +35,8 @@
           cell_raw: td.eq(10).text(),
           source_raw: '凡川',
           source_uint: 3,
-        });
+        };
+        result.push(item);
       });
       return result;
     },
