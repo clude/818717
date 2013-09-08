@@ -2,8 +2,15 @@
 var cfg = {
   //host: '203.166.177.14',
   port: 9681,
+  immediate: process.argv.length>2,
   'script patterns': ['scripts/common.js', 'scripts/steel/common/*.js', 'scripts/steel/*.js']
 };
+
+var
+  io = require('socket.io-client').connect('/admin', cfg),
+  rl = require('readline').createInterface({ input: process.stdin, output: process.stdout, terminal: true }),
+  fs = require('fs'),
+  glob = require('glob');
 
 function concat_scripts(patterns)  {
   var script = '';
@@ -16,39 +23,8 @@ function concat_scripts(patterns)  {
   return script;
 }
 
-var
-  io = require('socket.io-client').connect('/admin', cfg),
-  rl = require('readline').createInterface({ input: process.stdin, output: process.stdout, terminal: true }),
-  fs = require('fs'),
-  glob = require('glob');
-
-io.
-  on('connect', function()  {
-    rl.setPrompt((cfg.host ? cfg.host : '')+'> ');
-    rl.prompt();
-  }).
-
-  on('disconnect', function() {
-    console.warn('disconnected.');
-    process.exit(1);
-  }).
-
-  on('result', function(data) {
-    console.log(data);
-    rl.prompt();
-  }).
-
-  on('message', function(message) {
-    console.log(message);
-  });
-
-rl.on('line', function(line){
-  var
-    parts = line.trim().split(' '),
-    command = parts[0],
-    arg = parts[1];
-
-  switch(command) {
+function run_command(command, arg)  {
+   switch(command) {
     case 'start':
     case 'stop':
     case 'status':
@@ -69,6 +45,50 @@ rl.on('line', function(line){
       break;
     default:
       console.log('ERR: unknown command');
-      rl.prompt();
+      return true;
   }
-});
+}
+
+io.
+  on('connect', function()  {
+    if (!cfg.immediate) {
+      rl.setPrompt((cfg.host ? cfg.host : '')+'> ');
+      rl.prompt();
+      rl.on('line', function(line){
+        var
+          parts = line.trim().split(' '),
+          command = parts[0],
+          arg = parts[1];
+
+        if (run_command(command, arg)) {
+          rl.prompt();
+        }
+      });
+    }
+    else  {
+      var
+        command = process.argv[2],
+        arg = process.argv[3];
+      if (run_command(command, arg)) process.exit(1);
+    }
+  }).
+
+  on('disconnect', function() {
+    console.warn('disconnected.');
+    process.exit(1);
+  }).
+
+  on('result', function(data) {
+    console.log(data);
+    if (!cfg.immediate) {
+      rl.prompt();
+    }
+    else {
+      process.exit(0);
+    }
+  }).
+
+  on('message', function(message) {
+    console.log(message);
+  });
+

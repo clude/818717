@@ -88,12 +88,13 @@ class Searcher(object):
                     row['json'] = self.rc.lindex(key, 3)
                     ql.add(row)
                 except:
-                    pass
+                    print 'ADD error:',row
                 done += 1
             try:
                 ql.run(self.SPHINX_HOST)
             except:
-                pass
+                import traceback
+                traceback.print_exc()
             print '%d / %d'%(done, len(all_keys))
         print 'finished.'
         return done
