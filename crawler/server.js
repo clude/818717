@@ -122,14 +122,26 @@ io.of('/admin').on('connection', function(socket) {
     }).
 
     on('load', function(domain, url_configs)  {
-      domains[domain] = url_configs;
-      var now = new Date().getTime();
-      for (var url in url_configs)  {
-        var url_config = url_configs[url];
-        url_config.check = now;
-        if (!url_config.validity) url_config.validity = 20*60*1000; // 默认保质期20分钟
-        if (!url_config.priority) url_config.priority = 3;
+      function load_domain_config(domain, domain_config) {
+        domains[domain] = domain_config;
+        var now = new Date().getTime();
+        for (var url in domain_config)  {
+          var url_config = domain_config[url];
+          url_config.check = now;
+          if (!url_config.validity) url_config.validity = 20*60*1000; // 默认保质期20分钟
+          if (!url_config.priority) url_config.priority = 3;
+        }
       }
+
+      if (domain) {
+        load_domain_config(domain, url_configs);        
+      }
+      else  {
+        for (var domain in url_configs) {
+          load_domain_config(domain, url_configs[domain]);
+        }
+      }
+      console.log('domain settings loaded, domains:', Object.keys(domains));
       reorder();
       socket.emit('result', 'OK');
     }).
