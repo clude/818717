@@ -1,6 +1,6 @@
 
 var cfg = {
-  //host: '203.166.177.14',
+  host: '203.166.177.14',
   port: 9681,
   immediate: process.argv.length>2,
   'script patterns': ['scripts/common.js', 'scripts/steel/common/*.js', 'scripts/steel/*.js']

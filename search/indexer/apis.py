@@ -87,9 +87,10 @@ class Searcher(object):
                     row['hit_count'] = hit_count
                     row['json'] = self.rc.lindex(key, 3)
                     ql.add(row)
+                    done += 1
                 except:
-                    print 'ADD error:',row
-                done += 1
+                    pass
+                    #print 'ADD error:',row['id'], row['id_hash']
             try:
                 ql.run(self.SPHINX_HOST)
             except:

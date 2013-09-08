@@ -1,0 +1,12 @@
+
+# m h  dom mon dow   command
+
+# 启动/停止 crawl server
+0 8 * * * cd <%= crawler_dir %>; node admin start
+0 18 * * * cd <%= crawler_dir %>; node admin stop
+
+# 定时报表
+30 8/9/10/11/12/13/14/15/16/17 * * * cd <%= crawler_dir %>; node admin status | mail -s "server report" reindexer@gmail.com
+
+# 清除旧数据
+30 2 * * * cd <%= site_dir %>; python manage.py reindex;
