@@ -141,9 +141,17 @@ module.exports = function ( grunt ) {
       localrun: {
         command: 'python search/manage.py runserver 8001'
       },
-      install_searchapi: {
-        command: 'python setup.py install',
-        cwd: 'indexer'
+      install_sphinx: {
+        command: 'wget http://sphinxsearch.com/files/sphinx-2.1.1-beta.tar.gz;'
+         + 'tar zxvf sphinx-2.1.1-beta.tar.gz;'
+         + 'cp ../../indexer/* sphinx-2.1.1-beta/src/; cd sphinx-2.1.1-beta;'
+         + './configure;'
+         + 'make;'
+         + 'make install;',
+        cwd: '<%= log_dir %>/sphinx'
+      },
+      install_crontab: {
+        command: 'crontab <%= target_dir %>/conf/tasks.cron'
       },
 
       start_nginx: {
@@ -166,12 +174,11 @@ module.exports = function ( grunt ) {
         command: "mysql -h <%= index_server %> -P 9217 -e 'show tables; desc steel_package; select count(*) from steel_package;'"
       },
       reindex: {
-        command: 'python search/manage.py reindex'
+        command: 'python search/manage.py reindex',
+        stdout: false,
+        stderr: false,
       },
 
-      start_supervisor: {
-        command: 'supervisord -c <%= target_dir %>/conf/supervisord.conf;'
-      },
       reload_supervisor: {
         command: 'supervisorctl reload'
       },
@@ -179,7 +186,11 @@ module.exports = function ( grunt ) {
         command: 'supervisorctl restart site'
       },
       restart_crawler: {
-        command: 'supervisorctl restart server; supervisorctl restart node;'
+        command: 'supervisorctl restart server'
+      },
+      crawler_init: {
+        command: 'node admin update; node admin load;',
+        cwd: '<%= crawler_dir %>'
       },
     }
   };
@@ -223,7 +234,7 @@ module.exports = function ( grunt ) {
   });
 
   grunt.registerTask('conf', function() {
-    ['conf/nginx.conf', 'conf/sphinx.conf', 'conf/supervisord.conf'].forEach(function(conf){
+    ['conf/nginx.conf', 'conf/sphinx.conf', 'conf/supervisord.conf', 'conf/tasks.cron'].forEach(function(conf){
       grunt.file.copy(path.join(cwd, conf), path.join(grunt.config('target_dir'), conf), {
         process: function (contents, path)  {
           console.log(path, 'processed.');
@@ -238,8 +249,9 @@ module.exports = function ( grunt ) {
   grunt.registerTask('compile', ['clean', 'copy', 'ngmin', 'concat', 'uglify', 'html2js', 'recess', 'index', 'conf']);
   grunt.registerTask('testbuild', ['compile', 'exec:pip', 'exec:testbuild']);
   grunt.registerTask('run', ['exec:pip', 'exec:localrun']);
-  grunt.registerTask('upgrade', ['exec:pip', 'exec:npm']);
-
+  grunt.registerTask('package', ['exec:pip', 'exec:npm']);
+  grunt.registerTask('install_sphinx', ['exec:install_sphinx']);
+  grunt.registerTask('init_config', ['compile', 'package', 'start_nginx', 'reload_supervisor', 'exec:install_crontab', 'exec:crawler_init'])
   grunt.registerTask('config_sphinx', ['exec:stop_sphinx', 'exec:sleep2', 'exec:clean_sphinx', 'exec:start_sphinx']);
   grunt.registerTask('restart', ['exec:stop_nginx', 'compile', 'exec:pip', 'exec:restart_gunicorn', 'exec:start_nginx']);
   grunt.registerTask('restart_sphinx', ['config_sphinx', 'exec:reindex', 'exec:test_sphinx']);
