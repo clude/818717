@@ -3,19 +3,26 @@
 <head>
   <meta charset="utf-8">
   <title>818717 beta</title>
-  <link rel="stylesheet" href="static/lib/bootstrap/css/bootstrap.min.css" />
-  <script src="static/lib/less/less.js"></script>
-  <script src="static/lib/angular/angular.min.js"></script>
-  <script src="static/lib/angular/ui-bootstrap-tpls-0.4.0.min.js"></script>
-  <script src="static/js/app.js"></script>
-  <script src="static/js/search.js"></script>
+
+  <link rel="stylesheet" href="/static/lib/bootstrap/css/bootstrap.min.css" />
+  <script src="/static/lib/angular/angular.min.js"></script>
+  <script src="/static/lib/angular/ui-bootstrap-tpls-0.4.0.min.js"></script>
+
+  <!-- dev begin -->
+  <script src="/static/lib/less/less.js"></script>
+  <link rel="stylesheet/less" href="/static/css/main.less" />
+  <script src="/static/js/app.js"></script>
+  <script src="/static/js/search.js"></script>
+  <!-- dev end -->
+
+  <!-- compile begin
+  <link rel="stylesheet" href="/static/css/818717.min.{{css_min_sha1}}.css" />
+  <script src="/static/js/818717.min.{{js_min_sha1}}.js"></script>
+  <script src="/static/js/template_cache.{{js_template_sha1}}.js"></script>
+  compile end -->
+
 </head>
 <body>
-
-<div ng-include="'static/partials/nav.html'" ng-controller="NavCtrl"></div>
-<div class="container">
-	<div ng-view></div>
-</div>
-
+<div ng-view></div>
 </body>
 </html>

@@ -1,59 +1,63 @@
 
-<tabset vertical="false" type="'tabs'">
-  <tab>
-    <tab-heading>
-      资源 ({{ total_amount }})
-    </tab-heading>
-    <div class="row">
-      <br />
-      <div class="col-md-12">
-        <table class="table">
-          <thead>
-            <tr>
-                <td class="text-center col-md-2">{{ sort_text() }}</td>
-                <td class="text-center col-md-2">品名</td>
-                <td class="text-center col-md-2">牌号</td>
-                <td class="text-center col-md-2">规格</td>
-                <td class="text-center col-md-2">产地</td>
-              </tr>
-          </thead>
-          <tbody>
-            <tbody ng-repeat="group in groups">
+<div ng-include="'static/partials/nav.html'" ng-controller="NavCtrl"></div>
+
+<div class="container">
+  <tabset vertical="false" type="'tabs'">
+    <tab>
+      <tab-heading>
+        资源 ({{ total_amount }})
+      </tab-heading>
+      <div class="row">
+        <br />
+        <div class="col-md-12">
+          <table class="table">
+            <thead>
               <tr>
-                <td class="text-center col-md-2">{{ group.sort_by|sort_by_text }}</td>
-                <td class="text-center col-md-2">{{ group.model }}</td>
-                <td class="text-center col-md-2">{{ group.trademark }}</td>
-                <td class="text-center col-md-2">{{ group.spec }}</td>
-                <td class="text-center col-md-2">{{ group.producer }}</td>
-                <td class="text-center col-md-2"><a class="btn btn-primary" ng-click="expand(group.group_hash)">详细</a></td>
-              </tr>
-              <tr ng-show="group_details[group.group_hash]">
-                <td colspan="6">
-                  <table class="table">
-                    <tr ng-repeat="resource in group_details[group.group_hash]">
-                      <td>{{ resource.time|from_now }}</td>
-                      <td>{{ resource.source_raw }}</td>
-                      <td>{{ resource.model }}</td>
-                      <td>{{ resource.trademark }}</td>
-                      <td>{{ resource.spec }}</td>
-                      <td>{{ resource.producer }}</td>
-                      <td>{{ resource.store_raw }}</td>
-                      <td>{{ resource.warehouse }}</td>
-                      <td>{{ resource.price_float|price }}</td>
-                      <td>{{ resource.weight_raw }}</td>
-                      <td>{{ resource.cell_raw }}</td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-            </tobdy>
-          </tbody>
-        </table>
-        <ul class="pagination pull-right">
-          <li ng-class="page_class(current_page-1)" ><a href="javascript:void(0)" ng-click="paging(current_page-1)">&laquo;</a></li>
-          <li ng-class="page_class(page)" ng-repeat="page in pages"><a href="javascript:void(0)" ng-click="paging(page)">{{ page+1 }}</a></li>
-          <li ng-class="page_class(current_page+1)" ><a href="javascript:void(0)" ng-click="paging(current_page+1)">&raquo;</a></li>
-        </ul>
-    </div>
-  </tab>
-</tabset>
+                  <td class="text-center col-md-2">{{ sort_text() }}</td>
+                  <td class="text-center col-md-2">品名</td>
+                  <td class="text-center col-md-2">牌号</td>
+                  <td class="text-center col-md-2">规格</td>
+                  <td class="text-center col-md-2">产地</td>
+                </tr>
+            </thead>
+            <tbody>
+              <tbody ng-repeat="group in groups">
+                <tr>
+                  <td class="text-center col-md-2">{{ group.sort_by|sort_by_text }}</td>
+                  <td class="text-center col-md-2">{{ group.model }}</td>
+                  <td class="text-center col-md-2">{{ group.trademark }}</td>
+                  <td class="text-center col-md-2">{{ group.spec }}</td>
+                  <td class="text-center col-md-2">{{ group.producer }}</td>
+                  <td class="text-center col-md-2"><a class="btn btn-primary" ng-click="expand(group.group_hash)">详细</a></td>
+                </tr>
+                <tr ng-show="group_details[group.group_hash]">
+                  <td colspan="6">
+                    <table class="table">
+                      <tr ng-repeat="resource in group_details[group.group_hash]">
+                        <td>{{ resource.time|from_now }}</td>
+                        <td>{{ resource.source_raw }}</td>
+                        <td>{{ resource.model }}</td>
+                        <td>{{ resource.trademark }}</td>
+                        <td>{{ resource.spec }}</td>
+                        <td>{{ resource.producer }}</td>
+                        <td>{{ resource.store_raw }}</td>
+                        <td>{{ resource.warehouse }}</td>
+                        <td>{{ resource.price_float|price }}</td>
+                        <td>{{ resource.weight_raw }}</td>
+                        <td>{{ resource.cell_raw }}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </tobdy>
+            </tbody>
+          </table>
+          <ul class="pagination pull-right">
+            <li ng-class="page_class(current_page-1)" ><a href="javascript:void(0)" ng-click="paging(current_page-1)">&laquo;</a></li>
+            <li ng-class="page_class(page)" ng-repeat="page in pages"><a href="javascript:void(0)" ng-click="paging(page)">{{ page+1 }}</a></li>
+            <li ng-class="page_class(current_page+1)" ><a href="javascript:void(0)" ng-click="paging(current_page+1)">&raquo;</a></li>
+          </ul>
+      </div>
+    </tab>
+  </tabset>
+</div>
