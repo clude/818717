@@ -32,6 +32,7 @@ io.
       io.emit('update result');
     }
     catch(e)  {
+      console.log('update error', e);
       script = backup.script;
       worker = backup.worker;
       io.emit('update result', e);
@@ -47,6 +48,7 @@ io.
       worker(domain, url, crawl_result);
     }
     catch(e)  {
+      console.log('*** worker error ***', e);
       crawl_result(e, domain, url);
     }
   });

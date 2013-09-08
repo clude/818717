@@ -7,8 +7,9 @@ var cfg = {
 };
 
 var
-  io = require('socket.io').listen(cfg.port).set('log level', 1)
-  $ = require('jQuery');
+  io = require('socket.io').listen(cfg.port).set('log level', 1),
+  $ = require('jQuery'),
+  sha1 = require('sha1');
 
 var
   nodes = {},
@@ -22,6 +23,7 @@ var
 function reorder()  {
   var now = new Date().getTime();
   worklist = {};
+  console.log('~~~~~ reorder begin~~~~~');
   for (var domain in domains) {
     var
       crawl_urls = [],
@@ -36,7 +38,9 @@ function reorder()  {
       return v1[1].priority > v2[1].priority ? 1 : -1;
     });
     worklist[domain] = crawl_urls;
+    console.log(domain, crawl_urls.length);
   }
+  console.log('~~~~~ reorder end~~~~~');
 }
 setInterval(reorder, cfg['reorder_interval']);
 
@@ -52,6 +56,7 @@ function dispatch() {
       var url = crawl_url[0], url_config = crawl_url[1];
       url_config.check = now + 3*60*1000;
       nodes[socket_id].socket.emit('crawl', domain, url);
+      console.log(domain, '...'+url.slice(url.length-30,url.length), '=== crawl ===>', socket_id);
       nodes[socket_id].working[domain] = url;
     }
   }
@@ -61,6 +66,7 @@ setInterval(dispatch, cfg['dispatch_interval']);
 io.of('/node').on('connection', function(socket)  {
   socket.
     on('login', function(name)  {
+      console.log(socket.id, '=== login ===>', name);
       nodes[socket.id] = {
         socket: socket,
         name: name,
@@ -71,11 +77,14 @@ io.of('/node').on('connection', function(socket)  {
     }).
 
     on('disconnect', function(socket) {
-      if (socket) delete nodes[socket.id];
+      if (!socket) return;
+      console.log(socket.id, '=== disconnect ===>');
+      delete nodes[socket.id];
     }).
 
     on('update result', function(err) {
       if (!socket) return;
+      console.log(socket.id, '=== update ===>', err);
       nodes[socket.id].ready = !err;
     }).
 
@@ -87,10 +96,11 @@ io.of('/node').on('connection', function(socket)  {
       crawl_config = domains[domain][url];
       var now = new Date().getTime();
       if (err)  {
+        console.log(socket.id, '=== crawl result error ===>', err, domain, '...'+url.slice(url.length-30, url.length));
         crawl_config.check = now;
       } else {
         crawl_config.check = now + crawl_config.validity;
-        console.log(socket.id, '-->', domain, url, objects.length);
+        console.log(socket.id, '=== crawl result ===>', objects.length, domain, '...'+url.slice(url.length-30, url.length));
         $.post(cfg['index server']+'update/', JSON.stringify(objects));
       }
     });
@@ -100,29 +110,38 @@ io.of('/admin').on('connection', function(socket) {
   socket.
     on('start', function()  {
       server.online = true;
+      console.log('***** ADMIN: start *****');
       socket.emit('result', 'OK');
     }).
 
     on('stop', function()  {
       server.online = false;
+      console.log('***** ADMIN: stop *****');
       socket.emit('result', 'OK');
     }).
 
     on('status', function()  {
+      console.log('***** ADMIN: status *****');
       // TODO: report the status here
       socket.emit('result', 'OK');
     }).
 
     on('update', function(script)  {
+      console.log('***** ADMIN: status *****');
       server.script = script;
+      var script_hash = sha1(script);
+      console.log('server script updated:', script_hash);
       for (var socket_id in nodes)  {
+        console.log(script_hash, '== update =>', socket_id);
         nodes[socket_id].socket.emit('update', script);
       }
       socket.emit('result', 'OK');
     }).
 
     on('load', function(domain, url_configs)  {
+      console.log('***** ADMIN: load *****');
       function load_domain_config(domain, domain_config) {
+        console.log('domain:', domain, Object.keys(domain_config).length);
         domains[domain] = domain_config;
         var now = new Date().getTime();
         for (var url in domain_config)  {
@@ -141,21 +160,23 @@ io.of('/admin').on('connection', function(socket) {
           load_domain_config(domain, url_configs[domain]);
         }
       }
-      console.log('domain settings loaded, domains:', Object.keys(domains));
       reorder();
       socket.emit('result', 'OK');
     }).
 
     on('unload', function(domain)  {
+      console.log('***** ADMIN: unload *****');
       if (domain)
         delete domains[domain];
       else
         domains = {};
       reorder();
+      console.log('remaining domains:', Object.keys(domains));
       socket.emit('result', 'unload');
     }).
 
     on('refresh', function(domain)  {
+      console.log('***** ADMIN: refresh *****');
       var now = new Date().getTime();
       for (var _domain in domains) {
         if (domain == _domain) continue;
