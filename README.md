@@ -1,9 +1,25 @@
-模块说明
+安装
 ======
 
-* crawl 爬虫
-* indexer 索引
-* search 搜索网站
+* 准备工作
+
+    1. 安装 nodejs, redis, python, pip, mysql client, redis
+    2. npm install
+    3. npm install -g grunt-cli
+    4. 部署环境下，需要再安装：pip install supervisor, nginx
+
+* Grunt命令
+
+    1. install_sphinx: 安装sphinx搜索引擎
+    2. package: 安装nodejs和python的类库
+    3. compile: 将网站和配置文件压缩和编译
+    4. testbuild: 测试编译后的代码(localhost:9001)
+    5. run: 直接运行本地网站(localhost:9001)
+    6. init_config: 部署环境初始化(需先手工配置好supervisor (配置在build/conf/supervisord.conf中)
+    7. confg_sphinx: 重新配置sphinx(修改字段后)
+    8. restart: 编译并重启网站(部署环境)
+    9. restart_sphinx: 重启sphinx并从redis重导入索引
+    10. restart_crawler: 重启爬虫服务器
 
 代码获取
 ======
@@ -17,7 +33,7 @@
 * 同步代码
 
     1. git fetch upstream
-    2. git checkout master / git merge upstream/master
+    2. git checkout master; git merge upstream/master
     3. git checkout %working_branch%
     4. git rebase / merge master
     5. resolve conflit and commit
