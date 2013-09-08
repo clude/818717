@@ -24,7 +24,7 @@
       var result = [];
       $(content).find('.tr_zk').each(function(index, item){
         var td = $(item).children('td');
-        result.push({
+        var item = {
             'url': 'http://beta.baostar.com'+td.eq(1).find('a').attr('href'),
             'model': td.eq(1).find('a').text(),
             'store_raw': td.eq(1).find('div:last').text(),
@@ -36,7 +36,8 @@
             'source_raw': '宝时达',
             'source_uint': 2,
             'cell_raw': '50509699',
-        });
+        };
+        result.push(item);
       });
       return result;
     },

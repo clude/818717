@@ -43,7 +43,7 @@
         for (var i = 0; i < p.length/2; ++i)  {
           phone += secret_dict[p.slice(i*2, i*2+2)];
         }
-        result.push({
+        var item = {
           url: cols.eq(0).find('a').attr('href'),
           model: cols.eq(0).text(),
           trademark: cols.eq(2).text(),
@@ -56,7 +56,8 @@
           cell_raw: phone,
           source_raw: '你的钢铁',
           source_uint: 9,
-        })
+        };
+        result.push(item);
       });
       return result;
     },
