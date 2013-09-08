@@ -1,6 +1,6 @@
 
 var cfg = {
-  host: '203.166.177.14',
+  //host: '211.152.54.139',
   name: 'node-random',
   port: 9681,
   'reconnection delay': 5000,
