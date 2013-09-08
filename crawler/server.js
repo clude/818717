@@ -9,7 +9,8 @@ var cfg = {
 var
   io = require('socket.io').listen(cfg.port).set('log level', 1),
   $ = require('jQuery'),
-  sha1 = require('sha1');
+  sha1 = require('sha1'),
+  sprintf = require('sprintf').sprintf;
 
 var
   nodes = {},
@@ -122,8 +123,36 @@ io.of('/admin').on('connection', function(socket) {
 
     on('status', function()  {
       console.log('***** ADMIN: status *****');
-      // TODO: report the status here
-      socket.emit('result', 'OK');
+      var result = '';
+      result += '===== SERVER begin =====\n';
+      result += sprintf('online: %s\n', server.online);
+      result += sprintf('script: %s\n', sha1(server.script));
+      result += '===== SERVER end =====\n\n';
+
+      result += '===== NODES begin =====\n';
+      for (var socket_id in nodes)  {
+        var n = nodes[socket_id];
+        result += sprintf('***** %s *****\n', n.name);
+        result += sprintf('socket.id: %s\n', n.socket.id);
+        result += sprintf('ready: %s\n', n.ready);
+        result += 'working:\n';
+        for (var domain in n.working) {
+          var list = n.working[domain];
+          result += sprintf('   %s: %s\n', domain, list.slice(list.length-30, list.length));
+        }
+      }
+      result += '===== NODES end =====\n\n';
+
+      result += '===== DOMAINS begin =====\n';
+      for (var domain in domains)  {
+        var
+          total = Object.keys(domains[domain]).length,
+          remain = total-worklist[domain].length;
+        result += sprintf('%s: %d/%d, %.2f\n', domain, remain, total, remain*100/total);
+      }
+      result += '===== DOMAINS end =====\n\n';
+
+      socket.emit('result', result);
     }).
 
     on('update', function(script)  {
@@ -172,7 +201,7 @@ io.of('/admin').on('connection', function(socket) {
         domains = {};
       reorder();
       console.log('remaining domains:', Object.keys(domains));
-      socket.emit('result', 'unload');
+      socket.emit('result', 'OK');
     }).
 
     on('refresh', function(domain)  {
