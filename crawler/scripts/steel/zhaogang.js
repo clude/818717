@@ -2,7 +2,9 @@
 (function(url_configs, parsers)  {
   var
     sprintf = require('sprintf').sprintf,
-    $ = require('jQuery');
+    $ = require('jQuery'),
+    Q = require('q'),
+    request = require('request');
 
   var configs = {};
   for (var i=1; i<=5500; ++i)  {
@@ -15,8 +17,22 @@
   url_configs['zhaogang'] = configs;
 
   var parser = {
-    download: $.get,
+    download: function(url){
+      var deffered = Q.defer();
+      setTimeout(function() {
+        request(url, function(err, response, content) {
+          if (!err) {
+            deffered.resolve(content);
+          }
+          else {
+            deffered.reject(err);
+          }
+        })
+      }, 1000);
+      return deffered.promise;
+    },
     parse: function(url, content)  {
+      console.log(url, content.length);
       var result = [];
       var rows = $(content).find('.table').find('tr');
       for (var i=0; i<(rows.length/2 - 1); ++i) {

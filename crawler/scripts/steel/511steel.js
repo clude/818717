@@ -13,7 +13,7 @@
       var result = [];
       items.aaData.forEach(function(item){
         var doc = $(item);
-        result.push({
+        var item = {
           url: 'http://www.511steel.com/Customer/Resource/Purchase.aspx',
           model: $(item[1]).text(),
           trademark: $(item[2]).text(),
@@ -26,7 +26,8 @@
           cell_raw: '4001158158-6666',
           source_raw: '百营钢铁',
           source_uint: 0
-        })
+        };
+        result.push(item);
       });
       return result;
     },

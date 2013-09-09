@@ -19,7 +19,7 @@
   url_configs['steelabc'] = configs;
 
   var parser = {
-    download: gbk_get,
+    download: $.get,
     parse: function(url, content)  {
       var
         result = [],
@@ -34,7 +34,7 @@
         if ($row.eq(2).text() == '') return;
         var td2 = $row.eq(2).text().trim().split(' ');
 
-        result.push({
+        var item = {
           url: url,
           model: '',
           trademark: $row.eq(1).text(),
@@ -47,7 +47,8 @@
           cell_raw: $row.eq(5).text().trim(),
           source_raw: '有钢',
           source_uint: 7,
-        });
+        };
+        result.push(item);
       });
       return result;
     },

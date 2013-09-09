@@ -20,7 +20,7 @@
       var result = [];
       $(content).find('#result-bd').find('tr:gt(0)').each(function(index, row){
         var td = $(row).find('td');
-        result.push({
+        var item = {
           url: 'http://www.opsteel.cn'+td.eq(1).find('a').attr('href'),
           model: td.eq(1).find('a').text(),
           trademark: td.eq(3).text(),
@@ -33,7 +33,8 @@
           cell_raw: $(row).find('em').eq(1).text(),
           source_raw: '欧浦',
           source_uint: 6,
-        });
+        };
+        result.push(item);
       });
       return result;
     },

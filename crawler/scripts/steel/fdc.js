@@ -19,12 +19,12 @@
     parse: function(url, content)  {
       var result = [];
       JSON.parse(content).result.forEach(function(row)  {
-        result.push({
-          'url': sprintf('http://www.shgt.com/package/%s/%s', row.provider_code, row.package_code),
+        var item = {
+          'url': sprintf('http://www.shgt.com/package/%s/%s', row.provider_code, row.pack_code),
           'model': row.product_name,
           'store_raw': row.provider_name,
-          'warehouse': row.warehose_name,
-          'producer': row.manufactorer,
+          'warehouse': row.warehouse_name,
+          'producer': row.manufacturer,
           'trademark': row.shop_sign,
           'spec': row.spec,
           'weight_raw': sprintf('%f', row._weight),
@@ -32,7 +32,8 @@
           'source_raw': '范达城',
           'source_uint': 4,
           'cell_raw': row.cell_phone,
-        });
+        };
+        result.push(item);
       });
       return result;
     },

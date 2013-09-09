@@ -32,7 +32,7 @@
           , a4 = td.eq(4).text().match('重量：(.+) 数量')
           , stock_location = td.eq(5).children().remove().end().text().trim()
         ;
-        result.push({
+        var item = {
           url: url,
           model: a1[1].trim(),
           trademark: a1[2].trim(),
@@ -45,8 +45,8 @@
           cell_raw: '021-56105222',
           source_raw: '新事业',
           source_uint: 10,
-        });
-
+        }
+        result.push(item);
       });
       return result;
     },

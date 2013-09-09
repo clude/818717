@@ -12,7 +12,7 @@ worker = function(domain, url, crawl_result) {
   }
   var parser = parsers[domain];
   parser.download(url).
-    done(function(content) {
+    then(function(content) {
       try {
         var objects = [];
         parser.parse(url, content).forEach(function(object){
