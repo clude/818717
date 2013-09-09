@@ -1,0 +1,36 @@
+<div class="search_idx_area mt30 ml30" ng-controller="FilterCtrl">
+    <div class="row-fluid">
+        <div class="span2"><img src="/static/images/logo.jpg" class="site_logo"></div>
+        <div class="span8">
+            <form class="form-search">
+                <input type="text" name="query" class="maintext" placeholder="品名、牌号、规格、供应商、产地" ng-model="params.query" />
+                <button type="submit" class="btn btn-default searchbtn" ng-click="search(params.query)" trc_f="2,'sc_button',''"><span>搜索</span></button>
+            </form>
+        </div>
+    </div>
+
+    <div class="filter_area mt10 mb30" >
+        <div ng-show="filters_to_query(filters)">
+            <dl class="selected_area">
+                <div ng-repeat="i in [0,1,2]">
+                    <dd ng-repeat="filter in filters[i]">
+                        {{ filter }}<a ng-click="select_filter(filter, i)" href="#" trc_f="2,{{ i }},{{ filter }}"><img src="/static/images/icon_close.gif" alt="" title="清除条件" /></a>
+                    </dd>
+                </div>
+                <dd class="cls"><a ng-click="clear_filters()" href="#">清除全部</a></dd>
+            </dl>
+        </div>
+        <p>
+            <label>按存放地过滤：</label>
+            <a href="javascript:void(0)" ng-click="select_filter(city, 0)" ng-repeat="city in cities" trc_f="2,0,{{ city }}">{{ city }}</a>
+        </p>
+        <p>
+            <label>按产地过滤：</label>
+            <a href="javascript:void(0)" ng-click="select_filter(producer, 1)" ng-repeat="producer in producers" trc_f="2,1,{{ producer }}">{{ producer }}</a>
+        </p>
+        <p style="margin-bottom:30px;">
+            <label>按品种过滤：</label>
+            <a href="javascript:void(0)" ng-click="select_filter(model, 2)" ng-repeat="model in models" trc_f="2,2,{{ model }}">{{ model }}</a>
+        </p>
+    </div>
+</div>

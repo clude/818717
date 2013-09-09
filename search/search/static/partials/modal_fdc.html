@@ -1,0 +1,10 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="close()" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>确认电话号码</h3>
+</div>
+<div class="modal-body">
+    <input ng-number ng-model="phone" placeholder="您的手机号" />
+</div>
+<div class="modal-footer">
+    <input type="button" class="btn btn-success" ng-disabled="form.$invalid" value="{{ buy_text() }}" ng-click="buy_fdc()" />
+</div>
