@@ -2,3 +2,6 @@ django
 gunicorn
 redis
 mysql-python
+pymongo
+mongoengine
+httplib2

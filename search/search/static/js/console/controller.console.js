@@ -11,8 +11,8 @@ angular.module('b1b.controllers.console', []).
         $scope.results = [];
 
         $scope.search = function(){
-            params = {};
-            B1BHttp.get('/api/integration/rpt_pv/', { params: params }).success(function(rst){
+            var post_data = {};
+            B1BHttp.get('/api/integration/rpt_pv/', { params: post_data }).success(function(rst){
                 $scope.results = rst.data;
             });
         };
