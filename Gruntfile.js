@@ -251,7 +251,7 @@ module.exports = function ( grunt ) {
   grunt.registerTask('run', ['exec:pip', 'exec:localrun']);
   grunt.registerTask('package', ['exec:pip', 'exec:npm']);
   grunt.registerTask('install_sphinx', ['exec:install_sphinx']);
-  grunt.registerTask('init_config', ['compile', 'package', 'start_nginx', 'reload_supervisor', 'exec:install_crontab', 'exec:crawler_init'])
+  grunt.registerTask('init_config', ['compile', 'package', 'exec:start_sphinx', 'exec:start_nginx', 'exec:reload_supervisor', 'exec:install_crontab', 'exec:crawler_init'])
   grunt.registerTask('config_sphinx', ['exec:stop_sphinx', 'exec:sleep2', 'exec:clean_sphinx', 'exec:start_sphinx']);
   grunt.registerTask('restart', ['exec:stop_nginx', 'compile', 'exec:pip', 'exec:restart_gunicorn', 'exec:start_nginx']);
   grunt.registerTask('restart_sphinx', ['config_sphinx', 'exec:reindex', 'exec:test_sphinx']);
