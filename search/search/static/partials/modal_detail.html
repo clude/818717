@@ -1,0 +1,90 @@
+<style type="text/css">
+.table_pop001 { margin:10px auto; width:90%;}
+.table_pop001 tr td { border-bottom:1px solid #efefef; padding:4px 3px;}
+</style>
+
+<div class="modal-body content" style="margin:20px auto; padding:0px; width:660px; background-color:#fff;">
+    <h4 class="f13">资源详情</h4>
+    <table cellpadding="2" cellspacing="0" class="table_pop001 f13">
+        <tr>
+            <td class="tr w80">　品　名：</td>
+            <td>{{ steel_selected.model }}</td>
+            <td class="tr w80">来　源：</td>
+            <td>{{ steel_selected.source_raw }}</td>
+        </tr>
+        <tr>
+            <td class="tr">　牌　号：</td>
+            <td>{{ steel_selected.trademark }}</td>
+            <td class="tr">规　格：</td>
+            <td>{{ steel_selected.spec }}</td>
+        </tr>
+        <tr>
+            <td class="tr">　重　量：</td>
+            <td>{{ steel_selected.weight_raw }}</td>
+            <td class="tr">价　格：</td>
+            <td>{{ steel_selected.price_float | price}}</td>
+        </tr>
+        <tr>
+            <td class="tr">　库　房：</td>
+            <td>{{ steel_selected.warehouse }}</td>
+            <td class="tr">产　地：</td>
+            <td>{{ steel_selected.producer }}</td>
+        </tr>
+        <tr>
+            <td class="tr">公司名称：</td>
+            <td>{{ steel_selected.store_raw }}</td>
+            <td class="tr">电　话：</td>
+            <td>{{ steel_selected.cell_uint }}</td>
+        </tr>
+
+    </table>
+
+    <h4>去范达城交易</h4>
+    <div ng-show="stage == 0">
+        <div>
+            <img src="/static/images/pop_001.jpg" alt="" />
+            <div class="tc mt10 gray f12">范达城卖家保证金保证货真价实，客户货款第三方保管，保证买卖双方钱货安全</div>
+        </div>
+    </div>
+    <div ng-show="stage == 1">
+        <img src="/static/images/pop_002.jpg" alt="" />
+        <dl class="f13" style="margin:-86px 10px 0 240px; height:100px;">
+            <dt class="f14 c_666">请电话联系供应商是否有货？</dt>
+            <dd class="mt10"><span class="disib w70 tr">供 应 商：</span><strong>{{ steel_selected.store_name }}</strong></dd>
+            <dd class="mt5"><span class="disib w70 tr">联系电话：</span><strong>{{ steel_selected.phone_number }}</strong></dd>
+        </dl>
+        <div class="tl f13">供应商有货？有！想货物有保证吗？请点击下一步！</div>
+    </div>
+    <div ng-show="stage == 2">
+        <img src="/static/images/pop_000.jpg" alt="" />
+        <dl class="f13" style="margin:-86px 10px 0 140px; height:100px;">
+            <dt class="f14 c_47d">让供应商（卖家）去范达城挂货的好处：</dt>
+            <dd class="mt10 ml25 c_666">资源方便快捷地传送到范达城，无需重复再网站上挂货！！！</dd>
+            <dd class="mt5 ml25 c_666">您的货款由第三方平台托管，收货才支付给供应商！！！</dd>
+            <dd class="mt5 ml25 c_666">卖家如发生不诚信或违约行为，可按规则先行赔付您！！！</dd>
+        </dl>
+    </div>
+    <div ng-show="stage == 3">
+        <img src="/static/images/pop_000.jpg" alt="" />
+        <dl class="f13" style="margin:-86px 10px 0 140px; height:100px;">
+            <dt class="f14 c_47d">将供应商的货物推送到范达城：</dt>
+            <dd class="mt10 ml25 c_666">供应商挂货联系手机：
+                <input ng-model="seller_cell" type="text" /></dd>
+            <dd class="mt5 ml25 c_333"><strong>注意：此手机用于供应商在范达城接收挂货信息，请务必填写正确！！！</strong></dd>
+        </dl>
+    </div>
+    <div ng-show="stage == 4">
+        <img src="/static/images/pop_000.jpg" alt="" />
+        <dl class="f13" style="margin:-86px 10px 0 140px; height:100px;">
+            <dt class="f14 c_47d">为了您能够在范达城上登录并支付卖家订单，请务必用手机下单：</dt>
+            <dd class="mt10 ml25 c_666">请填写您的手机号：<input ng-model="buyer_cell" type="text" /></dd>
+            <dd class="mt5 ml25 c_333"><strong>注意：此手机用于在范达城上接收您的用户名、密码信息，请务必填写正确！！！</strong></dd>
+        </dl>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <input class="btn btn-success" type="button" value="{{ buy_text() }}" ng-click="step(true)">
+    <input class="btn" type="button" value="取消" ng-click="close()">
+</div>
+

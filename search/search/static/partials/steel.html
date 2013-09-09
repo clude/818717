@@ -1,0 +1,19 @@
+<div class="gridview" style="padding-top: 140px;" >
+    <div ng-repeat="steel in steels" class="griditem">
+        <h3>{{ steel.model }}</h3>
+        <ul ng-click="open_detail(steel)" class="description" style="max-height: 114px; overflow: hidden">
+            <li><label>牌号：{{ steel.trademark }}</label></li>
+            <li><label>规格：{{ steel.spec }}</label></li>
+            <li><label>来源：{{ steel.store_name }}</label></li>
+            <li><label>电话：{{ steel.phone_number }}</label></li>
+            <li><label>产地：{{ steel.producer }}</label></li>
+            <li><label>库房：{{ steel.stock_location }}</label></li>
+        </ul>
+        <p class="price">￥{{ steel.price|price }}</p>
+        <div class="btn_area">
+            <div class="share" href="#" ng-click="open_share(steel)"><p>分享</p></div>
+            <div class="save" href="#" ng-click="open_save(steel)"><p>保存</p></div>
+        </div>
+    </div>
+</div>
+<div style="text-align: center; display: block; width: 100%"><a class="btn" style="width: 200px; margin-top: 20px;" ng-click="more()">{{ ismore }}</a></div>

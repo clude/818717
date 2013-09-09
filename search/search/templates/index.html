@@ -1,21 +1,30 @@
 <!doctype html>
-<html lang="zh-cn" ng-app="818717">
+<html lang="zh-cn" ng-app="b1b">
 <head>
-  <meta charset="utf-8">
-  <title>818717 beta</title>
-  <link rel="stylesheet" href="static/lib/bootstrap/css/bootstrap.min.css" />
-  <script src="static/lib/less/less.js"></script>
-  <script src="static/lib/angular/angular.min.js"></script>
-  <script src="static/lib/angular/ui-bootstrap-tpls-0.4.0.min.js"></script>
-  <script src="static/js/app.js"></script>
-  <script src="static/js/search.js"></script>
+    <meta charset="utf-8">
+    <title>818717 beta</title>
+    <link rel="stylesheet" href="/static/lib/bootstrap/css/bootstrap.min.css?1=1" />
+    <link rel="stylesheet" href="/static/css/search.css" />
+    <script src="/static/lib/jquery/jquery.js"></script>
+    <script src="/static/lib/less/less.js"></script>
+    <script src="/static/lib/angular/angular.min.js"></script>
+    <script src="/static/lib/angular/ui-bootstrap-tpls-0.4.0.min.js"></script>
+    <script src="/static/lib/underscore/underscore-min.js"></script>
+    <script src="/static/js/utils/vx.js"></script>
+    <script src="/static/js/services.js"></script>
+    <script src="/static/js/filters.js"></script>
+    <script src="/static/js/directives.js"></script>
+    <script src="/static/js/controllers.js"></script>
+    <script src="/static/js/console/controller.console.js"></script>
+    <script src="/static/js/app.js"></script>
 </head>
 <body>
 
-<div ng-include="'static/partials/nav.html'" ng-controller="NavCtrl"></div>
+<div ng-include="'/static/partials/nav.html'" ng-controller="NavCtrl"></div>
 <div class="container">
-	<div ng-view></div>
+    <div ng-view></div>
 </div>
 
+<script src="/static/js/ext/trace.js"></script>
 </body>
 </html>

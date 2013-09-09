@@ -1,0 +1,11 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button>
+    <h3>意见反馈</h3>
+</div>
+<div class="modal-body" style="overflow-y:inherit">
+    <textarea ng-model="feedback" placeholder="意见以及反馈" style="width:250px; resize: none; margin-bottom: 0;" rows="4" ></textarea>
+</div>
+
+<div class="modal-footer">
+    <a ng-click="make_feedback(feedback)" style="color:white;" class="btn btn-success">提交意见</a>
+</div>

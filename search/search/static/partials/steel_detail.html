@@ -1,0 +1,74 @@
+<div class="content">
+    <div class="row">
+        <div class="span2">
+            <h3>{{ steel.model }}</h3>
+            <div class="gridview">
+                <ul class="description">
+                    <li><label>牌号：{{ steel.trademark }}</label></li>
+                    <li><label>规格：{{ steel.spec }}</label></li>
+                    <li><label>来源：<a href="/store/{{ steel.store_name }}">{{ steel.store_name }}</a></label></li>
+                    <li><label>电话：{{ steel.phone_number }}</label></li>
+                    <li><label>产地：{{ steel.producer }}</label></li>
+                    <li><label>库房：{{ steel.stock_location }}</label></li>
+                </ul>
+                <p class="price">￥{{ steel.price|price }}</p>
+            </div>
+        </div>
+        <div ng-controller='CommentCtrl' style="display:block; float: left; left: 240px; top: 10px; min-width: 740px; max-height: 250px;">
+            <div class="arrow"></div>
+            <h3 class="popover-title" >评论</h3>
+            <div class="popover-content" style="max-height: 200px; overflow: hidden;">
+                <input ng-model="new_comment" />
+                <input type="button" class="btn btn-success" value="评论" ng-click="make_comment(steel)" />
+                <div ng-repeat="comment in comments" style="margin-top:8px;">
+                    <h4 class="media-heading"><small>{{ comment.time }}</small>
+                        <a href="/{{ comment.username }}">@{{ comment.username }}</a>: <small>{{ comment.text }}</small></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr/>
+    <div class="gridview" ng-controller="ListsCtrl">
+        <div class="item" ng-repeat="item in steel.store" >
+            <ul class="list-area" ng-controller="DetailCtrl" >
+                <li ng-click="open_detail(steel)" ng-repeat="steel in item.steels" style="height: 100px; overflow: hidden;">
+                    <em>￥{{ steel.price|price }}</em>
+                    <h4>{{ steel.model }}</h4>
+                    <label>{{ steel.trademark }}</label>
+                </li>
+            </ul>
+            <div class="grid-item-btm">
+                <input type="button" class="btn_follow" value="取消关注" ng-show="item.my_follow" ng-click="follow(item)" />
+                <input type="button" class="btn_follow" value="关注" ng-show="!item.my_follow" ng-click="follow(item)" />
+                <p><a href="{{ item.url }}">{{ item.name }}</a></p>
+                <p class="follow-view">
+                    <var>{{ item.score }}</var>个产品
+                    <var>{{ item.follow_count }}</var>人关注
+                </p>
+            </div>
+        </div>
+        <div class="item" ng-repeat="item in steel.savers">
+            <ul class="list-area" ng-controller="DetailCtrl" >
+                <li ng-click="open_detail(steel)" ng-repeat="steel in item.steels" style="height: 100px; overflow: hidden;">
+                    <em>￥{{ steel.price|price }}</em>
+                    <h4>{{ steel.model }}</h4>
+                    <label>{{ steel.trademark }}</label>
+                </li>
+            </ul>
+            <div class="grid-item-btm">
+                <input type="button" class="btn_follow" value="取消关注" ng-show="item.my_follow" ng-click="follow(item)" />
+                <input type="button" class="btn_follow" value="关注" ng-show="!item.my_follow" ng-click="follow(item)" />
+                <p><a href="{{ item.url }}">{{ item.name }}</a></p>
+                <p class="follow-view">
+                    <var>{{ item.score }}</var>个产品
+                    <var>{{ item.follow_count }}</var>人关注
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <input class="btn" type="button" value="保存" ng-click="open_save(steel)">
+        <a class="btn" type="button" ng-show="steel.spider != 'xsy'" href="{{ steel.url }}" target="new">去官网看看</a>
+        <input class="btn btn-success" type="button" value="去购买" ng-click="open_fdc(steel)">
+    </div>
+</div>
