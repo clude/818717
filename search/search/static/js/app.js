@@ -6,18 +6,17 @@
  * To change this template use File | Settings | File Templates.
  */
 'use strict';
-// register global value niUtil
+// register global value b1b
 if(window.b1b){
 
 } else{
     window.b1b = {};
 }
-//window.ni = ni || {};
 
 angular.module('b1b', ['ui.bootstrap', 'b1b.filters', 'b1b.services', 'b1b.directives', 'b1b.controllers', 'b1b.controllers.console']).
     provider('newVersion', function () {
         var get = function (url) {
-            return url + '?v=' + (ni.version || '');
+            return url + '?v=' + (b1b.version || '');
         };
         this.$get = function () {
             return get;

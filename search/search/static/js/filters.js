@@ -17,14 +17,6 @@ angular.module('b1b.filters', []).
             return (v>88888) ? '电议' : $filter('number')(v,0); //TODO
         };
     }]).
-    filter('sort_by_text', function(SearchService){
-        return function(input)  {
-            var sort = SearchService.param('sort');
-            if (sort == 0) return input;
-            if (sort == 1) return VX.format_friendly_date(input);
-            if (sort == 2) return (parseFloat(input)>88888) ? '电议' : input;
-        };
-    }).
     filter('hideusername', function(){
         return function(input,res)  {
             if (input) {

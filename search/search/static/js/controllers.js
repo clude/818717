@@ -79,21 +79,8 @@ angular.module('b1b.controllers', []).
             SearchService.search();
         };
 
-//        function load_params()  {
-//            $scope.params = {
-//                query: SearchService.param('query'),
-//                sort_mode: $scope.modes[SearchService.param('sort')]
-//            };
-//        };
-//
-//        load_params();
-//
-//        $scope.$on('search params', function(event, data) {
-//            load_params();
-//        });
     }]).
     controller('SearchCtrl',['$scope','$routeParams', 'SearchService', 'Dialogs' ,function($scope, $routeParams, SearchService, Dialogs){
-        var vm = $scope.vm = {};
 
         $scope.modes = [
             { text: '活跃', sort: 0, arrow_up:false, is_selected: true },
@@ -215,12 +202,6 @@ angular.module('b1b.controllers', []).
         $scope.refresh = function(steel){
             $scope.steel_selected = steel;
             $scope.seller_cell = steel.cell_raw;
-
-//            UserService
-//                .steel_detail(steel.id)
-//                .success(function(data){
-//                    $scope.detail_items = data;
-//                });
 
             $scope.user = UserService.get_current_user();
             if ($scope.user)    {
