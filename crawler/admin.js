@@ -10,7 +10,8 @@ var
   io = require('socket.io-client').connect('/admin', cfg),
   rl = require('readline').createInterface({ input: process.stdin, output: process.stdout, terminal: true }),
   fs = require('fs'),
-  glob = require('glob');
+  glob = require('glob'),
+  compress = require('compress-buffer');
 
 function concat_scripts(patterns)  {
   var script = '';
@@ -38,7 +39,7 @@ function run_command(command, arg)  {
     case 'load':
       // 不进行任何错误处理，此处失败则退出程序，便于早点发现问题
       eval(concat_scripts(cfg['script patterns']));
-      io.emit(command, arg, generate_url_config(arg));
+      io.emit(command, arg, compress.compress(new Buffer(JSON.stringify(generate_url_config(arg)))));
       break;
     case 'exit':
       process.exit(0);

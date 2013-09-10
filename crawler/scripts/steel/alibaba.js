@@ -40,7 +40,7 @@
           trademark: parseField(spans.eq(2).text()),
           producer: parseField(spans.eq(3).text()),
           spec: parseField(spans.eq(4).text()),
-          price: ul.find('.sw-ui-font-standardPrice').text(),
+          price_raw: ul.find('.sw-ui-font-standardPrice').text(),
           store_raw: ul.find('.sw-block-company').find('a').text(),
           warehouse: '',
           weight_raw: '',

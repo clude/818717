@@ -4,35 +4,40 @@
     sprintf = require('sprintf').sprintf,
     $ = require('jQuery'),
     Q = require('q'),
-    request = require('request');
+    http = require('http');
 
   var configs = {};
   for (var i=1; i<=5500; ++i)  {
     var url = sprintf('http://www.zhaogang.com/spot/?page=%d', i);
     configs[url] = {
       priority: i,
-      validity: 60*60*1000
+      validity: 360*60*1000
     };
   }
   url_configs['zhaogang'] = configs;
 
   var parser = {
-    download: function(url){
+    download: function(url) {
       var deffered = Q.defer();
-      setTimeout(function() {
-        request(url, function(err, response, content) {
-          if (!err) {
-            deffered.resolve(content);
-          }
-          else {
+      setTimeout(function(){
+        http.get(url).
+          on('response', function(res){
+            var content = '';
+            res.
+              on('data', function(trunk) {
+                content += trunk.toString();
+              }).
+              on('end', function() {
+                deffered.resolve(content);
+              })
+          }).
+          on('error', function(err) {
             deffered.reject(err);
-          }
-        })
+          });
       }, 1000);
       return deffered.promise;
     },
     parse: function(url, content)  {
-      console.log(url, content.length);
       var result = [];
       var rows = $(content).find('.table').find('tr');
       for (var i=0; i<(rows.length/2 - 1); ++i) {

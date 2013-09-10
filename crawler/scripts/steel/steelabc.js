@@ -19,7 +19,7 @@
   url_configs['steelabc'] = configs;
 
   var parser = {
-    download: $.get,
+    download: http_get,
     parse: function(url, content)  {
       var
         result = [],

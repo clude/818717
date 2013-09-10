@@ -7,7 +7,9 @@ var cfg = {
   'max reconnection attempts': Infinity
 };
 
-var io = require('socket.io-client').connect('/node', cfg);
+var
+  io = require('socket.io-client').connect('/node', cfg),
+  compress = require('compress-buffer');
 
 var script = '';
 function worker(domain, url, crawl_result) {
@@ -41,7 +43,7 @@ io.
 
   on('crawl', function(domain, url) {
     function crawl_result(err, domain, url, objects) {
-      io.emit('crawl result', err, domain, url, objects);
+      io.emit('crawl result', err, domain, url, compress.compress(new Buffer(JSON.stringify(objects))));
     }
     try {
       console.log(domain, url);
