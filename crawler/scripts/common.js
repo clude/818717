@@ -1,7 +1,8 @@
 
 var
   Q = require('q'),
-  gbk = require('gbk'),
+  iconv = require('iconv-lite'),
+  http = require('http'),
   parsers = {},
   url_configs = {};
 
@@ -36,13 +37,38 @@ generate_url_config = function(domain)  {
 
 gbk_get = function(url) {
   var deffered = Q.defer();
-  gbk.fetch(url,'utf-8').to('string', function(err,string){
-    if (err)  {
+  http.get(url).
+    on('response', function(res){
+      var content = '';
+      res.
+        on('data', function(trunk) {
+          content += iconv.decode(trunk, 'GBK');
+        }).
+        on('end', function() {
+          deffered.resolve(content);
+        })
+    }).
+    on('error', function(err) {
       deffered.reject(err);
-    }
-    else  {
-      deffered.resolve(string);
-    }
-  });
+    });
   return deffered.promise;
 };
+
+http_get = function(url) {
+  var deffered = Q.defer();
+  http.get(url).
+    on('response', function(res){
+      var content = '';
+      res.
+        on('data', function(trunk) {
+          content += trunk.toString();
+        }).
+        on('end', function() {
+          deffered.resolve(content);
+        })
+    }).
+    on('error', function(err) {
+      deffered.reject(err);
+    });
+  return deffered.promise;
+}

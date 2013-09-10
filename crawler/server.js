@@ -10,7 +10,8 @@ var
   io = require('socket.io').listen(cfg.port).set('log level', 1),
   $ = require('jQuery'),
   sha1 = require('sha1'),
-  sprintf = require('sprintf').sprintf;
+  sprintf = require('sprintf').sprintf,
+  compress = require('compress-buffer');
 
 var
   nodes = {},
@@ -88,7 +89,7 @@ io.of('/node').on('connection', function(socket)  {
       nodes[socket.id].ready = !err;
     }).
 
-    on('crawl result', function(err, domain, url, objects)  {
+    on('crawl result', function(err, domain, url, objects_compressed)  {
       if (!socket || !socket.id || !nodes[socket.id]) return;
       var node_worklist = nodes[socket.id].working;
       if (node_worklist && node_worklist[domain]) delete node_worklist[domain];
@@ -100,8 +101,9 @@ io.of('/node').on('connection', function(socket)  {
         crawl_config.check = now;
       } else {
         crawl_config.check = now + crawl_config.validity;
+        var objects = compress.uncompress(new Buffer(objects_compressed)).toString();
         console.log(socket.id, '=== crawl result ===>', objects.length, domain, '...'+url.slice(url.length-30, url.length));
-        $.post(cfg['index server']+'update/', JSON.stringify(objects));
+        $.post(cfg['index server']+'update/', objects);
       }
     });
 });
@@ -166,8 +168,9 @@ io.of('/admin').on('connection', function(socket) {
       socket.emit('result', 'OK');
     }).
 
-    on('load', function(domain, url_configs)  {
+    on('load', function(domain, url_configs_compressed)  {
       console.log('***** ADMIN: load *****');
+      var url_configs = JSON.parse(compress.uncompress(new Buffer(url_configs_compressed)).toString());
       function load_domain_config(domain, domain_config) {
         console.log('domain:', domain, Object.keys(domain_config).length);
         domains[domain] = domain_config;

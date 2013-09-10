@@ -19,7 +19,7 @@
   url_configs['baostar'] = configs;
 
   var parser = {
-    download: $.get,
+    download: http_get,
     parse: function(url, content)  {
       var result = [];
       $(content).find('.tr_zk').each(function(index, item){

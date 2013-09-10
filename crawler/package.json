@@ -4,12 +4,13 @@
         "socket.io-client": "*",
         "jQuery": "*",
         "q": "*",
-        "gbk": "*",
+        "iconv-lite": "*",
         "sprintf": "*",
         "jsdom": "*",
         "xmlhttprequest": "*",
         "sha1": "*",
         "glob": "*",
-        "request": "*"
+        "request": "*",
+        "compress-buffer": "*"
     }
 }

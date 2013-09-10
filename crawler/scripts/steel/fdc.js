@@ -15,7 +15,7 @@
   url_configs['fdc'] = configs;
 
   var parser = {
-    download: $.get,
+    download: http_get,
     parse: function(url, content)  {
       var result = [];
       JSON.parse(content).result.forEach(function(row)  {

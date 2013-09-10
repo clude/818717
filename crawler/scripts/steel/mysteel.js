@@ -9,7 +9,7 @@
     var url = sprintf('http://list.sososteel.com/res/p------------2--------------------%d.html', i);
     configs[url] = {
       priority: i,
-      validity: 60*60*1000
+      validity: 360*60*1000
     };
   }
   url_configs['mysteel'] = configs;

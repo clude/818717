@@ -7,7 +7,7 @@
   url_configs['511steel'][url] = { validity: 60*60*1000 };
 
   var parser = {
-    download: $.get,
+    download: http_get,
     parse: function(url, content)  {
       var items = JSON.parse(content);
       var result = [];

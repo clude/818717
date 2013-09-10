@@ -31,7 +31,7 @@
   };
 
   var parser = {
-    download: $.get,
+    download: http_get,
     parse: function(url, content)  {
       var result = []
         , doc = $(content)
