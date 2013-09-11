@@ -10,6 +10,6 @@
         "xmlhttprequest": "*",
         "sha1": "*",
         "glob": "*",
-        "request": "*",
+        "request": "*"
     }
 }
