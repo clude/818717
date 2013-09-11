@@ -40,19 +40,20 @@ class Searcher(object):
         insert_ql, replace_ql = sphinxql.insert(self.index), sphinxql.replace(self.index)
         insert_count, replace_count = 0, 0
         for row in rows:
+            if not row: continue
             id_hash, full_hash, json = [row[_] for _ in ['id_hash', 'full_hash', 'json']]
 
             if self.rc.exists(id_hash):
                 check_hash, check_hit, gid = self.rc.lrange(id_hash, 0, 2)
                 if full_hash == check_hash: continue
-                ql, hit_count = replace_ql, int(check_hit)+1
+                ql, hit_count = sphinxql.replace(self.index), int(check_hit)+1
                 self.rc.lset(id_hash, 0, full_hash)
                 self.rc.lset(id_hash, 1, hit_count)
                 # no need for update id, because it's never changed.
                 self.rc.lset(id_hash, 3, json)
                 replace_count += 1
             else:
-                ql, hit_count, gid = insert_ql, 0, self.rc.incr('GLOBAL_ID')
+                ql, hit_count, gid = sphinxql.insert(self.index), 0, self.rc.incr('GLOBAL_ID')
                 self.rc.rpush(id_hash, full_hash)
                 self.rc.rpush(id_hash, 0)
                 self.rc.rpush(id_hash, gid)
@@ -63,10 +64,9 @@ class Searcher(object):
             self.rc.expire(id_hash, self.EXPIRE_TTL)
             row['id'] = gid
             row['hit_count'] = hit_count
-            ql.add(row)
+            ql.add(row).run()
 
-        if insert_count: insert_ql.run(self.SPHINX_HOST)
-        if replace_count: replace_ql.run(self.SPHINX_HOST)
+        print insert_count, replace_count
         return insert_count, replace_count
 
     def reindex(self, BATCH_COUNT=50):

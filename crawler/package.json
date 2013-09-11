@@ -11,6 +11,5 @@
         "sha1": "*",
         "glob": "*",
         "request": "*",
-        "compress-buffer": "*"
     }
 }

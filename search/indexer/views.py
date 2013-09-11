@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import apis
-import json
+import json, gzip, tempfile, os
 
 INDEX = 'steel_package'
 PAGE_SIZE = 20
@@ -16,7 +16,12 @@ def reindex(request):
 @csrf_exempt
 def update(request):
     searcher = apis.Searcher(INDEX, settings.INDEX_SERVER)
-    rows = json.loads(request.body)
+    temp_file = tempfile.NamedTemporaryFile(delete=False)
+    temp_file.write(request.body)
+    temp_file.close()
+    data = gzip.open(temp_file.name).read()
+    rows = json.loads(data)
+    os.unlink(temp_file.name)
     result = searcher.update(rows)
     return HttpResponse(result)
 
