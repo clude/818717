@@ -116,7 +116,7 @@ class insert(SphinxQL):
     def add(self, row_dict):
         columns = [kw_encode(_) for _ in row_dict.keys()]
         if not self.columns: self.columns = columns
-        elif self.columns != columns: raise Exception('SphinxQL[INSERT]: different columns')
+        elif self.columns != columns: raise Exception('SphinxQL[INSERT]: different columns: self-%s, input: %s'%(self.columns, columns))
 
         values = [value_encode(_) for _ in row_dict.values()]
         self.values.append('(%s)'%(', '.join(values)))

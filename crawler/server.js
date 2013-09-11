@@ -3,12 +3,10 @@ var cfg = {
   port: 9681,
   'dispatch_interval': 0.5*1000,
   'reorder_interval': 30*1000,
-  'index server': 'http://127.0.0.1:8000/search/'
 };
 
 var
   io = require('socket.io').listen(cfg.port).set('log level', 1),
-  $ = require('jQuery'),
   sha1 = require('sha1'),
   sprintf = require('sprintf').sprintf,
   compress = require('compress-buffer');
@@ -19,7 +17,8 @@ var
   worklist = {},
   server = {
     online: false,
-    script: ''
+    script: '',
+    script_hash: '',
   };
 
 function reorder()  {
@@ -53,7 +52,7 @@ function dispatch() {
     var crawl_urls = worklist[domain];
     for (var socket_id in nodes)  {
       if (crawl_urls.length == 0) break;
-      if (!nodes[socket_id].ready || nodes[socket_id].working[domain]) continue;
+      if (nodes[socket_id].script_hash != server.script_hash || nodes[socket_id].working[domain]) continue;
       var crawl_url = crawl_urls.splice(0, 1)[0];
       var url = crawl_url[0], url_config = crawl_url[1];
       url_config.check = now + 3*60*1000;
@@ -72,7 +71,7 @@ io.of('/node').on('connection', function(socket)  {
       nodes[socket.id] = {
         socket: socket,
         name: name,
-        ready: false,
+        script_hash: '',
         working: {}
       };
       socket.emit('update', server.script);
@@ -83,13 +82,13 @@ io.of('/node').on('connection', function(socket)  {
       delete nodes[socket.id];
     }).
 
-    on('update result', function(err) {
+    on('update result', function(script_hash) {
       if (!socket) return;
-      console.log(socket.id, '=== update ===>', err ? 'failed' : 'success');
-      nodes[socket.id].ready = !err;
+      console.log(socket.id, '=== update ===>', script_hash);
+      nodes[socket.id].script_hash = script_hash;
     }).
 
-    on('crawl result', function(err, domain, url, objects_compressed)  {
+    on('crawl result', function(err, domain, url)  {
       if (!socket || !socket.id || !nodes[socket.id]) return;
       var node_worklist = nodes[socket.id].working;
       if (node_worklist && node_worklist[domain]) delete node_worklist[domain];
@@ -97,13 +96,11 @@ io.of('/node').on('connection', function(socket)  {
       crawl_config = domains[domain][url];
       var now = new Date().getTime();
       if (err)  {
-        console.log(socket.id, '=== crawl result error ===>', err, domain, '...'+url.slice(url.length-30, url.length));
+        console.log(socket.id, '=== crawl result ===>', err, domain, '...'+url.slice(url.length-30, url.length));
         crawl_config.check = now;
       } else {
         crawl_config.check = now + crawl_config.validity;
-        var objects = compress.uncompress(new Buffer(objects_compressed)).toString();
-        console.log(socket.id, '=== crawl result ===>', objects.length, domain, '...'+url.slice(url.length-30, url.length));
-        $.post(cfg['index server']+'update/', objects);
+        console.log(socket.id, '=== crawl result ===> success', '...'+url.slice(url.length-30, url.length));
       }
     });
 });
@@ -127,7 +124,7 @@ io.of('/admin').on('connection', function(socket) {
       var result = '';
       result += '===== SERVER begin =====\n';
       result += sprintf('online: %s\n', server.online);
-      result += sprintf('script: %s\n', sha1(server.script));
+      result += sprintf('script_hash: %s\n', server.script_hash);
       result += '===== SERVER end =====\n\n';
 
       result += '===== NODES begin =====\n';
@@ -135,7 +132,7 @@ io.of('/admin').on('connection', function(socket) {
         var n = nodes[socket_id];
         result += sprintf('***** %s *****\n', n.name);
         result += sprintf('socket.id: %s\n', n.socket.id);
-        result += sprintf('ready: %s\n', n.ready);
+        result += sprintf('script_hash: %s\n', n.script_hash);
         result += 'working:\n';
         for (var domain in n.working) {
           var list = n.working[domain];
@@ -159,10 +156,10 @@ io.of('/admin').on('connection', function(socket) {
     on('update', function(script)  {
       console.log('***** ADMIN: status *****');
       server.script = script;
-      var script_hash = sha1(script);
-      console.log('server script updated:', script_hash);
+      server.script_hash = sha1(script);
+      console.log('server script updated:', server.script_hash);
       for (var socket_id in nodes)  {
-        console.log(script_hash, '== update =>', socket_id);
+        console.log(server.script_hash, '== update =>', socket_id);
         nodes[socket_id].socket.emit('update', script);
       }
       socket.emit('result', 'OK');
