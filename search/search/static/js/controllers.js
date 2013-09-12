@@ -139,17 +139,23 @@ angular.module('b1b.controllers', []).
 
             $scope.groups = [];
             angular.forEach(data.result, function(row) {
-                var group = angular.fromJson(row[0]);
-                group.sort_by = row[1];
-                $scope.groups.push(group);
+                try {
+                    var group = angular.fromJson(row[0]);
+                    group.sort_by = row[1];
+                    $scope.groups.push(group);
+                } catch (e) {
+                }
             });
         });
 
         $scope.$on('detail result', function(event, data) {
             var details = [];
             angular.forEach(data.result, function(row){
-                var resource = angular.fromJson(row[0]);
-                details.push(resource);
+                try {
+                  var resource = angular.fromJson(row[0]);
+                  details.push(resource);
+                } catch(e) {
+                }
             });
             $scope.group_details[data.group_hash] = details;
         });
