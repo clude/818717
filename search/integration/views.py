@@ -14,7 +14,7 @@ def api_fdc_buy(request):
     fdc_url = 'http://fdc.baostar.com/services/fdc/api-data-from-818717/'
 
     #TODO get from post
-    post = json.loads(request.body);
+    post = json.loads(request.body)
     data = {
         'company_name': post.get('store_raw', '').encode('utf8'), #steel.store_name.encode('utf8'),
         'mobile': post.get('seller_cell', '').encode('utf8'), #seller_cell,
@@ -40,7 +40,7 @@ def api_fdc_buy(request):
     encoded_data = urllib.urlencode(data)
     h = httplib2.Http()
     res, content = h.request(fdc_url+'?'+encoded_data)
-    return HttpResponseJson(content);
+    return HttpResponseJson(content)
     #return json.loads(content)
 
 
@@ -67,6 +67,35 @@ def api_trace(request):
     try:
         trc.save()
     except Exception:
+        pass
+
+    return HttpResponseJson('')
+
+
+@csrf_exempt
+def api_correct_error(request):
+    from integration.models import CorrectError
+
+    #TODO get from post
+    post = json.loads(request.body)
+
+    ce = CorrectError()
+    if request.user and request.user.is_authenticated():
+        ce.user_id = str(request.user.pk)
+    ce.cookie_id = request.COOKIES.get('sessionid', None)
+    ce.uid = request.COOKIES.get('uid', None)
+
+    ce.error_group = post.get('error_group', 0)
+    ce.search_params = post.get('params', None)
+    ce.prd_group = post.get('group', None)
+    if ce.prd_group:
+        ce.group_hash = ce.prd_group.get('group_hash', None)
+    ce.prd_detail = post.get('detail', None)
+    ce.errors = post.get('errors', None)
+
+    try:
+        ce.save()
+    except Exception as e:
         pass
 
     return HttpResponseJson('');

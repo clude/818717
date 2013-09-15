@@ -150,6 +150,68 @@
         return Math.floor(time)+'周前';
     };
 
+    vx.ui = {
+        // depend on blockUI plugin
+        showWaiting: function(selector, isShow, opts) {
+            var messageHtml = "<img alt='Waiting..' src='" + "/static/images/img_loading_bar.gif' />";
+            var defaultOpts = {
+                message: messageHtml,
+                css: {
+                    cursor: "default",
+                    border: 'none',
+                    opacity: 1,
+                    backgroundColor: 'transparent'
+                },
+                overlayCSS: { opacity: 0.1, backgroundColor: '#eee' },
+                showOverlay: true,
+                fadeIn: 0
+            }
+            var newOpts = jQuery.extend({}, defaultOpts, opts);
+            // show full waiting
+            if (selector == null) {
+                if (isShow) {
+                    jQuery.blockUI(newOpts);
+                } else {
+                    jQuery.unblockUI({ fadeOut: 0 });
+                }
+            } else {
+                // show waiting on element
+                // var selector = '#' + id;
+                newOpts.css.top = '48%';
+                newOpts.css.left = '48%';
+
+                if (isShow) {
+                    jQuery(selector).block(newOpts);
+                } else {
+                    jQuery(selector).unblock();
+                }
+            }
+        },
+
+        showMessageAutoClose: function(message) {
+            var opts = {
+                message: message,
+                css: {
+                    cursor: "default",
+                    border: '1px solid #3985c0',
+                    padding: '15px',
+                    width: '20%',
+                    left: '40%',
+                    opacity:.5,
+                    'border-radius': '6px',
+                    color: '#fff',
+                    backgroundColor: '#4A96D0'
+                },
+                overlayCSS: { opacity: 0.0, backgroundColor: '#eee' },
+                showOverlay: true,
+                fadeIn: 300,
+                timeout: 1000
+            };
+
+            vx.ui.showWaiting(null, true, opts);
+        }
+    }
+
 
 }).call(this);
 

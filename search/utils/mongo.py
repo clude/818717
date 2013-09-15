@@ -10,3 +10,4 @@ class BaseDocument(Document):
 
     def to_dict(self):
         return json_util._json_convert(self.to_mongo());
+
