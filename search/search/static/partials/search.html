@@ -49,7 +49,7 @@
                     <td colspan="7">
                         <table class="table">
                             <tr ng-repeat="resource in group_details[group.group_hash]" >
-                                <td class="w120 tc" style="padding-left:80px;">
+                                <td class="w120 tc" style="padding-left:50px;">
                                     <p>
                                         <a ng-href="{{ resource.url }}" target="new">
                                             <img ng-src="/static/images/logo/{{ resource.source_raw }}.jpg" />
@@ -68,7 +68,7 @@
                                     <p>产地：{{ resource.producer }}</p>
                                 </td>
                                 <td class="tr">重量：<strong class="f16">{{ resource.weight_raw }}</strong></td>
-                                <td class="tr">
+                                <td class="tr" style="width:70px;">
                                     <em class="price f24">{{ resource.price_float|price }}</em>
                                     <p class="gray">{{ resource.time|from_now }}</p>
                                     <a href="#" bibpopover popover-title="信息纠错" popover-template="/static/partials/popover_correctme.html" >纠错</a>
