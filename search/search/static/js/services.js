@@ -34,11 +34,16 @@ angular.module('b1b.services', []).
                     headers:        null,
                     successFn:      null,
                     errorFn:        null,
-                    waitingElement: null
+                    waitingElement: null,
+                    isNeedShowWaiting: true
                 };
                 var opt = angular.extend(config, options);
+
+                if(opt.waitingElement != null) opt.isNeedShowWaiting = true;
+
                 // TODO: show block on waitingElement
-                // VX.UI.showWaiting(null, true);
+                if(opt.isNeedShowWaiting ) VX.ui.showWaiting(opt.waitingElement, true);
+
                 $http(
                     {
                         method:     opt.method,
@@ -50,7 +55,7 @@ angular.module('b1b.services', []).
                 ).
                 success(function(data, status, headers, config) {
                     // TODO: hide block on waitingElement
-                    // VX.UI.showWaiting(null, false);
+                    if(opt.isNeedShowWaiting ) VX.ui.showWaiting(opt.waitingElement, false);
                     deferred.resolve(data);
                     //if(data.status == 1){
                     //    deferred.resolve(data);
@@ -60,7 +65,7 @@ angular.module('b1b.services', []).
                 }).
                 error(function(data, status, headers, config) {
                     // TODO: hide block on waitingElement
-                    // VX.UI.showWaiting(null, false);
+                    if(opt.isNeedShowWaiting ) VX.ui.showWaiting(opt.waitingElement, false);
                     deferred.reject(data);
                 });
 
@@ -95,7 +100,9 @@ angular.module('b1b.services', []).
             page: 0
         };
         return {
+
             param: function(name, value)  {
+                if (name === undefined && value === undefined) return params;
                 if (value === undefined) return params[name];
                 var old_value = params[name];
                 if (value === null) {
@@ -109,14 +116,16 @@ angular.module('b1b.services', []).
                 }
                 return value;
             },
-            search: function()  {
-                B1BHttp.get('/search/query/', { params: params }).success(function(data){
+            search: function(opts)  {
+                var searchOpts = angular.extend({}, opts, {params: params});
+                B1BHttp.get('/search/query/', searchOpts).success(function(data){
                     //console.log('searching:', params);
                     $rootScope.$broadcast('search result', data);
                 });
             },
-            detail: function(group_hash)  {
-                B1BHttp.get('/search/detail/'+group_hash+'/', { params: params }).success(function(data){
+            detail: function(group_hash, opts)  {
+                var searchOpts = angular.extend({}, opts, {params: params});
+                B1BHttp.get('/search/detail/'+group_hash+'/', searchOpts).success(function(data){
                     $rootScope.$broadcast('detail result', { group_hash: group_hash , result: data.result });
                 });
             }
@@ -202,6 +211,11 @@ angular.module('b1b.services', []).
                 data.buyer_cell = buyer_cell;
                 data.seller_cell = seller_cell;
                 return B1BHttp.post('/api/integration/fdc_buy/', { data: data });
+            },
+
+            correct_error: function(posts){
+                var data = angular.copy(posts);
+                return B1BHttp.post('/api/integration/correct_error/', { data: data });
             }
         };
 

@@ -1,0 +1,9 @@
+<div class="correct_error">
+    <ul>
+        <li><label class="checkbox"><input type="checkbox" ng-model="resource.errors.empty"><span>没货</span></label></li>
+        <li><label class="checkbox"><input type="checkbox" ng-model="resource.errors.link"><span>链接失效</span></label></li>
+        <li><label class="checkbox"><input type="checkbox" ng-model="resource.errors.price"><span>价格不对</span></label></li>
+    </ul>
+    <a class='btn btn-small btn-info' ng-click='popoverCloseMe(); correctDetailError(group, resource) '>提交</a>
+    <a class='btn btn-small btn-info' ng-click='popoverCloseMe(); '>算了</a>
+</div>

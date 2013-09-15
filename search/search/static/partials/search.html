@@ -9,7 +9,11 @@
                 <span class="text">{{ mode.text }}</span>
                 <span class="arrow" ng-class="{true: 'up', false: 'down'}[mode.arrow_up]"></span>
             </a>
-            <span style="margin-left: 30px">资源总数 ({{ total_amount }})</span>
+            <span style="margin-left: 30px" ng-show="total_amount">资源总数 ({{ total_amount }})</span>
+        </div>
+
+        <div class="btn_right">
+            <a href="#" bibpopover popover-title="信息纠错" popover-placement="bottom" popover-template="/static/partials/popover_correct_search.html" >查询结果纠错</a>
         </div>
 
 
@@ -38,17 +42,20 @@
                     <td class="text-center col-md-2">{{ group.spec }}</td>
                     <td class="text-center col-md-2">{{ group.producer }}</td>
                     <td class="text-center col-md-2">￥{{ group.price_raw|price }}</td>
-                    <td class="text-center col-md-2">{{ group.time|from_now }}</td>
-                    <td class="text-center col-md-2"><a class="btn btn-primary" ng-click="expand(group.group_hash)">详细</a></td>
+                    <td class="text-center col-md-2" style="width:70px;">{{ group.time|from_now }}</td>
+                    <td class="text-center col-md-2" style="width:60px;"><a class="btn btn-warning" ng-click="expand(group.group_hash)">详细</a></td>
                 </tr>
                 <tr ng-show="group_details[group.group_hash]" class="steel_detail">
                     <td colspan="7">
                         <table class="table">
-                            <tr ng-repeat="resource in group_details[group.group_hash]" ng-click="open_detail(resource)" >
+                            <tr ng-repeat="resource in group_details[group.group_hash]" >
                                 <td class="w120 tc" style="padding-left:80px;">
-                                    <a ng-href="{{ resource.url }}" target="new">
-                                        <img ng-src="/static/images/logo/{{ resource.source_raw }}.jpg" />
-                                    </a>
+                                    <p>
+                                        <a ng-href="{{ resource.url }}" target="new">
+                                            <img ng-src="/static/images/logo/{{ resource.source_raw }}.jpg" />
+                                        </a>
+                                    </p>
+                                    <a ng-href="{{ resource.url }}" target="new">查看来源链接</a>
                                 </td>
                                 <td>
                                     <p>公司：<strong class="c_333">{{ resource.store_raw }}</strong></p>
@@ -64,9 +71,10 @@
                                 <td class="tr">
                                     <em class="price f24">{{ resource.price_float|price }}</em>
                                     <p class="gray">{{ resource.time|from_now }}</p>
+                                    <a href="#" bibpopover popover-title="信息纠错" popover-template="/static/partials/popover_correctme.html" >纠错</a>
                                 </td>
                                 <td class="tc">
-                                    <a class="fdc_buy" title="通过范达城进行交易"><img src="/static/images/goto_fdc.png" alt="go_fdc" /></a>
+                                    <a href="#" class="fdc_buy" ng-click="open_detail(resource)" title="通过范达城进行交易"><img src="/static/images/goto_fdc.png" alt="go_fdc" /></a>
                                 </td>
 
                             </tr>
@@ -76,7 +84,7 @@
                 </tobdy>
                 </tbody>
             </table>
-            <div class="pagination pagination-right">
+            <div class="pagination pagination-right" ng-show="total_amount">
                 <ul>
                     <li ng-class="page_class(current_page-1)" ><a href="javascript:void(0)" ng-click="paging(current_page-1)">&laquo;</a></li>
                     <li ng-class="page_class(page)" ng-repeat="page in pages"><a href="javascript:void(0)" ng-click="paging(page)">{{ page+1 }}</a></li>

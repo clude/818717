@@ -38,14 +38,25 @@ angular.module('b1b.controllers', []).
         $scope.cities = ['上海', '北京', '天津', '南京', '无锡', '杭州', '济南', '西安', '武汉', '广州', '成都', '重庆'];
         $scope.producers = ['宝钢', '马钢', '鞍钢', '本钢', '舞钢', '南钢', '首钢', '邯郸', '通钢', '武钢', '沙钢', '唐钢', '日钢', '太钢', '柳钢', '天钢', '安钢'];
         $scope.filters = [[],[],[]];
+        $scope.search_query = '';
+
+        $scope.isShowClearAll = function(){
+            for (var i in $scope.filters)   {
+                if( !_.isEmpty($scope.filters[i])) return true;
+            }
+            return false;
+        }
 
         $scope.filters_to_query = function(filters) {
             var filterQuery = [];
             for (var i in $scope.filters)   {
                 var subFilters = $scope.filters[i];
                 if (subFilters.length > 0)  {
-                    filterQuery.push('('+subFilters.join(')|(')+')')
+                    filterQuery.push('('+subFilters.join(')|(')+')');
                 }
+            }
+            if($scope.search_query){
+                filterQuery.push('(' + $scope.search_query + ')');
             }
             return filterQuery.join(' ');
         };
@@ -74,19 +85,22 @@ angular.module('b1b.controllers', []).
         };
 
         $scope.search = function(query)  {
-            SearchService.param('query', query);
+            $scope.filters = [[],[],[]];
+            SearchService.param('query', $scope.filters_to_query($scope.filters));
             SearchService.param('page', 0);
             SearchService.search();
         };
 
     }]).
-    controller('SearchCtrl',['$scope','$routeParams', 'SearchService', 'Dialogs' ,function($scope, $routeParams, SearchService, Dialogs){
+    controller('SearchCtrl',['$scope','$routeParams', 'SearchService', 'Dialogs','APIIntegration' ,function($scope, $routeParams, SearchService, Dialogs, APIIntegration){
 
         $scope.modes = [
             { text: '活跃', sort: 0, arrow_up:false, is_selected: true },
             { text: '更新', sort: 1, arrow_up:false, is_selected: false },
             { text: '价格', sort: 2, arrow_up:true, is_selected: false }
         ];
+
+        $scope.correcterrors = {};
 
         $scope.group_details = {};
         if ($routeParams['query']) SearchService.param('query', $routeParams['query']);
@@ -160,6 +174,47 @@ angular.module('b1b.controllers', []).
             $scope.group_details[data.group_hash] = details;
         });
 
+        $scope.correctSearchResultError = function(){
+            // if no error selected, we do not post the request
+            if( _.isEmpty($scope.correcterrors) ) return;
+
+            var post = {
+                error_group: 0,
+                errors: $scope.correcterrors,
+                params: SearchService.param()
+            }
+
+            APIIntegration
+                .correct_error(post)
+                .success(function(data){
+                    VX.ui.showMessageAutoClose('信息已提交，感谢您的反馈！');
+                })
+                .error(function(data){
+                });
+        };
+
+        $scope.correctDetailError = function(group, resource){
+            // if no error selected, we do not post the request
+            if( _.isEmpty(resource.errors) ) return;
+
+            var post = {
+                error_group: 1,
+                group: group,
+                detail: resource,
+                errors: resource.errors,
+                params: SearchService.param()
+            }
+
+            APIIntegration
+                .correct_error(post)
+                .success(function(data){
+                    VX.ui.showMessageAutoClose('信息已提交，感谢您的反馈！');
+                })
+                .error(function(data){
+                });
+        };
+
+        // init loading the search result, we should remove this line in the future
         SearchService.search();
 
     }]).

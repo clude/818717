@@ -28,3 +28,18 @@ class Feedback(BaseDocument):
     created_at = DateTimeField(default=datetime.datetime.now)
 
 
+class CorrectError(BaseDocument):
+    user_id = ObjectIdField(required=False)
+    cookie_id = StringField(max_length=64)
+    uid = StringField(max_length=64)
+    error_group = IntField()
+    search_params = DictField()
+    group_hash = StringField()
+    prd_group = DictField()
+    prd_detail = DictField()
+    errors = DictField()
+    created_at = DateTimeField(default=datetime.datetime.now)
+
+
+
+
