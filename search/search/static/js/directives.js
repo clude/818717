@@ -7,7 +7,7 @@
  */
 
 angular.module('b1b.directives', [])
-    .directive('bibpopover', ['$parse','$compile','$timeout','$http','$templateCache','$q'], function ($parse, $compile,$timeout,$http,$templateCache,$q) {
+    .directive('bibpopover', ['$parse','$compile','$timeout','$http','$templateCache','$q', function ($parse, $compile,$timeout,$http,$templateCache,$q) {
 
         var templateBase = "<div>{{popoverContent}}</div>";
 
@@ -60,5 +60,5 @@ angular.module('b1b.directives', [])
             }
         }
 
-    })
+    }])
 ;
