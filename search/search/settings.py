@@ -10,10 +10,6 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-# connect to mongodb
-connect('db818717')
-
-# MongoDB settings
 # MONGODB_DATABASES = {
 #     'default': {'name': 'db818717'}
 # }
@@ -189,9 +185,9 @@ LOGGING = {
 INDEX_SERVER = '127.0.0.1'
 
 try:
-    from local_settings.py import *
+    from local_settings import *
     print 'using local_settings'
 except:
     pass
 
-
+connect('db818717', host=INDEX_SERVER)

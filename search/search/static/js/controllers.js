@@ -158,6 +158,7 @@ angular.module('b1b.controllers', []).
                     group.sort_by = row[1];
                     $scope.groups.push(group);
                 } catch (e) {
+                    console.log(e);
                 }
             });
         });
@@ -169,6 +170,7 @@ angular.module('b1b.controllers', []).
                   var resource = angular.fromJson(row[0]);
                   details.push(resource);
                 } catch(e) {
+                  console.log(e);
                 }
             });
             $scope.group_details[data.group_hash] = details;

@@ -32,7 +32,7 @@ class Searcher(object):
     def detail(self, group_hash, keyword, sort):
         sort_field, sort_method, group_method = SORT_MODES[sort]
         ql = sphinxql.search(self.index, 'json')
-        ql.keyword(keyword+' '+group_hash).sort('%s %s'%(sort_field, sort_method)).limit(0, 1000)
+        ql.keyword(keyword+' '+group_hash).sort('%s %s'%(sort_field, sort_method)).limit(0, 15)
         result = ql.run(self.SPHINX_HOST)
         return result
 
