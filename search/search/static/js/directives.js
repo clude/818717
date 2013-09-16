@@ -7,7 +7,7 @@
  */
 
 angular.module('b1b.directives', [])
-    .directive('bibpopover', function ($parse, $compile,$timeout,$http,$templateCache,$q) {
+    .directive('bibpopover', ['$parse','$compile','$timeout','$http','$templateCache','$q'], function ($parse, $compile,$timeout,$http,$templateCache,$q) {
 
         var templateBase = "<div>{{popoverContent}}</div>";
 
@@ -18,11 +18,9 @@ angular.module('b1b.directives', [])
             link: function (scope, element, attrs) {
 
                 // it is not a good approach, make sure the values is fixed string value (not dynamicly from scope)
-                // if we directly read the attrs values instead of using $observe
+                // if we want to directly read the attrs values instead of using $observe
                 var popPlacement = attrs.popoverPlacement || 'right';
                 var popTitle = attrs.popoverTitle || '';
-
-                //scope.contentMsg = "fasdfasdfafa";
 
                 attrs.$observe('popoverTemplate', function(templateUrl){
                     var templatePromise;
