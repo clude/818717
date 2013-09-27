@@ -118,12 +118,12 @@ angular.module('b1b.controllers', []).
             SearchService.search();
         };
 
-        $scope.expand = function(group_hash)  {
-            if ($scope.group_details[group_hash]) {
-                delete $scope.group_details[group_hash];
+        $scope.expand = function(store_raw)  {
+            if ($scope.group_details[store_raw]) {
+                delete $scope.group_details[store_raw];
             }
             else {
-                SearchService.detail(group_hash);
+                SearchService.detail(store_raw);
             }
         };
 
@@ -152,10 +152,12 @@ angular.module('b1b.controllers', []).
             }
 
             $scope.groups = [];
+            $scope.group_details = {};
             angular.forEach(data.result, function(row) {
                 try {
                     var group = angular.fromJson(row[0]);
-                    group.sort_by = row[1];
+                    group.min_price = row[1];
+                    group.sort_by = row[2];
                     $scope.groups.push(group);
                 } catch (e) {
                     console.log(e);
@@ -173,7 +175,7 @@ angular.module('b1b.controllers', []).
                   console.log(e);
                 }
             });
-            $scope.group_details[data.group_hash] = details;
+            $scope.group_details[data.store_raw] = details;
         });
 
         $scope.correctSearchResultError = function(){

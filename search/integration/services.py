@@ -30,6 +30,11 @@ def get_pv_rpt_by_day(conditions):
                   "sc": {"$sum": "$sc"},
                   "uc": {"$sum": 1}
               }
+        },
+        { "$sort":
+              {
+                  "_id": -1,
+              }
         }
     ]
 
