@@ -123,10 +123,10 @@ angular.module('b1b.services', []).
                     $rootScope.$broadcast('search result', data);
                 });
             },
-            detail: function(group_hash, opts)  {
+            detail: function(store_raw, opts)  {
                 var searchOpts = angular.extend({}, opts, {params: params});
-                B1BHttp.get('/search/detail/'+group_hash+'/', searchOpts).success(function(data){
-                    $rootScope.$broadcast('detail result', { group_hash: group_hash , result: data.result });
+                B1BHttp.get('/search/detail/'+store_raw+'/', searchOpts).success(function(data){
+                    $rootScope.$broadcast('detail result', { store_raw: store_raw , result: data.result });
                 });
             }
         }
