@@ -37,6 +37,7 @@
             'source_uint': 2,
             'cell_raw': '50509699',
         };
+        console.log(item);
         result.push(item);
       });
       return result;
@@ -46,3 +47,4 @@
   parsers['baostar'] = parser;
 
 })(url_configs, parsers);
+

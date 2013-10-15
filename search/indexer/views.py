@@ -33,9 +33,8 @@ def query(request):
     result = searcher.query(keyword, sort, page*PAGE_SIZE, PAGE_SIZE)
     return HttpResponse(json.dumps(result), 'application/json')
 
-def detail(request, store):
-    keyword = request.GET.get('query', '')
-    sort = int(request.GET.get('sort', '0'))
+def detail(request, group):
     searcher = apis.Searcher(INDEX, settings.INDEX_SERVER)
-    result = searcher.detail(store, keyword, sort)
+    result = searcher.detail(group)
     return HttpResponse(json.dumps(result), 'application/json')
+

@@ -17,10 +17,12 @@
   var parser = {
     download: gbk_get,
     parse: function(url, content)  {
+      console.log('1');
       var result = [];
       $(content).find('#qiatan_table').find('tr:gt(0)').each(function(index, row){  
         if (index % 3 != 0) return;          
         var td = $(row).find('td');
+        var cell = td.eq(1).find('table').find('tr:eq(1)').text().trim().match(/[-\d]+/g)
         var item = {
           url: td.eq(1).find('a').attr('href'),
           model: td.eq(5).text(),
@@ -31,10 +33,11 @@
           producer: td.eq(10).text(),
           warehouse: td.eq(11).text(),
           store_raw: td.eq(1).find('strong').text(),
-          cell_raw: td.eq(1).find('table').find('tr:eq(1)').text().trim().match(/[-\d]+/g).join(' '),
+          cell_raw: cell ? cell.join(' ') : '',
           source_raw: '钢之家',
           source_uint: 8,
         }
+        console.log(item);
         result.push(item);
       });
       return result;

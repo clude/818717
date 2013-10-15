@@ -23,21 +23,14 @@ class Searcher(object):
         self.EXPIRE_TTL = EXPIRE_TTL
 
     def query(self, keyword, sort, start, count):
-        # clude: disable sort feature, but we should show the min price for each group
-        #sort_field, sort_method, group_method = SORT_MODES[2]
-        #ql = sphinxql.search(self.index, 'json', '%s(%s) AS sort_by'%(group_method, sort_field))
-        #ql.keyword(keyword).group('store_raw').limit(start, count)
-        sort_field, sort_method, group_method = SORT_MODES[sort]
-        ql = sphinxql.search(self.index, 'json, MIN(price_float) as min_price', '%s(%s) AS sort_by'%(group_method, sort_field))
-        ql.keyword(keyword).sort('sort_by %s'%sort_method).group('store_raw').limit(start, count)
-
+        ql = sphinxql.search(self.index, 'json')
+        ql.keyword(keyword).group('group_hash').limit(start, count)
         result = ql.run(self.SPHINX_HOST)        
         return result
 
-    def detail(self, store, keyword, sort):
-        sort_field, sort_method, group_method = SORT_MODES[sort]
+    def detail(self, group):
         ql = sphinxql.search(self.index, 'json')
-        ql.keyword(keyword+' '+store).sort('%s %s'%(sort_field, sort_method)).limit(0, 15)
+        ql.keyword(group).sort('price_float ASC').limit(0, 40)
         result = ql.run(self.SPHINX_HOST)
         return result
 

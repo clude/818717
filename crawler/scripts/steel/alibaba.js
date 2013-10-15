@@ -48,6 +48,7 @@
           source_raw: '阿里巴巴',
           source_uint: 1
         };
+        console.log(item);
         result.push(item);
       });
       return result;

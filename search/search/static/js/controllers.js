@@ -305,6 +305,15 @@ angular.module('b1b.controllers', []).
         $scope.close = function()   {
             dialog.close();
         }
+    }]).
+    controller('GroupCtrl', ['$scope', '$routeParams', '$http', function($scope, $routeParams, $http) {
+        $http.get('/search/detail/'+$routeParams.group_hash).success(function(data) {
+            $scope.result = [];
+            angular.forEach(data.result, function(row) {
+                $scope.result.push(angular.fromJson(row[0]));
+            })
+            console.log($scope.result);
+        });
     }])
 ;
 

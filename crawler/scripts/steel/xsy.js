@@ -46,6 +46,7 @@
           source_raw: '新事业',
           source_uint: 10,
         }
+        console.log(item);
         result.push(item);
       });
       return result;

@@ -48,6 +48,7 @@
           source_raw: '有钢',
           source_uint: 7,
         };
+        console.log(item);
         result.push(item);
       });
       return result;

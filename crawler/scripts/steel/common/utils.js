@@ -39,7 +39,7 @@ var utils = {
       if (hit)  {
         matchList = matchList.concat(tagGroup);
       }
-    })
+    });
     return matchList;
   }
 }
@@ -49,7 +49,7 @@ function group (item) {
     spec = utils.analyzeSpec(item.spec),
     tags = utils.analyzeTags(item.model+item.trademark+item.producer);
 
-  item.extended = tags.join(' ')
+  item.extended = tags.join(' ');
   item.width = spec.width;
   item.thick = spec.thick;
   item.group_hash = 'group_'+sha1(item.extended + spec.width + spec.height);

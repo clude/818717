@@ -33,6 +33,7 @@
           'source_uint': 4,
           'cell_raw': row.cell_phone,
         };
+        console.log(item);
         result.push(item);
       });
       return result;
@@ -42,3 +43,4 @@
   parsers['fdc'] = parser;
 
 })(url_configs, parsers);
+

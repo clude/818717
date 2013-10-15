@@ -5,7 +5,7 @@ var cfg = {
   port: 9681,
   'reconnection delay': 5000,
   'max reconnection attempts': Infinity,
-  batch: 1000,
+  batch: 100,
 };
 
 var

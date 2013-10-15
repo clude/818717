@@ -1,17 +1,7 @@
-/**
- * Created with PyCharm.
- * User: zhuclude
- * Date: 9/7/13
- * Time: 4:06 PM
- * To change this template use File | Settings | File Templates.
- */
-'use strict';
-// register global value b1b
-if(window.b1b){
 
-} else{
-    window.b1b = {};
-}
+'use strict';
+
+window.b1b = window.b1b | {}
 
 // This is a placeholder, the real template cache will be built later
 // or, in the dev mode, just load from /static/partials directly.
@@ -31,6 +21,7 @@ angular.module('b1b', ['ui.bootstrap', 'b1b.filters', 'b1b.services', 'b1b.direc
         function($routeProvider, newVersionProvider) {
             $routeProvider.
                 when('/', {templateUrl: '/static/partials/search.html', controller: 'SearchCtrl'}).
+                when('/group/:group_hash', { templateUrl:'/static/partials/group.html', controller: 'GroupCtrl'}).
                 when('/console/rpt/pv', {templateUrl: '/static/partials/rpt_pv.html', controller: 'PVRPTCtrl'}).
                 otherwise({redirectTo: '/'});
             ;

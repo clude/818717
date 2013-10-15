@@ -38,10 +38,14 @@
       ;
       doc.find('.list>tr:gt(0)').each(function(index, item){
         var cols = $(item).find('td')
-          , p = cols.eq(7).find('img').attr('src').split('&')[2].split('=')[1]
+          , p = cols.eq(7).find('img').attr('src')
           , phone = '';
-        for (var i = 0; i < p.length/2; ++i)  {
+
+        if (p) {
+          p = p.split('&')[2].split('=')[1];
+          for (var i = 0; i < p.length/2; ++i)  {
           phone += secret_dict[p.slice(i*2, i*2+2)];
+        }
         }
         var item = {
           url: cols.eq(0).find('a').attr('href'),
@@ -57,6 +61,7 @@
           source_raw: '你的钢铁',
           source_uint: 9,
         };
+        console.log(item);
         result.push(item);
       });
       return result;

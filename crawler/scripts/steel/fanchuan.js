@@ -36,6 +36,7 @@
           source_raw: '凡川',
           source_uint: 3,
         };
+        console.log(item);
         result.push(item);
       });
       return result;

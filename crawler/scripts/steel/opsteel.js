@@ -34,6 +34,7 @@
           source_raw: '欧浦',
           source_uint: 6,
         };
+        console.log(item);
         result.push(item);
       });
       return result;

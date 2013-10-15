@@ -5,7 +5,7 @@
     $ = require('jQuery');
 
   var configs = {};
-  for (var i=1; i<=9000; ++i)  {
+  for (var i=1; i<=1200; ++i)  {
     var url = sprintf('http://list.sososteel.com/res/p------------2--------------------%d.html', i);
     configs[url] = {
       priority: i,
@@ -55,6 +55,7 @@
             source_uint: 5,
             cell_raw: phone,
           }
+          console.log(r);
           result.push(r);
         });
       });

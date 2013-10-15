@@ -4,22 +4,8 @@
 <div class="search_result">
     <div class="filterbar row-fluid">
         <div class="btn_filter">
-
-            <span class="search_tip">排序:</span>
-            <a ng-repeat="mode in modes" ng-click="sort(mode)" ng-class="{'active':mode.is_selected}"  href="javascript:void(0);">
-                <span class="text">{{ mode.text }}</span>
-                <span class="arrow" ng-class="{true: 'up', false: 'down'}[mode.arrow_up]"></span>
-            </a>
-
-            <span style="margin-left: 30px" ng-show="total_amount">店铺数 ({{ total_amount }})</span>
+            <span style="margin-left: 30px" ng-show="total_amount">资源种类 ({{ total_amount }})</span>
         </div>
-
-        <div class="btn_right">
-            <a href="#" bibpopover popover-title="信息纠错" popover-placement="bottom" popover-template="/static/partials/popover_correct_search.html" >查询结果纠错</a>
-        </div>
-
-
-
     </div>
 
     <div class="result_list">
@@ -27,67 +13,23 @@
             <table class="table">
                 <thead>
                     <tr class="result_header">
-                        <td class="text-center col-md-2">店铺</td>
                         <td class="text-center col-md-2">品名</td>
-                        <!--
                         <td class="text-center col-md-2">牌号</td>
                         <td class="text-center col-md-2">规格</td>
-                        -->
                         <td class="text-center col-md-2">产地</td>
-                        <td class="text-center col-md-2">价格</td>
-                        <td class="text-center col-md-2">更新时间</td>
-                        <td>&nbsp;</td>
+                        <td class="text-center col-md-2"></td>
                     </tr>
                 </thead>
                 <tbody>
-                <tbody ng-repeat="group in groups">
-                <tr>
-                    <td class="text-center col-md-2 highlight_txt">{{ group.store_raw }}</td>
-                    <td class="text-center col-md-2">{{ group.model }}</td>
-                    <!--<td class="text-center col-md-2">{{ group.trademark }}</td>
-                    <td class="text-center col-md-2">{{ group.spec }}</td> -->
-                    <td class="text-center col-md-2">{{ group.producer }}</td>
-                    <td class="text-center col-md-2">￥{{ group.min_price|price }}</td>
-                    <td class="text-center col-md-2" style="width:70px;">{{ group.time|from_now }}</td>
-                    <td class="text-center col-md-2" style="width:90px;"><a class="btn btn-warning" ng-click="expand(group.store_raw)">查看店铺</a></td>
-                </tr>
-                <tr ng-show="group_details[group.store_raw]" class="steel_detail">
-                    <td colspan="8">
-                        <table class="table">
-                            <tr ng-repeat="resource in group_details[group.store_raw]" >
-                                <td class="w120 tc" style="padding-left:50px;">
-                                    <p>
-                                        <a ng-href="{{ resource.url }}" target="new">
-                                            <img ng-src="/static/images/logo/{{ resource.source_raw }}.jpg" />
-                                        </a>
-                                    </p>
-                                    <a ng-href="{{ resource.url }}" target="new">查看来源链接</a>
-                                </td>
-                                <td>
-                                    <p>公司：<strong class="c_333">{{ resource.store_raw }}</strong></p>
-                                    <p>库房：{{ resource.warehouse }}</p>
-                                    <p>电话：{{ resource.cell_raw }}</p>
-                                </td>
-                                <td>
-                                    <p>牌号：{{ resource.trademark }}</p>
-                                    <p>规格：{{ resource.spec }}</p>
-                                    <p>产地：{{ resource.producer }}</p>
-                                </td>
-                                <td class="tr">重量：<strong class="f16">{{ resource.weight_raw }}</strong></td>
-                                <td class="tr" style="width:70px;">
-                                    <em class="price f24">{{ resource.price_float|price }}</em>
-                                    <p class="gray">{{ resource.time|from_now }}</p>
-                                    <a href="#" bibpopover popover-title="信息纠错" popover-template="/static/partials/popover_correctme.html" >纠错</a>
-                                </td>
-                                <td class="tc">
-                                    <a href="#" class="fdc_buy" ng-click="open_detail(resource)" title="通过范达城进行交易"><img src="/static/images/goto_fdc.png" alt="go_fdc" /></a>
-                                </td>
-
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                </tobdy>
+                    <tbody ng-repeat="group in groups">
+                        <tr>
+                            <td class="text-center col-md-2">{{ group.model }}</td>
+                            <td class="text-center col-md-2">{{ group.trademark }}</td>
+                            <td class="text-center col-md-2">{{ group.spec }}</td>
+                            <td class="text-center col-md-2">{{ group.producer }}</td>
+                            <td class="text-center col-md-2"><a href="group/{{ group.group_hash }}" target="new">查看报价</a></td>
+                        </tr>
+                    </tobdy>
                 </tbody>
             </table>
             <div class="pagination pagination-right" ng-show="total_amount">

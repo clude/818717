@@ -5,5 +5,5 @@ urlpatterns = patterns('indexer.views',
     url(r'^reindex/$', 'reindex'),
     url(r'^update/$', 'update'),
     url(r'^query/$', 'query'),
-    url(r'^detail/(\S+)/$', 'detail'),
+    url(r'^detail/(.*)', 'detail'),
 )
