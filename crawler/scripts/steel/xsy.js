@@ -9,7 +9,7 @@
     var url = sprintf('%d', i);
     configs[url] = {
       priority: i,
-      validity: 60*60*1000
+      validity: 3*60*60*1000
     };
   }
   url_configs['xsy'] = configs;

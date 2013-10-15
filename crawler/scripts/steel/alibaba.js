@@ -17,7 +17,7 @@
       var url = sprintf('http://s.1688.com/selloffer/-%s.html?earseDirect=false&button_click=top&pageSize=40&n=y&from=marketSearch&showStyle=img&offset=3&beginPage=%d', category, i);
       configs[url] = {
         priority: i,
-        validity: 60*60*1000
+        validity: 3*60*60*1000
       };
     }
   });

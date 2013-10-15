@@ -9,7 +9,7 @@
     var url = sprintf('http://www.opsteel.cn/resource/%d.html?order=4&dateSearch=2', i);
     configs[url] = {
       priority: i,
-      validity: 60*60*1000
+      validity: 3*60*60*1000
     };
   }
   url_configs['opsteel'] = configs;

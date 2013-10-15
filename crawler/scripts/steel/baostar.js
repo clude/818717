@@ -12,7 +12,7 @@
       var url = sprintf('http://beta.baostar.com/search/bggm/%d/?sfCate=%s&mymall=1', i, category);
       configs[url] = {
         priority: i,
-        validity: 60*60*1000
+        validity: 3*60*60*1000
       };
     }
   });

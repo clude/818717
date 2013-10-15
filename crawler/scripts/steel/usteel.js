@@ -9,7 +9,7 @@
     var url = sprintf('http://www.usteel.com/index.php?app=gangcai&created=3&page=%d', i);
     configs[url] = {
       priority: i,
-      validity: 60*60*1000
+      validity: 3*60*60*1000
     };
   }
   url_configs['usteel'] = configs;

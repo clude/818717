@@ -22,6 +22,7 @@ angular.module('b1b', ['ui.bootstrap', 'b1b.filters', 'b1b.services', 'b1b.direc
             $routeProvider.
                 when('/', {templateUrl: '/static/partials/search.html', controller: 'SearchCtrl'}).
                 when('/group/:group_hash', { templateUrl:'/static/partials/group.html', controller: 'GroupCtrl'}).
+                when('/store/:store_raw', { templateUrl:'/static/partials/store.html', controller: 'StoreCtrl'}).
                 when('/console/rpt/pv', {templateUrl: '/static/partials/rpt_pv.html', controller: 'PVRPTCtrl'}).
                 otherwise({redirectTo: '/'});
             ;

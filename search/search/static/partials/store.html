@@ -1,0 +1,31 @@
+
+<div class="page-header">
+<h1>{{ result[0].store_raw }} <small>{{ result[0].cell_raw }}</small></h1>
+</div>
+
+<table class="table">
+<thead>
+  <tr>
+    <th>品名</th>
+    <th>牌号</th>
+    <th>规格</th>
+    <th>产地</th>
+    <th>仓库</th>
+    <th>重量</th>
+    <th>价格</th>
+    <th>来源</th>
+  </tr>
+</thead>
+<tbody>
+  <tr ng-repeat="row in result">
+    <td> {{ row.model }} </td>
+    <td> {{ row.trademark }} </td>
+    <td> {{ row.spec }} </td>
+    <td> {{ row.producer }} </td>
+    <td> {{ row.stock_location }} </td>
+    <td> {{ row.weight_raw }} </td>
+    <td> {{ row.price_raw }} </td>
+    <td> <a href="{{ row.url }}" target="new">{{ row.source_raw }}</a></td>
+  </tr>
+</tbody>
+</table>

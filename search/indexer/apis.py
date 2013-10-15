@@ -34,6 +34,12 @@ class Searcher(object):
         result = ql.run(self.SPHINX_HOST)
         return result
 
+    def store(self, store_raw):
+        ql = sphinxql.search(self.index, 'json')
+        ql.keyword(store_raw).limit(0, 40)
+        result = ql.run(self.SPHINX_HOST)
+        return result
+
     def update(self, rows):
         insert_ql, replace_ql = sphinxql.insert(self.index), sphinxql.replace(self.index)
         insert_count, replace_count = 0, 0

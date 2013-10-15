@@ -7,11 +7,11 @@
     http = require('http');
 
   var configs = {};
-  for (var i=1; i<=5500; ++i)  {
+  for (var i=1; i<=4000; ++i)  {
     var url = sprintf('http://www.zhaogang.com/spot/?page=%d', i);
     configs[url] = {
       priority: i,
-      validity: 360*60*1000
+      validity: 6*60*60*1000
     };
   }
   url_configs['zhaogang'] = configs;

@@ -9,7 +9,7 @@
     var url = sprintf('http://www.shgt.com/api/general_search?mode=package&page=%d&query=&search=&sfregion=&shop=&sort=', i);
     configs[url] = {
       priority: i,
-      validity: 60*60*1000
+      validity: 3*60*60*1000
     };
   }
   url_configs['fdc'] = configs;

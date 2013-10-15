@@ -1,6 +1,6 @@
 
 <div class="page-header">
-<h1>{{ result[0].model }} <small> {{ result[0].trademark }}</small></h1>
+<h1>{{ result[0].model }} <small> {{ result[0].trademark }} - {{ result[0].spec }}</small></h1>
 </div>
 
 <table class="table">
@@ -14,13 +14,12 @@
     <th>牌号</th>
     <th>规格</th>
     <th>来源</th>
-
   </tr>
 </thead>
 <tbody>
   <tr ng-repeat="row in result">
     <td> {{ row.price_raw }} </td>
-    <td> {{ row.store_raw }} </td>
+    <td><a href="/store/{{ row.store_raw }}">{{ row.store_raw }}</a></td>
     <td> {{ row.cell_raw }} </td>
     <td> {{ row.stock_location }} </td>
     <td> {{ row.weight_raw }} </td>
@@ -28,7 +27,7 @@
     <td> {{ row.trademark }} </td>
     <td> {{ row.spec }} </td>
 
-    <td> {{ row.source_raw }} </td>
+    <td> <a href="{{ row.url }}" target="new">{{ row.source_raw }}</a></td>
   </tr>
 </tbody>
 </table>

@@ -314,6 +314,15 @@ angular.module('b1b.controllers', []).
             })
             console.log($scope.result);
         });
+    }]).
+    controller('StoreCtrl', ['$scope', '$routeParams', '$http', function($scope, $routeParams, $http) {
+        $http.get('/search/store/'+$routeParams.store_raw).success(function(data) {
+            $scope.result = [];
+            angular.forEach(data.result, function(row) {
+                $scope.result.push(angular.fromJson(row[0]));
+            })
+            console.log($scope.result);
+        });
     }])
 ;
 

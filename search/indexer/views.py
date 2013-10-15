@@ -38,3 +38,7 @@ def detail(request, group):
     result = searcher.detail(group)
     return HttpResponse(json.dumps(result), 'application/json')
 
+def store(request, store_raw):
+    searcher = apis.Searcher(INDEX, settings.INDEX_SERVER)
+    result = searcher.store(store_raw)
+    return HttpResponse(json.dumps(result), 'application/json')

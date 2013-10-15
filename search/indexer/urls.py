@@ -6,4 +6,5 @@ urlpatterns = patterns('indexer.views',
     url(r'^update/$', 'update'),
     url(r'^query/$', 'query'),
     url(r'^detail/(.*)', 'detail'),
+    url(r'^store/(.*)', 'store'),
 )

@@ -9,7 +9,7 @@
     var url = sprintf('http://www.steelhome.cn/biz/biz_search.php?view=search_xh&keyword=&search_action=search_xh&res_cz=&res_gga_1=&res_gga_2=&res_ggb_1=&res_ggb_2=&res_ggc_1=&res_ggc_2=&res_jhck=&res_jg_1=&res_jg_2=&res_companyname=&res_type=&area=&searchorder=&more_type=&page=%d', i);
     configs[url] = {
       priority: i,
-      validity: 60*60*1000
+      validity: 3*60*60*1000
     };
   }
   url_configs['steelhome'] = configs;
