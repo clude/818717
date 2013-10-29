@@ -12,7 +12,7 @@
       var url = sprintf('http://www.steelabc.com/steelinformation/steelsearch?key=%s&page=%d', category, i);
       configs[url] = {
         priority: i,
-        validity: 3*60*60*1000
+        validity: 10*60*1000
       };
     }
   });

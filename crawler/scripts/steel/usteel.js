@@ -5,11 +5,11 @@
     $ = require('jQuery');
 
   var configs = {};
-  for (var i=1; i<=3600; ++i)  {
-    var url = sprintf('http://www.usteel.com/index.php?app=gangcai&created=3&page=%d', i);
+  for (var i=1; i<=5; ++i)  {
+    var url = sprintf('http://www.usteel.com/index.php?app=gangcai&u=yes&page=%d', i);
     configs[url] = {
       priority: i,
-      validity: 3*60*60*1000
+      validity: 1*60*1000
     };
   }
   url_configs['usteel'] = configs;
@@ -48,7 +48,7 @@
         }
         }
         var item = {
-          url: cols.eq(0).find('a').attr('href'),
+          url: 'http://www.usteel.com/'+cols.eq(0).find('a').attr('href'),
           model: cols.eq(0).text(),
           trademark: cols.eq(2).text(),
           spec: cols.eq(1).text(),

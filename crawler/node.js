@@ -1,11 +1,11 @@
 
 var cfg = {
-  //host: '211.152.54.139',
+  host: '211.152.54.139',
   name: 'node-random',
   port: 9681,
   'reconnection delay': 5000,
   'max reconnection attempts': Infinity,
-  batch: 100,
+  batch: 10,
 };
 
 var
