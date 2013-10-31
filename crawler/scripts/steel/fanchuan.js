@@ -9,7 +9,7 @@
     var url = sprintf('http://www.fanchuan.net/resource.html?cn=&bn=&sp=&ma=&ct=&fa=&wh=&md=2318&sort=30&status=1&count=20&pg=%d', i);
     configs[url] = {
       priority: i,
-      validity: 10*60*1000
+      validity: 1*60*60*1000
     };
   }
   url_configs['fanchuan'] = configs;

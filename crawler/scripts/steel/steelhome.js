@@ -5,13 +5,13 @@
     $ = require('jQuery');
 
   var configs = {};
-  for (var i=1; i<=800; ++i)  {
-    var url = sprintf('http://www.steelhome.cn/biz/biz_search.php?view=search_xh&keyword=&search_action=search_xh&res_cz=&res_gga_1=&res_gga_2=&res_ggb_1=&res_ggb_2=&res_ggc_1=&res_ggc_2=&res_jhck=&res_jg_1=&res_jg_2=&res_companyname=&res_type=&area=&searchorder=&more_type=&page=%d', i);
-    configs[url] = {
-      priority: i,
-      validity: 10*60*1000
-    };
-  }
+
+  var url = 'http://www.steelhome.cn/biz/xh.html';
+  configs[url] = {
+    priority: 1,
+    validity: 1*60*1000
+  };
+
   url_configs['steelhome'] = configs;
 
   var parser = {
@@ -19,20 +19,20 @@
     parse: function(url, content)  {
       console.log('1');
       var result = [];
-      $(content).find('#qiatan_table').find('tr:gt(0)').each(function(index, row){  
+      $(content).find('#xhzy').find('tr:gt(0)').each(function(index, row){  
         if (index % 3 != 0) return;          
         var td = $(row).find('td');
         var cell = td.eq(1).find('table').find('tr:eq(1)').text().trim().match(/[-\d]+/g)
         var item = {
           url: td.eq(1).find('a').attr('href'),
-          model: td.eq(5).text(),
-          trademark: td.eq(6).text(),
-          spec: td.eq(7).text(),
-          price_raw: td.eq(8).text(),
-          weight_raw: td.eq(9).text(),
-          producer: td.eq(10).text(),
-          warehouse: td.eq(11).text(),
-          store_raw: td.eq(1).find('strong').text(),
+          model: td.eq(5).text().trim(),
+          trademark: td.eq(6).text().trim(),
+          spec: td.eq(7).text().trim(),
+          price_raw: td.eq(8).text().trim(),
+          weight_raw: td.eq(9).text().trim(),
+          producer: td.eq(10).text().trim(),
+          warehouse: td.eq(11).text().trim(),
+          store_raw: td.eq(1).find('strong').text().trim(),
           cell_raw: cell ? cell.join(' ') : '',
           source_raw: '钢之家',
           source_uint: 8,

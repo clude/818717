@@ -5,7 +5,7 @@
     $ = require('jQuery');
 
   var configs = {};
-  for (var i=1; i<=5; ++i)  {
+  for (var i=1; i<=10; ++i)  {
     var url = sprintf('http://www.usteel.com/index.php?app=gangcai&u=yes&page=%d', i);
     configs[url] = {
       priority: i,

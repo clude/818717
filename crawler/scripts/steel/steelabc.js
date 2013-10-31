@@ -8,11 +8,11 @@
 
   var configs = {};
   categories_1.forEach(function(category) {
-    for (var i=1; i<=100; ++i)  {
+    for (var i=1; i<=3; ++i)  {
       var url = sprintf('http://www.steelabc.com/steelinformation/steelsearch?key=%s&page=%d', category, i);
       configs[url] = {
         priority: i,
-        validity: 10*60*1000
+        validity: 1*60*1000
       };
     }
   });
