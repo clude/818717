@@ -17,17 +17,22 @@
                         <td class="text-center col-md-2">牌号</td>
                         <td class="text-center col-md-2">规格</td>
                         <td class="text-center col-md-2">产地</td>
+                        <td class="text-center col-md-2">供应商</td>
+                        <td class="text-center col-md-2">电话</td>
+                        <td class="text-center col-md-2">来源</td>
                         <td class="text-center col-md-2"></td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tbody ng-repeat="group in groups">
+                    <tbody ng-repeat="row in rows">
                         <tr>
-                            <td class="text-center col-md-2">{{ group.model }}</td>
-                            <td class="text-center col-md-2">{{ group.trademark }}</td>
-                            <td class="text-center col-md-2">{{ group.spec }}</td>
-                            <td class="text-center col-md-2">{{ group.producer }}</td>
-                            <td class="text-center col-md-2"><a href="group/{{ group.group_hash }}">查看报价</a></td>
+                            <td class="text-center col-md-2">{{ row.model }}</td>
+                            <td class="text-center col-md-2">{{ row.trademark }}</td>
+                            <td class="text-center col-md-2">{{ row.spec }}</td>
+                            <td class="text-center col-md-2">{{ row.producer }}</td>
+                            <td class="text-center col-md-2">{{ row.store_raw }}</td>
+                            <td class="text-center col-md-2">{{ row.cell_raw }}</td>
+                            <td class="text-center col-md-2"><a href="group/{{ row.url }}">{{ row.source_raw }}</a></td>
                         </tr>
                     </tobdy>
                 </tbody>

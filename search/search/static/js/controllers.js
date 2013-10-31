@@ -151,14 +151,11 @@ angular.module('b1b.controllers', []).
                 $scope.pages.push(i);
             }
 
-            $scope.groups = [];
-            $scope.group_details = {};
+            $scope.rows = [];
             angular.forEach(data.result, function(row) {
                 try {
-                    var group = angular.fromJson(row[0]);
-                    group.min_price = row[1];
-                    group.sort_by = row[2];
-                    $scope.groups.push(group);
+                    var r = angular.fromJson(row[0]);
+                    $scope.rows.push(r);
                 } catch (e) {
                     console.log(e);
                 }

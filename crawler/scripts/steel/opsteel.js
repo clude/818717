@@ -5,11 +5,11 @@
     $ = require('jQuery');
 
   var configs = {};
-  for (var i=1; i<=1400; ++i)  {
-    var url = sprintf('http://www.opsteel.cn/resource/%d.html?order=4&dateSearch=2', i);
+  for (var i=1; i<=1; ++i)  {
+    var url = sprintf('http://www.opsteel.cn/resource/%d.html', i);
     configs[url] = {
       priority: i,
-      validity: 3*60*60*1000
+      validity: 1*60*1000
     };
   }
   url_configs['opsteel'] = configs;

@@ -24,7 +24,7 @@ class Searcher(object):
 
     def query(self, keyword, sort, start, count):
         ql = sphinxql.search(self.index, 'json')
-        ql.keyword(keyword).group('group_hash').limit(start, count)
+        ql.keyword(keyword).sort('time DESC').limit(start, count)
         result = ql.run(self.SPHINX_HOST)        
         return result
 
@@ -73,7 +73,7 @@ class Searcher(object):
         print insert_count, replace_count
         return insert_count, replace_count
 
-    def reindex(self, BATCH_COUNT=50):
+    def reindex(self, BATCH_COUNT=1):
         sphinxql.truncate(self.index).run()
         print 'rt truncated.'
 
@@ -93,11 +93,11 @@ class Searcher(object):
                     ql.add(row)
                     done += 1
                 except:
-                    pass
-                    #print 'ADD error:',row['id'], row['id_hash']
+                    print 'ADD error:',row['id'], row['id_hash'], row
             try:
                 ql.run(self.SPHINX_HOST)
             except:
+                print ql.sql()
                 import traceback
                 traceback.print_exc()
             print '%d / %d'%(done, len(all_keys))
