@@ -20,7 +20,10 @@ angular.module('b1b', ['ui.bootstrap', 'b1b.filters', 'b1b.services', 'b1b.direc
     config(['$routeProvider', '$locationProvider', 'newVersionProvider',
         function($routeProvider, newVersionProvider) {
             $routeProvider.
-                when('/', {templateUrl: '/static/partials/search.html', controller: 'SearchCtrl'}).
+                when('/', {templateUrl: '/static/partials/dashboard.html', controller: 'DashboardCtrl'}).
+                when('/sc/', {templateUrl: '/static/partials/search.html', controller: 'SearchCtrl'}).
+                when('/sc/?query=:query', {templateUrl: '/static/partials/search.html', controller: 'SearchCtrl'}).
+                when('/steel/:id_hash', { templateUrl:'/static/partials/item_detail.html', controller: 'SteelDetailCtrl'}).
                 when('/group/:group_hash', { templateUrl:'/static/partials/group.html', controller: 'GroupCtrl'}).
                 when('/store/:store_raw', { templateUrl:'/static/partials/store.html', controller: 'StoreCtrl'}).
                 when('/console/rpt/pv', {templateUrl: '/static/partials/rpt_pv.html', controller: 'PVRPTCtrl'}).

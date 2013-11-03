@@ -32,14 +32,36 @@
 </head>
 <body>
 
-<div ng-include="'/static/partials/nav.html'" ng-controller="NavCtrl"></div>
-<div class="container">
-    <div ng-view></div>
+<div class="main-content-bg">
+    <div class="main-content">
+        <div ng-include="'/static/partials/nav.html'" ng-controller="NavCtrl"></div>
+        <div ng-include="'/static/partials/search_widget.html'"></div>
+        <div ng-view></div>
+        <div class="container" style="background-color: #aaaaaa; text-align: center">
+            818717.com 沪ICP备12045504号-2
+        </div>
+    </div>
 </div>
 
-<div class="navbar navbar-fixed-bottom text-center">
-    818717.com 沪ICP备12045504号-2
+<!--
+<div ng-include="'/static/partials/nav.html'" ng-controller="NavCtrl"></div>
+<div>
+    <div class="container" ng-include="'/static/partials/search_widget.html'"></div>
+    <div class="main-content-bg">
+        <div class="main-content">
+            <div ng-view></div>
+            <div class="container" style="background-color: #cccccc; text-align: center">
+                818717.com 沪ICP备12045504号-2
+            </div>
+        </div>
+    </div>
+
 </div>
+-->
+
+<!--div class="navbar navbar-fixed-bottom text-center">
+    818717.com 沪ICP备12045504号-2
+</div-->
 
 </body>
 </html>

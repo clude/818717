@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="dashboard">
+        <!--div class="model-block" ng-repeat="item in model_steels">
+            <label>{{ item.model }}</label>
+            <table>
+                <tr></tr>
+            </table>
+        </div-->
+
+        <div class="model_block" ng-repeat="item in model_steels">
+            <div class="model_title">
+                <a class="more fr f12" href="/sc/?query={{ item.model }}" target="_blank">更多&raquo;</a>
+                <h3>{{ item.model }}</h3>
+            </div>
+            <table cellpadding="2" cellspacing="0" class="tiletab w f12">
+                <tr class="tl">
+                    <th>牌号</th>
+                    <th>规格</th>
+                    <th>重量</th>
+                    <th>价格</th>
+                </tr>
+                <tr class="steel_line" ng-repeat="steel in item.steels" ng-click="view_detail(steel.id_hash)">
+                    <td class="label-detail">{{ steel.trademark }}</td>
+                    <td class="label-detail">{{ steel.spec }}</td>
+                    <td style="width:70px;" class="label-detail">{{ steel.weight_raw }}</td>
+                    <td style="width:50px;" class="label-price">{{ steel.price_float | price}}</td>
+
+                </tr>
+            </table>
+        </div>
+
+        <div class="break"></div>
+
+    </div>
+</div>

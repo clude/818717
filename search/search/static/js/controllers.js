@@ -33,12 +33,34 @@ angular.module('b1b.controllers', []).
 
 
     }]).
+    controller('SearchWidgetCtrl',['$scope','SearchService','$rootScope' ,function($scope, SearchService,$rootScope){
+        $scope.search_query = '';
+
+        $scope.$on('set query string', function(event, data) {
+            $scope.search_query = data;
+        });
+
+
+        $scope.search = function(query)  {
+            var isSearchPage = ( window.location.pathname == "/sc/" );
+            if(isSearchPage){
+                $rootScope.$broadcast('global search', query);
+            }else{
+                window.location.href = '/sc/?query=' + query;
+            }
+        };
+
+    }]).
     controller('FilterCtrl',['$scope','SearchService' ,function($scope, SearchService){
         $scope.models = ['热轧', '冷轧', '热镀锌', '酸洗', '取向电工钢', '无取向电工钢', '电镀锌', '彩涂', '镀锌', '镀铝锌', '轧硬卷', '镀铬'];
         $scope.cities = ['上海', '北京', '天津', '南京', '无锡', '杭州', '济南', '西安', '武汉', '广州', '成都', '重庆'];
         $scope.producers = ['宝钢', '马钢', '鞍钢', '本钢', '舞钢', '南钢', '首钢', '邯郸', '通钢', '武钢', '沙钢', '唐钢', '日钢', '太钢', '柳钢', '天钢', '安钢'];
         $scope.filters = [[],[],[]];
         $scope.search_query = '';
+
+        $scope.$on('set query string', function(event, data) {
+            $scope.search_query = data;
+        });
 
         $scope.isShowClearAll = function(){
             for (var i in $scope.filters)   {
@@ -91,14 +113,20 @@ angular.module('b1b.controllers', []).
             SearchService.search();
         };
 
+        $scope.$on('global search', function(event, data) {
+            $scope.search_query = data;
+            $scope.search(data);
+        });
+
     }]).
-    controller('SearchCtrl',['$scope','$routeParams', 'SearchService', 'Dialogs','APIIntegration' ,function($scope, $routeParams, SearchService, Dialogs, APIIntegration){
+    controller('SearchCtrl',['$scope','$routeParams', 'SearchService', 'Dialogs','APIIntegration','$rootScope' ,function($scope, $routeParams, SearchService, Dialogs, APIIntegration,$rootScope){
 
         $scope.modes = [
-            { text: '活跃', sort: 0, arrow_up:false, is_selected: true },
-            { text: '更新', sort: 1, arrow_up:false, is_selected: false },
-            { text: '价格', sort: 2, arrow_up:true, is_selected: false }
-        ];
+            { text: '价格', sort: 2, arrow_up:true, is_selected: false },
+            { text: '更新', sort: 1, arrow_up:false, is_selected: true }
+        ]; //{ text: '活跃', sort: 0, arrow_up:false, is_selected: true },
+
+        $scope.isSearchPage = true;
 
         $scope.correcterrors = {};
 
@@ -106,6 +134,9 @@ angular.module('b1b.controllers', []).
         if ($routeParams['query']) SearchService.param('query', $routeParams['query']);
         if ($routeParams['sort']) SearchService.param('sort', $routeParams['sort']);
         if ($routeParams['page']) SearchService.param('page', parseInt($routeParams['page']));
+
+        if ($routeParams['query']) $rootScope.$broadcast('set query string', $routeParams['query']);
+        //$rootScope.$broadcast('set isSearchPage', true);
 
         $scope.sort = function(sort_mode)  {
             for(var k in $scope.modes){
@@ -320,6 +351,77 @@ angular.module('b1b.controllers', []).
             })
             console.log($scope.result);
         });
+    }]).
+    controller('SteelDetailCtrl', ['$scope', '$routeParams', '$http', function($scope, $routeParams, $http) {
+        $scope.steel_detail = {};
+        $scope.rows = [];
+
+        $http.get('/search/steel_detail/'+$routeParams.id_hash).success(function(data) {
+            try {
+                if(data && data.result && data.result.length > 0){
+                    var row = data.result[0];
+                    $scope.steel_detail = angular.fromJson(row[0]);
+                    $scope.get_similar($scope.steel_detail.group_hash);
+                }
+            } catch (e) {
+                console.log(e);
+            }
+
+        });
+
+        $scope.get_similar = function(group_hash){
+            $http.get('/search/similar_resources/'+group_hash).success(function(data) {
+                try {
+                    $scope.rows = [];
+                    angular.forEach(data.result, function(row) {
+                        try {
+                            var steel = angular.fromJson(row[0]);
+                            if(steel.id_hash != $scope.steel_detail.id_hash){
+                                $scope.rows.push(steel);
+                            }
+
+                        } catch (e) {
+                            console.log(e);
+                        }
+                    })
+                } catch (e) {
+                    console.log(e);
+                }
+
+            });
+        }
+
+    }]).
+    controller('DashboardCtrl', ['$scope', '$routeParams', '$http', function($scope, $routeParams, $http) {
+        $scope.model_steels = [];
+        $http.get('/search/dashboard_models/').success(function(data) {
+            try {
+                $scope.model_steels = [];
+                angular.forEach(data, function(item) {
+                    var modelItem = {model:item.model, steels:[]};
+                    if(item.steels){
+                        angular.forEach(item.steels, function(row) {
+                            try {
+                                modelItem.steels.push(angular.fromJson(row[0]));
+                            } catch (e) {
+                                console.log(e);
+                            }
+                        });
+                    }
+                    $scope.model_steels.push(modelItem);
+                })
+
+                console.log(data);
+
+            } catch (e) {
+                console.log(e);
+            }
+
+        });
+
+        $scope.view_detail = function(id_hash){
+            window.open('/steel/'+id_hash, '_blank')
+        }
     }])
 ;
 
