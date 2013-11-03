@@ -10,3 +10,6 @@
 
 # 清除旧数据
 30 2 * * * cd <%= site_dir %>; python manage.py reindex;
+
+# 生成首页数据, 每5分钟刷新一次
+*/5 8/9/10/11/12/13/14/15/16/17 * * * cd <%= site_dir %>; python manage.py dashboard_models;
