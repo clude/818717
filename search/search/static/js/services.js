@@ -277,7 +277,7 @@ angular.module('b1b.services', []).
             'login': function() {
                 open({
                     dialogClass: 'modal dialog_auth',
-                    templateUrl: 'static/partials/modal_login.html',
+                    templateUrl: '/static/partials/modal_login.html',
                     controller: 'AuthDialogCtrl'
                 });
             },

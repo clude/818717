@@ -1,0 +1,51 @@
+<table class="table search-result-table">
+    <thead>
+
+    </thead>
+    <tbody>
+    <tr ng-repeat="row in rows">
+        <td class="bold" style="width:120px">
+            <a href="/steel/{{ row.id_hash }}" target="_blank">{{ row.model }}</a>
+        </td>
+        <td>
+            <table class="row-detail-table">
+                <tr>
+                    <td style="width: 40px;">厂家：</td>
+                    <td class="label-detail" style="width: 200px">{{ row.producer }}</td>
+                    <td style="width: 40px;">总重：</td>
+                    <td class="label-detail">{{ row.weight_raw }}</td>
+                </tr>
+                <tr>
+                    <td>公司：</td>
+                    <td class="label-detail bold">{{ row.store_raw }}</td>
+                    <td>牌号：</td>
+                    <td class="label-detail">{{ row.trademark }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="label-detail">电话：{{ row.cell_raw }}</td>
+                    <td>规格：</td>
+                    <td class="label-detail">{{ row.spec }}</td>
+                </tr>
+            </table>
+
+        </td>
+        <td style="width:130px;">
+            <table class="row-detail-table">
+                <tr>
+                    <td class="label-price">¥ {{ row.price_float | price}}</td>
+                </tr>
+                <tr>
+                    <td class="label-source">
+                        <span class="label-detail">来源：</span>
+                        <a href="{{ row.url }}" target="_blank">{{ row.source_raw }}</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label-detail">{{ row.time|from_now }}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>

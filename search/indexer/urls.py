@@ -7,4 +7,7 @@ urlpatterns = patterns('indexer.views',
     url(r'^query/$', 'query'),
     url(r'^detail/(.*)', 'detail'),
     url(r'^store/(.*)', 'store'),
+    url(r'^steel_detail/(.*)', 'steel_detail'),
+    url(r'^similar_resources/(.*)', 'similar_resources'),
+    url(r'^dashboard_models/', 'dashboard_models'),
 )

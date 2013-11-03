@@ -1,4 +1,4 @@
-
+# encoding: utf-8
 from django.http import HttpResponse
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
@@ -25,6 +25,7 @@ def update(request):
     result = searcher.update(rows)
     return HttpResponse(result)
 
+
 def query(request):
     keyword = request.GET.get('query', '')
     page = int(request.GET.get('page', '0'))
@@ -33,12 +34,34 @@ def query(request):
     result = searcher.query(keyword, sort, page*PAGE_SIZE, PAGE_SIZE)
     return HttpResponse(json.dumps(result), 'application/json')
 
+
 def detail(request, group):
     searcher = apis.Searcher(INDEX, settings.INDEX_SERVER)
     result = searcher.detail(group)
     return HttpResponse(json.dumps(result), 'application/json')
 
+
 def store(request, store_raw):
     searcher = apis.Searcher(INDEX, settings.INDEX_SERVER)
     result = searcher.store(store_raw)
     return HttpResponse(json.dumps(result), 'application/json')
+
+
+def steel_detail(request, id):
+    searcher = apis.Searcher(INDEX, settings.INDEX_SERVER)
+    result = searcher.steel_detail(id)
+    return HttpResponse(json.dumps(result), 'application/json')
+
+
+def similar_resources(request, group):
+    searcher = apis.Searcher(INDEX, settings.INDEX_SERVER)
+    result = searcher.similar_resources(group)
+    return HttpResponse(json.dumps(result), 'application/json')
+
+def dashboard_models(request):
+    from models import DashboardModels
+
+    result = DashboardModels.objects.all().to_json();
+
+    return HttpResponse(result, 'application/json')
+

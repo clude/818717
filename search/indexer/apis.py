@@ -6,6 +6,7 @@ import sphinxql
 import redis
 import json
 import math
+import services
 
 SORT_MODES = {
     0: ('hit_count', 'DESC', 'MAX'), 
@@ -24,13 +25,30 @@ class Searcher(object):
 
     def query(self, keyword, sort, start, count):
         ql = sphinxql.search(self.index, 'json')
-        ql.keyword(keyword).sort('time DESC').limit(start, count)
+
+        sort_key = 'time DESC'
+        if sort:
+            m = SORT_MODES[sort]
+            sort_key = '%s %s'%(m[0], m[1])
+        ql.keyword(keyword).sort(sort_key).limit(start, count)
         result = ql.run(self.SPHINX_HOST)        
         return result
 
     def detail(self, group):
         ql = sphinxql.search(self.index, 'json')
         ql.keyword(group).sort('price_float ASC').limit(0, 40)
+        result = ql.run(self.SPHINX_HOST)
+        return result
+
+    def steel_detail(self, id):
+        ql = sphinxql.search(self.index, 'json')
+        ql.keyword(id).sort('price_float ASC').limit(0, 1)
+        result = ql.run(self.SPHINX_HOST)
+        return result
+
+    def similar_resources(self, group):
+        ql = sphinxql.search(self.index, 'json')
+        ql.keyword(group).sort('price_float ASC').limit(0, 11)
         result = ql.run(self.SPHINX_HOST)
         return result
 
@@ -56,6 +74,7 @@ class Searcher(object):
                 # no need for update id, because it's never changed.
                 self.rc.lset(id_hash, 3, json)
                 replace_count += 1
+                #services.save_crawresult(True, row)
             else:
                 ql, hit_count, gid = sphinxql.insert(self.index), 0, self.rc.incr('GLOBAL_ID')
                 self.rc.rpush(id_hash, full_hash)
@@ -64,6 +83,7 @@ class Searcher(object):
                 self.rc.rpush(id_hash, json)
                 row['id'] = gid
                 insert_count += 1
+                #services.save_crawresult(False, row)
 
             self.rc.expire(id_hash, self.EXPIRE_TTL)
             row['id'] = gid
@@ -103,4 +123,30 @@ class Searcher(object):
             print '%d / %d'%(done, len(all_keys))
         print 'finished.'
         return done
+
+    def generate_dashboard_models(self, modellist = []):
+        from models import DashboardModels
+
+        for model in modellist:
+            try:
+
+                ql = sphinxql.search(self.index, 'json')
+                ql.keyword(model).sort('price_float ASC').limit(0, 3)
+                result = ql.run(self.SPHINX_HOST)
+
+                dm = DashboardModels.objects(model=model).first()
+                if dm:
+                    dm.steels = result['result']
+                    dm.save()
+                else:
+                    dm = DashboardModels()
+                    dm.model = model;
+                    dm.steels = result['result']
+                    dm.save()
+                #DashboardModels.objects(model=model).update_one(set__steels=result['result'])
+            except Exception,e:
+                print e;
+                print 'gen dashboard model error:',model.encode('utf8')
+
+        return True
 

@@ -1,53 +1,33 @@
-
-<div ng-include="'/static/partials/search_filter.html'"></div>
-
-<div class="search_result">
-    <div class="filterbar row-fluid">
-        <div class="btn_filter">
-            <span style="margin-left: 30px" ng-show="total_amount">资源种类 ({{ total_amount }})</span>
+<div class="container">
+    <div ng-include="'/static/partials/search_filter.html'"></div>
+    <div class="search_result">
+        <div class="filterbar row-fluid ">
+            <ul class="search-summary-tab" ng-show="total_amount">
+                <li>
+                    <span class="tab-title">资源</span>
+                    <span class="label-detail">({{ total_amount }})</span>
+                </li>
+            </ul>
+            <div class="btn_filter">
+                <span class="search_tip">排序:</span>
+                <a ng-repeat="mode in modes" ng-click="sort(mode)" ng-class="{'active':mode.is_selected}"  href="javascript:void(0);">
+                    <span class="text">{{ mode.text }}</span>
+                    <span class="arrow" ng-class="{true: 'up', false: 'down'}[mode.arrow_up]"></span>
+                </a>
+            </div>
         </div>
-    </div>
 
-    <div class="result_list">
-        <div class="col-md-12">
-            <table class="table">
-                <thead>
-                    <tr class="result_header">
-                        <td class="text-center col-md-2">时间</td>
-                        <td class="text-center col-md-2">品名</td>
-                        <td class="text-center col-md-2">牌号</td>
-                        <td class="text-center col-md-2">规格</td>
-                        <td class="text-center col-md-2">产地</td>
-                        <td class="text-center col-md-2">供应商</td>
-                        <td class="text-center col-md-2">电话</td>
-                        <td class="text-center col-md-2">来源</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tbody ng-repeat="row in rows">
-                        <tr>
-                            <td class="text-center col-md-2">{{ row.time|from_now }}</td>
-                            <td class="text-center col-md-2">{{ row.model }}</td>
-                            <td class="text-center col-md-2">{{ row.trademark }}</td>
-                            <td class="text-center col-md-2">{{ row.spec }}</td>
-                            <td class="text-center col-md-2">{{ row.producer }}</td>
-                            <td class="text-center col-md-2">{{ row.store_raw }}</td>
-                            <td class="text-center col-md-2">{{ row.cell_raw }}</td>
-                            <td class="text-center col-md-2"><a href="{{ row.url }}">{{ row.source_raw }}</a></td>
-                        </tr>
-                    </tobdy>
-                </tbody>
-            </table>
-            <div class="pagination pagination-right" ng-show="total_amount">
-                <ul>
-                    <li ng-class="page_class(current_page-1)" ><a href="javascript:void(0)" ng-click="paging(current_page-1)">&laquo;</a></li>
-                    <li ng-class="page_class(page)" ng-repeat="page in pages"><a href="javascript:void(0)" ng-click="paging(page)">{{ page+1 }}</a></li>
-                    <li ng-class="page_class(current_page+1)" ><a href="javascript:void(0)" ng-click="paging(current_page+1)">&raquo;</a></li>
-                </ul>
+        <div class="result_list">
+            <div class="col-md-12">
+                <div ng-include="'/static/partials/search_result_table.html'"></div>
+                <div class="pagination pagination-right" ng-show="total_amount">
+                    <ul>
+                        <li ng-class="page_class(current_page-1)" ><a href="javascript:void(0)" ng-click="paging(current_page-1)">&laquo;</a></li>
+                        <li ng-class="page_class(page)" ng-repeat="page in pages"><a href="javascript:void(0)" ng-click="paging(page)">{{ page+1 }}</a></li>
+                        <li ng-class="page_class(current_page+1)" ><a href="javascript:void(0)" ng-click="paging(current_page+1)">&raquo;</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-
 </div>
-
-

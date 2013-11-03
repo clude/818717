@@ -1,20 +1,22 @@
-<div>
-    <table class="table">
-        <thead>
+<div class="container">
+    <div class="search_result">
+        <table class="table">
+            <thead>
             <tr>
                 <td>日期</td>
                 <td>页面访问数</td>
                 <td>搜索次数</td>
                 <td>独立用户数</td>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <tr ng-repeat="r in results">
                 <td>{{ r._id }}</td>
                 <td>{{ r.pc }}</td>
                 <td>{{ r.sc }}</td>
                 <td>{{ r.uc }}</td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>

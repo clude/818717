@@ -1,0 +1,59 @@
+
+<div class="container">
+    <div class="product_detail">
+        <div class="ofz product_plane">
+            <div class="fl picture_area">
+                <img src="/static/images/category/a0001.jpg" alt="" />
+            </div>
+
+            <div class="fl para_area">
+                <h2 class="product_name">{{ steel_detail.model }}</h2>
+                <h3>参考价：<em>{{ steel_detail.price_float | price}}</em></h3>
+                <table cellpadding="2" cellspacing="0" >
+                    <tr>
+                        <td style="width: 40px;">品名：</td>
+                        <td style="width: 220px;">{{ steel_detail.model }}</td>
+                        <td style="width: 40px;">库房：</td>
+                        <td>{{ steel_detail.warehouse }}</td>
+                    </tr>
+                    <tr>
+                        <td>厂家：</td>
+                        <td>{{ steel_detail.producer }}</td>
+                        <td>卷重：</td>
+                        <td>{{ steel_detail.weight_raw }}</td>
+                    </tr>
+                    <tr>
+                        <td>公司：</td>
+                        <td>{{ steel_detail.store_raw }}</td>
+                        <td>牌号：</td>
+                        <td>{{ steel_detail.trademark }}</td>
+                    </tr>
+                    <tr>
+                        <td>规格：</td>
+                        <td>{{ steel_detail.spec }}</td>
+                        <td>电话：</td>
+                        <td>{{ steel_detail.cell_raw }}</td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="search_result">
+            <div class="filterbar row-fluid ">
+                <ul class="search-summary-tab" ng-show="rows.length > 0">
+                    <li>
+                        <span class="tab-title">同类推荐</span>
+                        <span class="label-detail"></span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="result_list">
+                <div class="col-md-12">
+                    <div ng-include="'/static/partials/search_result_table.html'"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

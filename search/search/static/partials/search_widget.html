@@ -1,0 +1,17 @@
+<div class="search_line_bg">
+    <div class="container">
+        <div class="search_idx_area mt30 ml30" ng-controller="SearchWidgetCtrl">
+            <div class="row-fluid search_line">
+                <div class="span2"><a href="/"><img src="/static/images/logo_c3.png" class="site_logo"></a></div>
+                <div class="span8">
+                    <form class="form-search">
+                        <!--button popover-html-unsafe="aaaaaaaa" popover-placement="right" class="btn">title</button-->
+                        <input type="text" name="query" class="maintext" placeholder="品名、牌号、规格、供应商、产地" ng-model="search_query" />
+                        <button type="submit" class="btn btn-danger searchbtn" ng-click="search(search_query)" trc_f="2,'sc_button',''"><span>搜索</span></button>
+                    </form>
+                </div>
+            </div>
+            <div class="break"></div>
+        </div>
+    </div>
+</div>
