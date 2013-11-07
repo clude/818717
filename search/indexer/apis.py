@@ -14,6 +14,24 @@ SORT_MODES = {
     2: ('price_float', 'ASC', 'MIN'),
 }
 
+SORT_WEIGHT_DEF = {
+    # 1 - x/2y based on mysteel range
+    # then (1-x/2y) / (x/2y) = max_one / current_one
+    # then y/x = (1/2)(max_one / current_one) + 0.5
+    0:  (1, 10000),  #511steel
+    1:  (1, 1000),  #alibaba
+    2:  (1, 19000),  #baostar
+    3:  (1, 10000),  #fanchuan
+    4:  (1, 10000),  #fdc
+    5:  (1, 1600),  #mysteel
+    6:  (1, 20000),  #opsteel
+    7:  (1, 20000),  #steelabc
+    8:  (1, 20000),  #steelhome
+    9:  (1, 1000),  #usteel
+    10: (1, 15000),  #xsy
+    11: (1, 1000),  #zhaogang
+}
+
 class Searcher(object):
 
     def __init__(self, index, HOST='127.0.0.1', EXPIRE_TTL=60*60*24):
@@ -26,7 +44,7 @@ class Searcher(object):
     def query(self, keyword, sort, start, count):
         ql = sphinxql.search(self.index, 'json')
 
-        sort_key = 'time DESC'
+        sort_key = 'sort_weight DESC'
         if sort:
             m = SORT_MODES[sort]
             sort_key = '%s %s'%(m[0], m[1])
@@ -77,12 +95,15 @@ class Searcher(object):
                 #services.save_crawresult(True, row)
             else:
                 ql, hit_count, gid = sphinxql.insert(self.index), 0, self.rc.incr('GLOBAL_ID')
+                sort_weight = self.generate_random_sort_weight(row) #TODO: move it to crawer ?
                 self.rc.rpush(id_hash, full_hash)
                 self.rc.rpush(id_hash, 0)
                 self.rc.rpush(id_hash, gid)
                 self.rc.rpush(id_hash, json)
+                self.rc.rpush(id_hash, sort_weight)
                 row['id'] = gid
                 insert_count += 1
+                row['sort_weight'] = sort_weight
                 #services.save_crawresult(False, row)
 
             self.rc.expire(id_hash, self.EXPIRE_TTL)
@@ -110,6 +131,7 @@ class Searcher(object):
                     row['id'] = gid
                     row['hit_count'] = hit_count
                     row['json'] = self.rc.lindex(key, 3)
+                    row['sort_weight'] = self.rc.lindex(key, 4)
                     ql.add(row)
                     done += 1
                 except:
@@ -149,4 +171,13 @@ class Searcher(object):
                 print 'gen dashboard model error:',model.encode('utf8')
 
         return True
+
+    def generate_random_sort_weight(self, data):
+        from random import randrange
+        source_unit = data['source_uint']
+        rd_range = SORT_WEIGHT_DEF[source_unit]
+        sort_weight = randrange(rd_range[0], rd_range[1]);
+        return sort_weight
+
+
 

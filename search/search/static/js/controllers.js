@@ -123,7 +123,7 @@ angular.module('b1b.controllers', []).
 
         $scope.modes = [
             { text: '价格', sort: 2, arrow_up:true, is_selected: false },
-            { text: '更新', sort: 1, arrow_up:false, is_selected: true }
+            { text: '更新', sort: 1, arrow_up:false, is_selected: false }
         ]; //{ text: '活跃', sort: 0, arrow_up:false, is_selected: true },
 
         $scope.isSearchPage = true;
@@ -138,13 +138,23 @@ angular.module('b1b.controllers', []).
         if ($routeParams['query']) $rootScope.$broadcast('set query string', $routeParams['query']);
         //$rootScope.$broadcast('set isSearchPage', true);
 
+        //$scope.$on('global search', function(event, data) {
+        //    for(var k in $scope.modes){
+        //        $scope.modes[k].is_selected = false;
+        //    }
+        //});
+
         $scope.sort = function(sort_mode)  {
+            var preStatus = sort_mode.is_selected;
             for(var k in $scope.modes){
                 $scope.modes[k].is_selected = false;
             }
-            sort_mode.is_selected = true;
-
-            SearchService.param('sort', sort_mode.sort);
+            sort_mode.is_selected = !preStatus;
+            if(sort_mode.is_selected){
+                SearchService.param('sort', sort_mode.sort);
+            }else{
+                SearchService.param('sort', 0);
+            }
             SearchService.param('page', 0);
             SearchService.search();
         };
