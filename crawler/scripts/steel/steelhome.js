@@ -9,7 +9,7 @@
   var url = 'http://www.steelhome.cn/biz/xh.html';
   configs[url] = {
     priority: 1,
-    validity: 1*60*1000
+    validity: 1*15*1000
   };
 
   url_configs['steelhome'] = configs;
@@ -17,7 +17,6 @@
   var parser = {
     download: gbk_get,
     parse: function(url, content)  {
-      console.log('1');
       var result = [];
       $(content).find('#xhzy').find('tr:gt(0)').each(function(index, row){  
         if (index % 3 != 0) return;          

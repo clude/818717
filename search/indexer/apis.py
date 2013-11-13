@@ -79,6 +79,7 @@ class Searcher(object):
     def update(self, rows):
         insert_ql, replace_ql = sphinxql.insert(self.index), sphinxql.replace(self.index)
         insert_count, replace_count = 0, 0
+
         for row in rows:
             if not row: continue
             id_hash, full_hash, json = [row[_] for _ in ['id_hash', 'full_hash', 'json']]
@@ -109,7 +110,11 @@ class Searcher(object):
             self.rc.expire(id_hash, self.EXPIRE_TTL)
             row['id'] = gid
             row['hit_count'] = hit_count
-            ql.add(row).run()
+            sql = ql.add(row)
+            try:
+                sql.run()
+            except:
+                print 'error', sql.sql()
 
         print insert_count, replace_count
         return insert_count, replace_count
@@ -151,7 +156,6 @@ class Searcher(object):
 
         for model in modellist:
             try:
-
                 ql = sphinxql.search(self.index, 'json')
                 ql.keyword(model).sort('price_float ASC').limit(0, 3)
                 result = ql.run(self.SPHINX_HOST)

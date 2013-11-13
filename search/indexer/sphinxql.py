@@ -23,9 +23,9 @@ def value_encode(v):
     if isinstance(v, datetime.date) or isinstance(v, datetime.datetime):
         return time.strftime("'%Y%m%d%H%M%S'", v.timetuple())
     if isinstance(v, unicode):
-        return "'%s'"%v.encode('utf8')
+        return "'%s'"%v.replace("'", " ").encode('utf8')
     if isinstance(v, str):
-        return "'%s'"%v
+        return "'%s'"%v.replace("'", " ")
     return json.dumps(v)
 
 class SphinxQL(object):

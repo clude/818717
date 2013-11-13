@@ -11,7 +11,7 @@
     var url = sprintf('http://www.zhaogang.com/spot/?page=%d', i);
     configs[url] = {
       priority: i,
-      validity: 10*60*1000
+      validity: 60*60*1000
     };
   }
   url_configs['zhaogang'] = configs;
@@ -34,7 +34,7 @@
           on('error', function(err) {
             deffered.reject(err);
           });
-      }, 1000);
+      }, 3000);
       return deffered.promise;
     },
     parse: function(url, content)  {

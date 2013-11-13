@@ -5,11 +5,11 @@
     $ = require('jQuery');
 
   var configs = {};
-  for (var i=0; i<=500; ++i)  {
-    var url = sprintf('http://www.shgt.com/api/general_search?mode=package&page=%d&query=&search=&sfregion=&shop=&sort=', i);
+  for (var i=0; i<1; ++i)  {
+    var url = sprintf('http://fdc.baostar.com/api/general_search?mode=package&page=%d&query=&search=&sfregion=&shop=&sort=&page_size=20000', i);
     configs[url] = {
       priority: i,
-      validity: 10*60*1000
+      validity: 1*60*1000
     };
   }
   url_configs['fdc'] = configs;
@@ -20,7 +20,7 @@
       var result = [];
       JSON.parse(content).result.forEach(function(row)  {
         var item = {
-          'url': sprintf('http://www.shgt.com/package/%s/%s', row.provider_code, row.pack_code),
+          'url': sprintf('http://fdc.baostar.com/package/%s/%s', row.provider_code, row.pack_code),
           'model': row.product_name,
           'store_raw': row.provider_name,
           'warehouse': row.warehouse_name,
