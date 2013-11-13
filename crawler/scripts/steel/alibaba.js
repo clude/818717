@@ -13,7 +13,7 @@
 
   var configs = {};
   categories_1.forEach(function(category) {
-    for (var i=1; i<=100; ++i)  {
+    for (var i=1; i<=10; ++i)  {
       var url = sprintf('http://s.1688.com/selloffer/-%s.html?earseDirect=false&button_click=top&pageSize=40&n=y&from=marketSearch&showStyle=img&offset=3&beginPage=%d', category, i);
       configs[url] = {
         priority: i,

@@ -432,6 +432,9 @@ angular.module('b1b.controllers', []).
         $scope.view_detail = function(id_hash){
             window.open('/steel/'+id_hash, '_blank')
         }
+    }]).
+    controller('ReportCtrl', ['$scope', function($scope) {
+        console.log('a report view of all controllers');
     }])
 ;
 

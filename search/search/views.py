@@ -10,4 +10,3 @@ def index(request):
         rsp.set_cookie('uid',str(uuid.uuid1()))
 
     return rsp
-
