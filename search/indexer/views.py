@@ -57,6 +57,6 @@ def similar_resources(request, group):
 
 def dashboard_models(request):
     from models import DashboardModels
-    result = DashboardModels.objects.all().to_json();
-    return json_result(result)
+    result = DashboardModels.objects.all().to_json()
+    return HttpResponse(result, 'application/json')
 
