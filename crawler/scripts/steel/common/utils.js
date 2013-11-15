@@ -53,7 +53,8 @@ function group (item) {
   item.width = spec.width;
   item.thick = spec.thick;
   item.group_hash = 'group_'+sha1(item.extended + spec.width + spec.height);
-  item.json = JSON.stringify(item);
+  //item.json = JSON.stringify(item);
+  item.json = JSON.stringify(item).replace(/(\r\n|\n|\r)/gm," "); // replace line break for safety purpose
 }
 
 function process(item)  {
