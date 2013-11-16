@@ -29,6 +29,9 @@
       function parseField(field) {
         return field.slice(field.indexOf(':')+1, field.length).trim();
       }
+      function removeLinebreak(field) {
+        return field.replace(/(\n|\r|\t\s)/g,"");
+      }
       var result = [];
       $(content).find('#sw_maindata_asyncload').children('li').each(function(index, row){
         var
@@ -40,7 +43,7 @@
           trademark: parseField(spans.eq(2).text()),
           producer: parseField(spans.eq(3).text()),
           spec: parseField(spans.eq(4).text()),
-          price_raw: ul.find('.sw-ui-font-standardPrice').text(),
+          price_raw: removeLinebreak(ul.find('.sw-block-price').find('.sw-block-textP:eq(0)').text()),
           store_raw: ul.find('.sw-block-company').find('a').text(),
           warehouse: '',
           weight_raw: '',
