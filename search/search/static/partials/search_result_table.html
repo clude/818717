@@ -33,7 +33,11 @@
         <td style="width:130px;">
             <table class="row-detail-table">
                 <tr>
-                    <td class="label-price">¥ {{ row.price_float | price}}</td>
+                    <td class="label-price">
+                        <span ng-show="row.price_float > 0">¥ {{ row.price_float | price}}</span>
+                        <span ng-show="row.price_float == 0 && row.price_raw.length > 0">{{ row.price_raw}}</span>
+                        <span ng-show="row.price_float == 0 && row.price_raw.length == 0">---</span>
+                    </td>
                 </tr>
                 <tr>
                     <td class="label-source">

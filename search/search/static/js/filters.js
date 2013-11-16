@@ -14,7 +14,11 @@ angular.module('b1b.filters', []).
     filter('price',['$filter', function($filter){
         return function(input) {
             var v = parseFloat(input);
-            return (v>88888) ? '电议' : $filter('number')(v,0); //TODO
+            if(v == 0){
+                return "---";
+            }else{
+                return (v>88888) ? '电议' : $filter('number')(v,0); //TODO
+            }
         };
     }]).
     filter('hideusername', function(){
