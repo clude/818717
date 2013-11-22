@@ -26,7 +26,7 @@
           trademark: td.eq(3).text(),
           spec: td.eq(2).text(),
           producer: td.eq(4).text(),
-          price_raw: td.eq(5).find('span').text(),
+          price_raw: td.eq(5).text(),
           weight_raw: td.eq(6).find('p:eq(0)').text(),
           warehouse: td.eq(7).text(),
           store_raw: $(row).find('a.comp-name').text(),

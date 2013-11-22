@@ -20,7 +20,9 @@
                     <th>价格</th>
                 </tr>
                 <tr class="steel_line" ng-repeat="steel in item.steels" ng-click="view_detail(steel.id_hash)">
-                    <td class="label-detail">{{ steel.trademark }}</td>
+                    <td class="label-detail">
+                        <span class="label-trademark">{{ steel.trademark }}</span>
+                    </td>
                     <td class="label-detail">{{ steel.spec }}</td>
                     <td style="width:70px;" class="label-detail">{{ steel.weight_raw }}</td>
                     <td style="width:50px;" class="label-price">{{ steel.price_float | price}}</td>

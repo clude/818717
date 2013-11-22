@@ -16,7 +16,9 @@ SORT_MODES = {
     2: ('price_float', 'ASC', 'MIN'),
 }
 
-SORT_WEIGHT_DEF = {
+SORT_TIME_SECTION = 2 * 3600  #排序用， 设定时间范围，每两小时的数据为一个数据区间
+
+SORT_WEIGHT_DEF = {  # 排序用， 设定排序权重
     # 1 - x/2y based on mysteel range
     # then (1-x/2y) / (x/2y) = max_one / current_one
     # then y/x = (1/2)(max_one / current_one) + 0.5
@@ -46,7 +48,7 @@ class Searcher(object):
     def query(self, keyword, sort, start, count):
         ql = sphinxql.search(self.index, 'json')
 
-        sort_key = 'sort_weight DESC'
+        sort_key = 'sort_time_section DESC, sort_weight DESC'
         if sort:
             m = SORT_MODES[sort]
             sort_key = '%s %s'%(m[0], m[1])
@@ -110,6 +112,7 @@ class Searcher(object):
                 row['id'] = gid
                 insert_count += 1
                 row['sort_weight'] = sort_weight
+                row['sort_time_section'] = self.generate_sort_time_section(row)
                 #services.save_crawresult(False, row)
 
             self.rc.expire(id_hash, self.EXPIRE_TTL)
@@ -142,9 +145,12 @@ class Searcher(object):
                     row['hit_count'] = hit_count
                     row['json'] = self.rc.lindex(key, 3)
                     row['sort_weight'] = self.rc.lindex(key, 4)
+                    row['sort_time_section'] = self.generate_sort_time_section(row)
+
                     if row.has_key('trademark'):
                         kw = keywords.get_keyword(row['trademark'])
                         row['keywords'] = kw
+
                     ql.add(row)
                     done += 1
                 except:
@@ -159,13 +165,14 @@ class Searcher(object):
         print 'finished.'
         return done
 
-    def generate_dashboard_models(self, modellist = []):
+    def generate_dashboard_models(self, modellist = [], min_price = 2000.0):
         from models import DashboardModels
 
         for model in modellist:
             try:
                 ql = sphinxql.search(self.index, 'json')
-                ql.keyword(model).sort('price_float ASC').limit(0, 3)
+                ql.range( price_float = ( min_price, 999999.0) )
+                ql.keyword(model).sort('sort_time_section DESC, price_float ASC').limit(0, 3)
                 result = ql.run(self.SPHINX_HOST)
 
                 dm = DashboardModels.objects(model=model).first()
@@ -190,6 +197,11 @@ class Searcher(object):
         rd_range = SORT_WEIGHT_DEF[source_unit]
         sort_weight = randrange(rd_range[0], rd_range[1]);
         return sort_weight
+
+    def generate_sort_time_section(self, data):
+        return int(data['time']/1000.0/SORT_TIME_SECTION) * SORT_TIME_SECTION
+
+
 
 
 
