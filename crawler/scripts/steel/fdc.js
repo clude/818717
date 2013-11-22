@@ -5,11 +5,11 @@
     $ = require('jQuery');
 
   var configs = {};
-  for (var i=0; i<1; ++i)  {
-    var url = sprintf('http://fdc.baostar.com/api/general_search?mode=package&page=%d&query=&search=&sfregion=&shop=&sort=&page_size=20000', i);
+  for (var i=0; i<10; ++i)  {
+    var url = sprintf('http://fdc.baostar.com/api/general_search?mode=package&page=%d&query=&search=&sfregion=&shop=&sort=&page_size=2000', i);
     configs[url] = {
       priority: i,
-      validity: 1*60*1000
+      validity: 10*60*1000
     };
   }
   url_configs['fdc'] = configs;

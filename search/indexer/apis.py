@@ -8,6 +8,8 @@ import json
 import math
 import services
 
+from indexer import keywords
+
 SORT_MODES = {
     0: ('hit_count', 'DESC', 'MAX'), 
     1: ('time', 'DESC', 'MAX'),
@@ -50,7 +52,7 @@ class Searcher(object):
         if sort:
             m = SORT_MODES[sort]
             sort_key = '%s %s'%(m[0], m[1])
-        ql.keyword(keyword).sort(sort_key).limit(start, count)
+        ql.keyword('*'+keyword+'*').sort(sort_key).limit(start, count)
         result = ql.run(self.SPHINX_HOST)        
         return result
 
@@ -85,6 +87,9 @@ class Searcher(object):
         for row in rows:
             if not row: continue
             id_hash, full_hash, json = [row[_] for _ in ['id_hash', 'full_hash', 'json']]
+            if row.has_key('trademark'):
+                kw = keywords.get_keyword(row['trademark'])
+                row['keywords'] = kw
 
             if self.rc.exists(id_hash):
                 check_hash, check_hit, gid = self.rc.lrange(id_hash, 0, 2)
@@ -141,6 +146,11 @@ class Searcher(object):
                     row['json'] = self.rc.lindex(key, 3)
                     row['sort_weight'] = self.rc.lindex(key, 4)
                     row['sort_time_section'] = self.generate_sort_time_section(row)
+
+                    if row.has_key('trademark'):
+                        kw = keywords.get_keyword(row['trademark'])
+                        row['keywords'] = kw
+
                     ql.add(row)
                     done += 1
                 except:

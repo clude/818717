@@ -74,11 +74,11 @@ angular.module('b1b.controllers', []).
             for (var i in $scope.filters)   {
                 var subFilters = $scope.filters[i];
                 if (subFilters.length > 0)  {
-                    filterQuery.push('('+subFilters.join(')|(')+')');
+                    filterQuery.push('(*'+subFilters.join('*)|(*')+'*)');
                 }
             }
             if($scope.search_query){
-                filterQuery.push('(' + $scope.search_query + ')');
+                filterQuery.push('(*' + $scope.search_query + '*)');
             }
             return filterQuery.join(' ');
         };
