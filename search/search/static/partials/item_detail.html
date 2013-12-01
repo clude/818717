@@ -15,6 +15,11 @@
                         <td style="width: 220px;">{{ steel_detail.model }}</td>
                         <td style="width: 40px;">库房：</td>
                         <td>{{ steel_detail.warehouse }}</td>
+                        <td rowspan="4" style="vertical-align: bottom; width:  100px;">
+                            <a href="#" ng-click="buy_via_fdc()" ng-show="!_.isEmpty(steel_detail)" title="去范达城购买">
+                                <img src="/static/images/goto_fdc.png">
+                            </a>
+                        </td>
                     </tr>
                     <tr>
                         <td>厂家：</td>

@@ -5,27 +5,27 @@
     <tbody>
     <tr ng-repeat="row in rows">
         <td class="bold" style="width:120px">
-            <a href="/steel/{{ row.id_hash }}" target="_blank">{{ row.model }}</a>
+            <a href="/steel/{{ row.id_hash }}" target="_blank">{{ row.model | unknown }}</a>
         </td>
         <td>
             <table class="row-detail-table">
                 <tr>
-                    <td style="width: 40px;">厂家：</td>
-                    <td class="label-detail" style="width: 200px">{{ row.producer }}</td>
                     <td style="width: 40px;">总重：</td>
-                    <td class="label-detail">{{ row.weight_raw }}</td>
+                    <td class="label-detail" style="min-width: 200px;">{{ row.weight_raw }}</td>
+                    <td style="width: 40px;">产地：</td>
+                    <td class="label-detail" style="width: 250px">{{ row.producer }}</td>
                 </tr>
                 <tr>
-                    <td>公司：</td>
-                    <td class="label-detail bold">{{ row.store_raw }}</td>
                     <td>牌号：</td>
                     <td class="label-detail">{{ row.trademark }}</td>
+                    <td>卖家：</td>
+                    <td class="label-detail bold">{{ row.store_raw }}</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td class="label-detail">电话：{{ row.cell_raw }}</td>
                     <td>规格：</td>
                     <td class="label-detail">{{ row.spec }}</td>
+                    <td></td>
+                    <td class="label-detail">电话：{{ row.cell_raw }}</td>
                 </tr>
             </table>
 

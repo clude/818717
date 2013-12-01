@@ -362,7 +362,7 @@ angular.module('b1b.controllers', []).
             console.log($scope.result);
         });
     }]).
-    controller('SteelDetailCtrl', ['$scope', '$routeParams', '$http', function($scope, $routeParams, $http) {
+    controller('SteelDetailCtrl', ['$scope', '$routeParams', '$http', 'Dialogs', function($scope, $routeParams, $http, Dialogs) {
         $scope.steel_detail = {};
         $scope.rows = [];
 
@@ -378,6 +378,12 @@ angular.module('b1b.controllers', []).
             }
 
         });
+
+        $scope.buy_via_fdc = function(){
+            if(!_.isEmpty($scope.steel_detail)){
+                Dialogs.detail($scope.steel_detail);
+            }
+        };
 
         $scope.get_similar = function(group_hash){
             $http.get('/search/similar_resources/'+group_hash).success(function(data) {

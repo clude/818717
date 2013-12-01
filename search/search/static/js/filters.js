@@ -27,5 +27,14 @@ angular.module('b1b.filters', []).
                 return input.slice(0,4) + res + input.slice(7);
             }
         }
+    }).
+    filter('unknown', function(){
+        return function(input)  {
+            if (input && !_.isEmpty(input)) {
+                return input;
+            }else{
+                return "未知";
+            }
+        }
     })
 ;

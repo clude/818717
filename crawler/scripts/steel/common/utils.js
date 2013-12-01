@@ -4,7 +4,7 @@ var sha1 = require('sha1')
 
 var utils = {
   numberOnly: function(originString, price)  {
-    if (!originString) return 0;
+    if (!originString) return price?max:0;
     var result = originString.replace(/[^0-9.]+/g, '');
     if (!result) return max;
     result = parseFloat(result);
